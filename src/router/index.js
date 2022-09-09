@@ -5,7 +5,10 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    component: HomeView,
+    meta: {
+      title: 'Home',
+    }
   },
   {
     path: '/about',
@@ -20,6 +23,16 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+// Set the title of the page
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title + " - Upsilon Workshop"
+  } else {
+    document.title = 'Upsilon Workshop'
+  }
+  next()
 })
 
 export default router
