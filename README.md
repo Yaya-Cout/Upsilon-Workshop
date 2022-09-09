@@ -1,4 +1,4 @@
-# numworks-workshop
+# Upsilon Workshop
 
 ## Project setup
 ```
