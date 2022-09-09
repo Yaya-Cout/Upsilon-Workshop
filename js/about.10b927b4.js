@@ -1,0 +1,1 @@
+"use strict";(self["webpackChunkWorkshop_workshop"]=self["webpackChunkWorkshop_workshop"]||[]).push([[443],{6506:function(n,o,r){r.r(o),r.d(o,{default:function(){return k}});var s=r(3396);const u={class:"about"},t=(0,s._)("h1",null,"This is an about page",-1),a=[t];function e(n,o){return(0,s.wg)(),(0,s.iD)("div",u,a)}var c=r(89);const h={},i=(0,c.Z)(h,[["render",e]]);var k=i}}]);
