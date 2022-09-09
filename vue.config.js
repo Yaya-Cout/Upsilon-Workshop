@@ -11,6 +11,9 @@ module.exports = defineConfig({
       runtimeOnly: false,
       compositionOnly: false,
       fullInstall: true
-    }
+    },
+    vuetify: {
+			// https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vuetify-loader
+		}
   }
 })
