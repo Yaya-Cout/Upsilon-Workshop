@@ -1,5 +1,6 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
+  publicPath: process.env.VUE_APP_PUBLIC_PATH,
   transpileDependencies: true,
   productionSourceMap: false,
 
@@ -16,6 +17,5 @@ module.exports = defineConfig({
     vuetify: {
 			// https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vuetify-loader
 		},
-    publicPath: process.env.VUE_APP_BASE_URL,
   }
 })
