@@ -125,14 +125,22 @@ export default defineComponent({
       }
     },
     actualTab() {
+      // Get the actual tab
+      const tab = this.tabs[this.actualTab]
+      // If the tab is empty, return
+      if (tab === undefined) return
       // Get the route of the tab
-      const route = this.tabs[this.actualTab][1]
+      const route = tab[1]
       // Redirect to the route
       this.$router.push({ path: route })
     },
     route() {
       // Get the index of the tab
       const index = this.tabs.findIndex((tab) => tab[1] === this.route)
+      // If the index is not -1, set the actual tab to the index
+      if (index !== -1) {
+        this.actualTab = index
+      }
       // Set the actual tab
       this.actualTab = index
     }
