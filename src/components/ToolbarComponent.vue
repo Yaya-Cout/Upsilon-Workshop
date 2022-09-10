@@ -21,6 +21,12 @@
 
     <v-spacer />
 
+    <v-text-field
+      v-model="search"
+      label="Search scripts"
+      hide-details
+      clearable
+    />
     <v-btn icon>
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
@@ -31,6 +37,7 @@
 
     <template #extension>
       <v-tabs align-with-title>
+        <v-tab>Home</v-tab>
         <v-tab>Most Downloaded</v-tab>
         <v-tab>Latest</v-tab>
         <v-tab>Solo Games</v-tab>
@@ -56,11 +63,22 @@ export default defineComponent({
     return { t }
   },
   data: () => ({
-    collapseOnScroll: true
+    search: '',
   }),
   computed: {
     pageTitle() {
       return this.$route.meta.title
+    }
+  },
+  watch: {
+    search() {
+      // Navigate to /search?query=...
+      this.$router.push({
+        name: 'search',
+        query: {
+          query: this.search
+        }
+      })
     }
   }
 })
