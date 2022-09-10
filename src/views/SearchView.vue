@@ -1,8 +1,10 @@
 <template>
-  <div class="search">
-    <p>
-      {{ $route.params.gameId }}
-    </p>
+  <div id="search">
+    <v-row>
+      <v-col cols="12">
+        <h1>Searching for {{ $route.params.query }}</h1>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -11,7 +13,7 @@ import { defineComponent } from "vue";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
-  name: "HelloI18n",
+  name: "SearchView",
   setup() {
     const { t } = useI18n({
       inheritLocale: true,

@@ -72,13 +72,13 @@ export default defineComponent({
   },
   watch: {
     search() {
-      // Navigate to /search?query=...
-      this.$router.push({
-        name: 'search',
-        query: {
-          query: this.search
-        }
-      })
+      // If search is empty, redirect to home
+      if (this.search === '') {
+        this.$router.push({ name: 'home' })
+      } else {
+        // Else, redirect to search page
+        this.$router.push({ name: 'search', params: { query: this.search } })
+      }
     }
   }
 })

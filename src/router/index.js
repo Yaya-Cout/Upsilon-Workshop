@@ -21,7 +21,7 @@ const routes = [
     }
   },
   {
-    path: '/search',
+    path: '/search/:query',
     name: 'search',
     component: SearchView,
     meta: {
