@@ -1,0 +1,25 @@
+{
+  "about": {
+    "name": "À propos",
+    "title": "Ceci est une page à propos"
+  },
+  "home": {
+    "name": "Accueil",
+    "title": "Ceci est une page d’accueil"
+  },
+  "list": {
+    "latest": "Récent",
+    "listing-category": "Liste des {0} ",
+    "most-downloaded": "Plus téléchargés",
+    "multiplayer-games": "Jeux multijoueurs",
+    "mathematics": "Mathématiques",
+    "others": "Autres",
+    "solo-games": "Jeux solo"
+  },
+  "search": {
+    "searching-for": "Recherche de {0}"
+  },
+  "toolbar": {
+    "search-scripts": "Recherchez des scripts"
+  }
+}
