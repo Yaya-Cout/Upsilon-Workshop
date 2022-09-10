@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import SearchView from '../views/SearchView.vue'
+import ListView from '../views/ListView.vue'
 
 const routes = [
   {
@@ -26,6 +27,14 @@ const routes = [
     component: SearchView,
     meta: {
       title: 'Search',
+    }
+  },
+  {
+    path: '/list/:category',
+    name: 'list',
+    component: ListView,
+    meta: {
+      title: 'List',
     }
   },
 ]

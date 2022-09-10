@@ -24,26 +24,36 @@
     <v-text-field
       v-model="search"
       label="Search scripts"
+      class="search-bar"
       hide-details
       clearable
     />
-    <v-btn icon>
+    <!-- <v-btn icon>
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
 
     <v-btn icon>
       <v-icon>mdi-dots-vertical</v-icon>
-    </v-btn>
+    </v-btn> -->
 
     <template #extension>
-      <v-tabs align-with-title>
-        <v-tab>Home</v-tab>
+      <v-tabs
+        v-model="actualTab"
+        align-with-title
+      >
+        <v-tab
+          v-for="tab in tabs"
+          :key="tab"
+        >
+          {{ tab[0] }}
+        </v-tab>
+        <!-- <v-tab>Home</v-tab>
         <v-tab>Most Downloaded</v-tab>
         <v-tab>Latest</v-tab>
         <v-tab>Solo Games</v-tab>
         <v-tab>Multiplayer Games</v-tab>
         <v-tab>Mathematics</v-tab>
-        <v-tab>Others</v-tab>
+        <v-tab>Others</v-tab> -->
       </v-tabs>
     </template>
   </v-app-bar>
@@ -64,10 +74,44 @@ export default defineComponent({
   },
   data: () => ({
     search: '',
+    tabs: [
+      [
+        "Home",
+        "/"
+      ],
+      [
+        "Most Downloaded",
+        "/list/most-downloaded"
+      ],
+      [
+        "Latest",
+        "/list/latest"
+      ],
+      [
+        "Solo Games",
+        "/list/solo-games"
+      ],
+      [
+        "Multiplayer Games",
+        "/list/multiplayer-games"
+      ],
+      [
+        "Mathematics",
+        "/list/mathematics"
+      ],
+      [
+        "Others",
+        "/list/others"
+      ]
+    ],
+    actualTab: 0,
   }),
   computed: {
     pageTitle() {
       return this.$route.meta.title
+    },
+    route() {
+      return this.$route.path
     }
   },
   watch: {
@@ -79,7 +123,26 @@ export default defineComponent({
         // Else, redirect to search page
         this.$router.push({ name: 'search', params: { query: this.search } })
       }
+    },
+    actualTab() {
+      // Get the route of the tab
+      const route = this.tabs[this.actualTab][1]
+      // Redirect to the route
+      this.$router.push({ path: route })
+    },
+    route() {
+      // Get the index of the tab
+      const index = this.tabs.findIndex((tab) => tab[1] === this.route)
+      // Set the actual tab
+      this.actualTab = index
     }
-  }
+  },
+  mounted() {}
 })
 </script>
+
+<style scoped>
+.search-bar {
+  margin: 0 1rem;
+}
+</style>
