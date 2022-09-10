@@ -1,3 +1,25 @@
 {
-  "message": "hello i18n !!"
+  "about": {
+    "name": "About",
+    "title": "This is an about page"
+  },
+  "home": {
+    "name": "Home",
+    "title": "This is a home page"
+  },
+  "list": {
+    "listing-category": "Listing {0}",
+    "most-downloaded": "Most downloaded",
+    "latest": "Latest",
+    "solo-games": "Solo games",
+    "multiplayer-games": "Multiplayer games",
+    "mathematics": "Mathematics",
+    "others": "Others"
+  },
+  "search": {
+    "searching-for": "Searching for {0}"
+  },
+  "toolbar": {
+    "search-scripts": "Search scripts"
+  }
 }

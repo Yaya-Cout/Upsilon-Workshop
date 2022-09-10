@@ -23,7 +23,7 @@
 
     <v-text-field
       v-model="search"
-      label="Search scripts"
+      :label="t('toolbar.search-scripts')"
       class="search-bar"
       hide-details
       clearable
@@ -45,7 +45,7 @@
           v-for="tab in tabs"
           :key="tab"
         >
-          {{ tab[0] }}
+          {{ t(tab[0]) }}
         </v-tab>
         <!-- <v-tab>Home</v-tab>
         <v-tab>Most Downloaded</v-tab>
@@ -68,7 +68,7 @@ export default defineComponent({
   setup() {
     const { t } = useI18n({
       inheritLocale: true,
-      useScope: 'local'
+      useScope: 'global'
     })
     return { t }
   },
@@ -76,31 +76,31 @@ export default defineComponent({
     search: '',
     tabs: [
       [
-        "Home",
+        'home.name',
         "/"
       ],
       [
-        "Most Downloaded",
+        'list.most-downloaded',
         "/list/most-downloaded"
       ],
       [
-        "Latest",
+        'list.latest',
         "/list/latest"
       ],
       [
-        "Solo Games",
+        'list.solo-games',
         "/list/solo-games"
       ],
       [
-        "Multiplayer Games",
+        'list.multiplayer-games',
         "/list/multiplayer-games"
       ],
       [
-        "Mathematics",
+        'list.mathematics',
         "/list/mathematics"
       ],
       [
-        "Others",
+        'list.others',
         "/list/others"
       ]
     ],

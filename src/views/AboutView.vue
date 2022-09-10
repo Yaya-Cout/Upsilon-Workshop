@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h1>{{ t("about.title") }}</h1>
   </div>
 </template>
 
@@ -13,7 +13,7 @@ export default defineComponent({
   setup() {
     const { t } = useI18n({
       inheritLocale: true,
-      useScope: 'local'
+      useScope: 'global'
     })
 
     return { t }

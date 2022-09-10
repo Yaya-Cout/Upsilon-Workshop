@@ -2,7 +2,7 @@
   <div id="search">
     <v-row>
       <v-col cols="12">
-        <h1>Listing {{ $route.params.category }}</h1>
+        <h1>{{ t('list.listing-category', [$route.params.category]) }}</h1>
       </v-col>
     </v-row>
   </div>
@@ -17,7 +17,7 @@ export default defineComponent({
     setup() {
         const { t } = useI18n({
         inheritLocale: true,
-        useScope: "local",
+        useScope: "global",
         });
 
         return { t };
