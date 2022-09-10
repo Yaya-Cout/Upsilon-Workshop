@@ -1,1 +1,0 @@
-"use strict";(self["webpackChunkupsilon_workshop"]=self["webpackChunkupsilon_workshop"]||[]).push([[443],{6506:function(n,s,u){u.r(s),u.d(s,{default:function(){return p}});var o=u(3396);const r={class:"about"},t=(0,o._)("h1",null,"This is an about page",-1),a=[t];function e(n,s){return(0,o.wg)(),(0,o.iD)("div",r,a)}var i=u(89);const c={},l=(0,i.Z)(c,[["render",e]]);var p=l}}]);
