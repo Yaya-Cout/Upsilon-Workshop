@@ -831,6 +831,11 @@ minimatch@^3.1.1:
   dependencies:
     brace-expansion "^1.1.7"
 
+monaco-editor@^0.34.0:
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.34.0.tgz#b1749870a1f795dbfc4dc03d8e9b646ddcbeefa7"
+  integrity sha512-VF+S5zG8wxfinLKLrWcl4WUizMx+LeJrG4PM/M78OhcwocpV0jiyhX/pG6Q9jIOhrb/ckYi6nHnaR5OojlOZCQ==
+
 ms@2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
@@ -1066,6 +1071,11 @@ uri-js@^4.2.2:
   integrity sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==
   dependencies:
     punycode "^2.1.0"
+
+vite-plugin-monaco-editor@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/vite-plugin-monaco-editor/-/vite-plugin-monaco-editor-1.1.0.tgz#a6238c2e13d5e98dd54a1bc51f6f189325219de3"
+  integrity sha512-IvtUqZotrRoVqwT0PBBDIZPNraya3BxN/bfcNfnxZ5rkJiGcNtO5eAOWWSgT7zullIAEqQwxMU83yL9J5k7gww==
 
 vite-plugin-vuetify@^1.0.0-alpha.12:
   version "1.0.0-alpha.17"
