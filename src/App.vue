@@ -1,7 +1,26 @@
 <template>
   <v-app>
     <v-main>
-      <HelloWorld/>
+      <v-app-bar>
+        <v-app-bar-title>
+          Upsilon Workshop
+        </v-app-bar-title>
+        <v-btn class="mx-2" to="/search">
+          {{$t('navbar.explore')}}
+        </v-btn>
+        <v-btn class="mx-2" to="/edit">
+          {{$t('navbar.start')}}
+        </v-btn>
+        <v-text-field solo class="mx-2" hide-details density="compact" :label="$t('navbar.search')">
+        </v-text-field>
+        <v-btn class="mx-2">
+          {{$t('navbar.login')}}
+        </v-btn>
+        <v-btn class="mx-2" variant="outlined">
+          {{$t('navbar.signup')}}
+        </v-btn>
+      </v-app-bar>
+      <router-view></router-view>
     </v-main>
   </v-app>
 </template>
@@ -17,10 +36,16 @@ export default defineComponent({
     HelloWorld,
   },
 
-  data () {
+  data() {
     return {
-      //
+
     }
   },
 })
 </script>
+<style>
+.v-main {
+  background-image: url('./assets/background_light.webp') !important;
+  background-size: cover;
+}
+</style>
