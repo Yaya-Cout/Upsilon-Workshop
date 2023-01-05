@@ -8,6 +8,7 @@ import { loadFonts } from './plugins/webfontloader';
 import About from './routes/About.vue';
 import Editor from './routes/Editor.vue';
 import Home from './routes/Home.vue';
+import Login from './routes/Login.vue';
 import Search from './routes/Search.vue';
 import Viewer from './routes/Viewer.vue';
 
@@ -16,11 +17,12 @@ loadFonts()
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', name: 'Home', component: Home },
-    { path: '/about', name: 'About', component: About },
-    { path: '/edit', name: 'Editor', component: Editor },
-    { path: '/search', name: 'Search', component: Search },
-    { path: '/view', name: 'View', component: Viewer },
+    { path: '/', component: Home },
+    { path: '/about', component: About },
+    { path: '/edit', component: Editor },
+    { path: '/search', component: Search },
+    { path: '/view/:uuid', component: Viewer },
+    { path: '/login', component: Login },
   ]
 })
 
@@ -32,7 +34,6 @@ const i18n = createI18n({
   messages: messages,
 });
 
-console.log(i18n)
 
 createApp(App)
   .use(vuetify)

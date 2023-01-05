@@ -6,18 +6,16 @@
           Upsilon Workshop
         </v-app-bar-title>
         <v-btn class="mx-2" to="/search">
-          {{$t('navbar.explore')}}
+          {{ $t('navbar.explore') }}
         </v-btn>
         <v-btn class="mx-2" to="/edit">
-          {{$t('navbar.start')}}
+          {{ $t('navbar.start') }}
         </v-btn>
-        <v-text-field solo class="mx-2" hide-details density="compact" :label="$t('navbar.search')">
-        </v-text-field>
-        <v-btn class="mx-2">
-          {{$t('navbar.login')}}
+        <v-btn class="mx-2" to="/login">
+          {{ $t('navbar.login') }}
         </v-btn>
         <v-btn class="mx-2" variant="outlined">
-          {{$t('navbar.signup')}}
+          {{ $t('navbar.signup') }}
         </v-btn>
       </v-app-bar>
       <router-view></router-view>

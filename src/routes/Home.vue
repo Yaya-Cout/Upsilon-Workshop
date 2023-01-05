@@ -1,12 +1,29 @@
 <template>
     <div id="home-page">
-        <h1>Home</h1>
+        <h1 class="text-center text-h1 my-10 py-10" style="background-color:#fffa">Upsilon Workshop</h1>
+        <v-row class="mx-2 my-0">
+            <ProjectPreview v-for="project in projects" :project="project" :key="project.uuid" />
+        </v-row>
     </div>
 </template>
 <script lang="ts">
+
 import { defineComponent } from 'vue';
+import getProjects from '../data';
+
+import ProjectPreview from '../components/ProjectPreview.vue';
+
 export default defineComponent({
     name: 'HomePage',
+    components: { ProjectPreview }
+    , data() {
+        return {
+            projects: []
+        }
+    },
+    mounted() {
+        getProjects().then((projects)=>this.projects = projects.slice(0,50))
+    },
 });
 </script>
 

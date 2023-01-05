@@ -2,7 +2,6 @@ import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
 import monacoEditorPlugin from 'vite-plugin-monaco-editor';
-console.log(monacoEditorPlugin)
 //@ts-ignore
 import path from "node:path";
 //@ts-ignore

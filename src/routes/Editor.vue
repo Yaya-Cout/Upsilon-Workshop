@@ -1,39 +1,30 @@
 <template>
-    <div id="editor-page">
-        <v-container fluid>
-            <v-row class="mt-1 mx-4">
-                <v-col class="bg-background elevation-3 rounded-lg">
+    <div id="editor-page" class="fill-height">
+        <v-container fluid class="fill-height">
+            <v-row class="mt-0 fill-height">
+                <div class="bg-background elevation-3 rounded-lg ml-4 pa-1" style="width:300px">
                     <v-card>
                         <v-card-title>
-                            <div id="title-editor" contenteditable style="float:left">Bataille navale</div>
-                            <v-chip style="float:right">Public</v-chip>
+                            <h3>{{ project.title }}</h3>
                         </v-card-title>
                         <v-card-item>
-                            TODO: add compatibility selector
+                            <v-chip variant="outlined" class="mx-1">Public</v-chip>
+                            <v-chip class="mx-1">Games</v-chip>
+                            <v-chip class="mx-1">Upsilon</v-chip>
+                            <v-chip class="mx-1">Omega</v-chip>
                         </v-card-item>
                         <v-card-actions>
                             <v-btn>
-                                Make private
-                            </v-btn>
-                            <v-btn>
-                                Delete
+                                Edit project info
                             </v-btn>
                         </v-card-actions>
                     </v-card>
-                    <v-card class="mt-4">
-                        <v-card-title>Project files</v-card-title>
-                        <v-card-item>
-                            <div class="src-display">main.py</div>
-                            <div class="src-display">engine.py</div>
-                        </v-card-item>
-                    </v-card>
-                </v-col>
-                <v-col class="mx-4 v-col-8 bg-background elevation-3 rounded-lg">
-                    <MonacoEditor />
-                </v-col>
-                <v-col class="bg-background elevation-3 rounded-lg">
-                    Simulator
-                </v-col>
+                    <Simulator />
+                </div>
+                <div style="display:flex; flex-direction:column;flex:1"
+                    class="bg-background elevation-3 rounded-lg mx-4 pa-1">
+                    <MonacoEditor :scripts="project.scripts" />
+                </div>
             </v-row>
         </v-container>
     </div>
@@ -41,12 +32,24 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import MonacoEditor from '../components/MonacoEditor.vue';
+import Simulator from '../components/Simulator.vue';
 export default defineComponent({
     name: 'EditorPage',
-    components: { MonacoEditor }
+    components: { MonacoEditor, Simulator },
+    data() {
+        return {
+            tab: null,
+            project: {
+                public: true,
+                title: 'Bataille navale',
+
+                scripts: [
+                    { title: 'main.py', content: 'from math import *' },
+                    { title: 'engine.py', content: 'from math import *' }
+                ]
+            }
+        }
+    }
 });
 </script>
 
-<style >
-
-</style>
