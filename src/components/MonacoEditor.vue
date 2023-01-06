@@ -11,10 +11,8 @@
 <script lang="ts">
 import * as monaco from 'monaco-editor';
 import { defineComponent, PropType } from 'vue';
-type Script = {
-    title: string,
-    content: string,
-}
+import { Script } from '../types';
+
 // Those variables are declared there instead of in data because otherwise it causes endless loops.
 var editor: monaco.editor.IStandaloneCodeEditor | null = null;
 var models: monaco.editor.ITextModel[] = [];
@@ -22,40 +20,40 @@ var states: monaco.editor.ICodeEditorViewState[] = [];
 export default defineComponent({
     name: 'MonacoEditor',
     props: {
-        scripts: { type: Object as PropType<Script[]>, required: true }
+        scripts: { type: Object as PropType<Script[]>, required: true },
     },
     data() {
         return {
             tab: 0,
-            oldTab: 0
-        }
+            oldTab: 0,
+        };
     },
     mounted() {
-        const editorElement = document.getElementById('monaco-editor')
-        if (editorElement === null) return
+        const editorElement = document.getElementById('monaco-editor');
+        if (editorElement === null) return;
         editor = monaco.editor.create(editorElement, {
             value: 'ahah',
             language: 'python',
-            automaticLayout: true
+            automaticLayout: true,
         });
         for (const script of this.scripts) {
-            models.push(monaco.editor.createModel(script.content, 'python'))
+            models.push(monaco.editor.createModel(script.content, 'python'));
         }
-        editor.setModel(models[0])
+        editor.setModel(models[0]);
     },
     methods: {
         setTab(tab: any) {
-            if (editor == null) throw Error()
+            if (editor == null) throw Error();
 
-            models[this.oldTab] = editor.getModel()!
-            states[this.oldTab] = editor.saveViewState()!
+            models[this.oldTab] = editor.getModel()!;
+            states[this.oldTab] = editor.saveViewState()!;
 
-            this.oldTab = tab
+            this.oldTab = tab;
 
-            editor.setModel(models[tab])
-            editor.restoreViewState(states[tab])
-        }
-    }
+            editor.setModel(models[tab]);
+            editor.restoreViewState(states[tab]);
+        },
+    },
 });
 </script>
 

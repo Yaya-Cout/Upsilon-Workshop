@@ -7,7 +7,7 @@ async function getData() {
     if (projects == null) {
         const data = await fetch('/src/data.json').then((response) => response.json());
         //@ts-ignore
-        projects = shuffle(data).map(e => { return { title: e.title, author: e.author, description: e.description, rating: 2, uuid: uuidv4(), content: e.content }; });
+        projects = shuffle(data).map(e => { return { title: e.title, author: e.author, description: e.description, rating: 2, uuid: uuidv4(), files: [{ title: e.title, content: e.content }] }; });
     } return projects;
 }
 

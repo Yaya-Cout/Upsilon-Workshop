@@ -1,7 +1,13 @@
 <template>
     <div id="viewer-page">
-        <h1>{{ project?.title }}</h1>
-        <Simulator />
+        <v-row>
+            <v-col>
+                <h1>{{ project?.title }}</h1>
+            </v-col>
+            <v-col>
+                <Simulator :scripts="project?.files" />
+            </v-col>
+        </v-row>
     </div>
 </template>
 <script lang="ts">
