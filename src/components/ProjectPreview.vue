@@ -6,7 +6,7 @@
                 elevation="4"
                 :aspect-ratio="320 / 240"
                 width="260"
-                src="/src/assets/screenshot.png"
+                src="/assets/screenshot.png"
                 style="z-index: -1"
             />
             <div class="elevation-10">

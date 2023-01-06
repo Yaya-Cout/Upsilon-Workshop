@@ -5,7 +5,7 @@
         <!-- I haven't yet found an easier way to acheive this. -->
         <iframe
             id="simulator-iframe"
-            src="/src/simulator/simulator.html"
+            src="/simulator/simulator.html"
             frameborder="0"
         ></iframe>
     </div>
@@ -36,6 +36,14 @@ export default defineComponent({
         },
     },
     props: { scripts: Object as PropType<Script[]> },
+    watch: {
+        scripts: {
+            deep: true,
+            handler(before, after) {
+                this.send();
+            },
+        },
+    },
 });
 </script>
 

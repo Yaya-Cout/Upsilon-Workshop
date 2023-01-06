@@ -3,6 +3,7 @@
         <v-row>
             <v-col>
                 <h1>{{ project?.title }}</h1>
+                <v-btn :to="'/edit/' + project?.uuid">Edit</v-btn>
             </v-col>
             <v-col>
                 <Simulator :scripts="project?.files" />

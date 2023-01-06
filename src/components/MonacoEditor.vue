@@ -3,6 +3,7 @@
         <v-tab v-for="script in scripts" :key="script.title">
             {{ script.title }}
         </v-tab>
+        <v-btn @click="update">Update</v-btn>
     </v-tabs>
     <div class="monaco-editor-wrapper">
         <div id="monaco-editor"></div>
@@ -32,16 +33,48 @@ export default defineComponent({
         const editorElement = document.getElementById('monaco-editor');
         if (editorElement === null) return;
         editor = monaco.editor.create(editorElement, {
-            value: 'ahah',
             language: 'python',
             automaticLayout: true,
         });
-        for (const script of this.scripts) {
-            models.push(monaco.editor.createModel(script.content, 'python'));
-        }
-        editor.setModel(models[0]);
+        this.createModels();
+    },
+    watch: {
+        scripts: {
+            deep: true,
+            handler(before, after) {
+                //FIXME this will break with script renaming
+                if (this.scripts.length != models.length) {
+                    // Delete and re create all models
+                    this.createModels();
+                } else {
+                    // Update existing models
+                    for (const script of this.scripts) {
+                        for (var i = 0; i < models.length; i++) {
+                            if (
+                                models[i].uri.path.substring(1) === script.title
+                            ) {
+                                models[i].setValue(script.content);
+                            }
+                        }
+                    }
+                }
+            },
+        },
     },
     methods: {
+        createModels() {
+            models = [];
+            for (const script of this.scripts) {
+                models.push(
+                    monaco.editor.createModel(
+                        script.content,
+                        'python',
+                        monaco.Uri.from({ scheme: 'file', path: script.title })
+                    )
+                );
+            }
+            editor?.setModel(models[0]);
+        },
         setTab(tab: any) {
             if (editor == null) throw Error();
 
@@ -52,6 +85,15 @@ export default defineComponent({
 
             editor.setModel(models[tab]);
             editor.restoreViewState(states[tab]);
+        },
+        update() {
+            for (const model of models) {
+                for (var i = 0; i < this.scripts.length; i++) {
+                    if (this.scripts[i].title === model.uri.path.substring(1)) {
+                        this.scripts[i].content = model.getValue();
+                    }
+                }
+            }
         },
     },
 });
