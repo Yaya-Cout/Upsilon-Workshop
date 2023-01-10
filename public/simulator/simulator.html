@@ -698,6 +698,7 @@
         var emModule = undefined;
         var loaded = false;
         async function getDownloadURL(jsonUrl) {
+            return 'epsilon.js';
             return fetch(jsonUrl).then(async(response) => {
                 if (response.status === 404) {
                     const err = new Error();

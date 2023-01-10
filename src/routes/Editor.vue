@@ -22,7 +22,19 @@
                             <v-btn> Edit project info </v-btn>
                         </v-card-actions>
                     </v-card>
-                    <Simulator :scripts="project?.files" />
+                    <v-tabs v-model="tab">
+                        <v-tab value="simulator">Simulator</v-tab>
+                        <v-tab value="device">Device</v-tab>
+                    </v-tabs>
+                    <v-window v-model="tab">
+                        <v-window-item value="simulator">
+                            <Simulator :scripts="project?.files" />
+                        </v-window-item>
+
+                        <v-window-item value="device">
+                            <DeviceInterface :scripts="project?.files" />
+                        </v-window-item>
+                    </v-window>
                 </div>
                 <div
                     style="display: flex; flex-direction: column; flex: 1"
@@ -36,13 +48,14 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
+import DeviceInterface from '../components/DeviceInterface.vue';
 import MonacoEditor from '../components/MonacoEditor.vue';
 import Simulator from '../components/Simulator.vue';
 import getProjects from '../data';
 import { Project } from '../types';
 export default defineComponent({
     name: 'EditorPage',
-    components: { MonacoEditor, Simulator },
+    components: { MonacoEditor, Simulator, DeviceInterface },
     methods: {
         launch() {},
     },

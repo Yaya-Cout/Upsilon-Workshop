@@ -1092,6 +1092,13 @@ upath@^2.0.1:
   resolved "https://registry.npmjs.org/upath/-/upath-2.0.1.tgz"
   integrity sha512-1uEe95xksV1O0CYKXo8vQvN1JEbtJp7lb7C5U9HMsIp6IVwntkH/oNUzyVNQSd4S1sYk2FpSSW44FqMc8qee5w==
 
+upsilon.js@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/upsilon.js/-/upsilon.js-1.4.0.tgz#021310eb483582164fef9e80c0fe1c66df591abb"
+  integrity sha512-qSY9Uj628rOUegS84bqYbMnw0SBoUGzt7CpJyoHwR2LR5GJNXeikoxK1ycXuCH4JT4/l9ATl+JWbGh2U2lIRZQ==
+  dependencies:
+    webdfu "^1.0.5"
+
 uri-js@^4.2.2:
   version "4.4.1"
   resolved "https://registry.npmjs.org/uri-js/-/uri-js-4.4.1.tgz"
@@ -1179,6 +1186,11 @@ vuetify@^3.0.3:
   version "3.0.3"
   resolved "https://registry.npmjs.org/vuetify/-/vuetify-3.0.3.tgz"
   integrity sha512-ODqnS2ux/qUjn/E7W600mvy096nUSSf1mEgYN9o1IpfeNOC7RsakPD37t3zmtift54YTrE/upjSpILg3piYKmQ==
+
+webdfu@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/webdfu/-/webdfu-1.0.5.tgz#0ef8f4600802b6b533ed52a3774903a49f636821"
+  integrity sha512-aZ7FwAq5qCUMas6wpkISQzb+DuE+9dCdpIWejZuQGzsNqr0UlaVCvz4oezoGDoGtTKmRaXjpUlTBung+lGAHVQ==
 
 webfontloader@^1.0.0:
   version "1.6.28"
