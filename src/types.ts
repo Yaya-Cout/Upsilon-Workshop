@@ -1,10 +1,10 @@
 export type Project = {
-    title: String,
+    title: string,
     rating: number,
-    description: String,
-    author: String,
+    description: string,
+    author: string,
     files: Script[],
-    uuid: String,
+    uuid: string,
 }
 export type Script = {
     title: string,
