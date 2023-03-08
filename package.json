@@ -12,6 +12,7 @@
     "@intlify/unplugin-vue-i18n": "^0.6.0",
     "@mdi/font": "5.9.55",
     "monaco-editor": "^0.34.0",
+    "pinia": "^2.0.33",
     "roboto-fontface": "*",
     "showdown": "^2.1.0",
     "upsilon.js": "^1.4.0",

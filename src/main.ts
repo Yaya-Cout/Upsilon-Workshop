@@ -4,6 +4,7 @@ import { createI18n } from 'vue-i18n';
 import { createRouter, createWebHistory } from "vue-router";
 import App from './App.vue';
 import vuetify from './plugins/vuetify';
+import pinia from './plugins/pinia';
 import { loadFonts } from './plugins/webfontloader';
 import About from './routes/About.vue';
 import Editor from './routes/Editor.vue';
@@ -17,12 +18,12 @@ loadFonts()
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', component: Home },
-    { path: '/about', component: About },
-    { path: '/edit/:uuid', component: Editor },
-    { path: '/search', component: Search },
-    { path: '/view/:uuid', component: Viewer },
-    { path: '/login', component: Login },
+    { path: '/', component: Home, name: "home" },
+    { path: '/about', component: About, name: "about" },
+    { path: '/edit/:uuid', component: Editor, name: "edit" },
+    { path: '/search', component: Search, name: "search" },
+    { path: '/view/:uuid', component: Viewer, name: "view" },
+    { path: '/login', component: Login, name: "login" },
   ]
 })
 
@@ -37,6 +38,7 @@ const i18n = createI18n({
 
 createApp(App)
   .use(vuetify)
+  .use(pinia)
   .use(i18n)
   .use(router)
   .mount('#app')
