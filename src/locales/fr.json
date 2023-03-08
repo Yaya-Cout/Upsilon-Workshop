@@ -1,1 +1,10 @@
-{}
+{
+  "navbar": {
+    "explore": "Explorer",
+    "create": "Créer",
+    "search": "Rechercher",
+    "login": "Connexion",
+    "signup": "Inscription",
+    "logout": "Déconnexion"
+  }
+}

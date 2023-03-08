@@ -11,10 +11,6 @@ export default class API {
      */
     constructor() {
         this.BASE_URL = "https://django-cdqivkhudi9mmk5gqgb0.apps.playground.napptive.dev/";
-        // Debugging
-        // this.TOKEN = "xxxxxxxxxxxxxxxx";
-        // this.BASE_URL = "http://localhost:8000/"
-        // this.BASE_URL = "http://127.0.0.1:8000/"
     }
 
     /*
@@ -84,7 +80,12 @@ export default class API {
             throw new Error("API request failed");
         }
 
-        return await response.json()
+        try {
+            return await response.json()
+        }
+        catch (e) {
+            return undefined
+        }
     }
 
     /*
