@@ -29,7 +29,7 @@ const router = createRouter({
 
 const i18n = createI18n({
   globalInjection: true,
-  locale: "en",
+  locale: navigator.language.split("-")[0],
   fallbackLocale: "en",
   availableLocales: ["en", "fr"],
   messages: messages,

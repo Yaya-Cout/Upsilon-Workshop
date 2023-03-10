@@ -1,10 +1,19 @@
 {
   "navbar": {
     "explore": "Explorer",
-    "create": "Créer",
     "search": "Rechercher",
     "login": "Connexion",
     "signup": "Inscription",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "start": "Créez"
+  },
+  "login": {
+    "password": "Mot de passe",
+    "register": "Vous n'avez pas encore de compte ? S'inscrire",
+    "submit": "Se connecter",
+    "title": "Connexion",
+    "username": "Nom d'utilisateur",
+    "error": "Nom d'utilisateur ou mot de passe incorrect",
+    "close": "Fermer"
   }
 }

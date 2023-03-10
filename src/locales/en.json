@@ -6,5 +6,14 @@
     "login": "Log in",
     "signup": "Sign up",
     "logout": "Log out"
+  },
+  "login": {
+    "title": "Log in",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Log in",
+    "register": "Don't have an account? Sign up",
+    "error": "Invalid username or password",
+    "close": "Close"
   }
 }

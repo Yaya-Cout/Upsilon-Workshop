@@ -2,29 +2,31 @@
     <div id="login-page">
         <!-- <v-sheet class="mx-auto"> -->
         <v-card class="mx-auto px-6 py-8" width="500">
-            <h1 class="text-center">Log in</h1>
+            <h1 class="text-center">{{ $t('login.title') }}</h1>
 
             <v-form @submit.prevent="login" v-model="form" ref="loginForm">
 
                 <v-container fluid>
-                    <v-text-field prepend-inner-icon="mdi-account-circle" v-model="username" label="Username"
+                    <v-text-field prepend-inner-icon="mdi-account-circle" v-model="username" :label="$t('login.username')"
                         :rules="usernameRules" clearable>
                     </v-text-field>
 
-                    <v-text-field prepend-inner-icon="mdi-lock" v-model="password" label="Password"
+                    <v-text-field prepend-inner-icon="mdi-lock" v-model="password" :label="$t('login.password')"
                         :append-inner-icon="show ? 'mdi-eye' : 'mdi-eye-off'" :rules="passwordRules"
                         :type="show ? 'text' : 'password'" @click:append-inner="show = !show">
                     </v-text-field>
 
                     <v-btn :loading="loading" :disabled="!form || loading" type="submit" block class="mt-2"
-                        variant="elevated" width="0%" color="primary" size="x-large">Connect</v-btn>
+                        variant="elevated" width="0%" color="primary" size="x-large">
+                        {{ $t('login.submit') }}
+                    </v-btn>
                 </v-container>
             </v-form>
         </v-card>
         <!-- </v-sheet> -->
         <v-snackbar v-model="snackbar" :timeout="timeout">
             <span>
-                Connection failed
+                {{ $t('login.error') }}
             </span>
             <template v-slot:actions>
                 <v-btn color="pink" variant="text" @click="snackbar = false">
