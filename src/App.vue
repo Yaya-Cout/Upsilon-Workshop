@@ -2,7 +2,11 @@
     <v-app>
         <v-main>
             <v-app-bar>
-                <v-app-bar-title>Upsilon Workshop </v-app-bar-title>
+                <v-app-bar-title>
+                    <router-link to="/" class="home-link">
+                        Upsilon Workshop
+                    </router-link>
+                </v-app-bar-title>
                 <v-btn class="mx-2" to="/search">
                     {{ $t('navbar.explore') }}
                 </v-btn>
@@ -46,5 +50,12 @@ export default defineComponent({
 .v-main {
     background-image: url('./assets/background_light.webp') !important;
     background-size: cover;
+}
+</style>
+
+<style scoped>
+.home-link {
+    color: var(--v-primary-base);
+    text-decoration: none;
 }
 </style>

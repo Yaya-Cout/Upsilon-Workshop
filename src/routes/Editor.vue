@@ -51,8 +51,8 @@ import { defineComponent } from 'vue';
 import DeviceInterface from '../components/DeviceInterface.vue';
 import MonacoEditor from '../components/MonacoEditor.vue';
 import Simulator from '../components/Simulator.vue';
-import getProjects from '../data';
-import { Project } from '../types';
+import { useAPIStore } from '@/stores/api';
+
 export default defineComponent({
     name: 'EditorPage',
     components: { MonacoEditor, Simulator, DeviceInterface },
@@ -63,15 +63,11 @@ export default defineComponent({
         return {
             tab: null,
             project: null as Project | null,
+            api: useAPIStore().api,
         };
     },
-    mounted() {
-        getProjects().then(
-            (projects: Project[]) =>
-                (this.project = projects.filter(
-                    (project) => project.uuid === this.$route.params.uuid
-                )[0])
-        );
+    async mounted() {
+        this.project = await this.api.getProject(this.$route.params.uuid);
     },
 });
 </script>

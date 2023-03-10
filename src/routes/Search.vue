@@ -30,9 +30,9 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-import getProjects from '../data';
-
+import { useAPIStore } from '@/stores/api';
 import ProjectPreview from '../components/ProjectPreview.vue';
+
 export default defineComponent({
     name: "SearchPage",
     components: { ProjectPreview },
@@ -40,10 +40,11 @@ export default defineComponent({
         return {
             projects: [],
             query: '',
+            api: useAPIStore().api,
         }
     },
-    mounted(){
-        getProjects().then((projects)=>this.projects = projects)
+    async mounted(){
+        this.projects = await this.api.getProjects()
     }
 });
 </script>

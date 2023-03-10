@@ -16,7 +16,7 @@
 import { defineComponent } from 'vue';
 import Markdown from '../components/Markdown.vue';
 import Simulator from '../components/Simulator.vue';
-import getProjects from '../data';
+import { useAPIStore } from '@/stores/api';
 import { Project } from '../types';
 
 export default defineComponent({
@@ -25,15 +25,11 @@ export default defineComponent({
     data() {
         return {
             project: null as Project | null,
+            api: useAPIStore().api,
         };
     },
-    mounted() {
-        getProjects().then(
-            (projects: Project[]) =>
-                (this.project = projects.filter(
-                    (project) => project.uuid === this.$route.params.uuid
-                )[0])
-        );
+    async mounted() {
+        this.project = await this.api.getProject(this.$route.params.uuid);
     },
 });
 </script>

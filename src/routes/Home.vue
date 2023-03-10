@@ -10,7 +10,7 @@
 
 import { defineComponent } from 'vue';
 import getProjects from '../data';
-
+import { useAPIStore } from '@/stores/api';
 import ProjectPreview from '../components/ProjectPreview.vue';
 
 export default defineComponent({
@@ -18,11 +18,12 @@ export default defineComponent({
     components: { ProjectPreview }
     , data() {
         return {
-            projects: []
+            projects: [],
+            api: useAPIStore().api
         }
     },
-    mounted() {
-        getProjects().then((projects)=>this.projects = projects.slice(0,50))
+    async mounted() {
+        this.projects = await this.api.getProjects()
     },
 });
 </script>

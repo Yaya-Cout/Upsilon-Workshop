@@ -1,3 +1,5 @@
+import { Project } from "./types";
+
 /*
  * Class to interact with the Workshop API
  *
@@ -61,21 +63,27 @@ export default class API {
      * @param {object} body - The body of the request
      * @returns {Promise} - A promise that resolves to the response
      */
-    async _request(endpoint: string, method: string, body: object, expectedStatus: number = 200): Promise<any> {
-        if (!this.isLoggedIn()) {
+    async _request(endpoint: string, method: string, body: object, expectedStatus: number = 200, loginRequired: boolean = true): Promise<any> {
+        if (!this.isLoggedIn() && loginRequired) {
             throw new Error("Not logged in");
         }
 
-        const response = await fetch(
-            this.BASE_URL + endpoint,
-            {
-                method: method,
-                body: JSON.stringify(body),
-                headers: {
-                    "Authorization": "Token " + this.TOKEN,
-                    "Content-Type": "application/json",
-                }
-            });
+        let payload = {
+            method: method,
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }
+        if (this.isLoggedIn()) {
+            payload.headers["Authorization"] = "Token " + this.TOKEN
+        }
+
+        if (method !== "GET" && method !== "HEAD") {
+            payload.body = JSON.stringify(body)
+        }
+
+        const response = await fetch(this.BASE_URL + endpoint, payload)
+
         if (response.status !== expectedStatus) {
             throw new Error("API request failed");
         }
@@ -106,5 +114,54 @@ export default class API {
         this.TOKEN = undefined;
 
         return true;
+    }
+
+    /*
+     * Get projects from the API
+     * @returns {Promise} - A promise that resolves to the projects
+     */
+    async getProjects(): Promise<Project[]> {
+        let response = await this._request("scripts/", "GET", {}, 200, false)
+
+        // Convert the response to a list of projects
+        let projects: Project[] = []
+        for (let project of response.results) {
+            projects.push({
+                title: project["name"],
+                rating: 3.5,
+                description: project["description"],
+                author: project["author"],
+                files: project["files"],
+                uuid: project["id"],
+            })
+        }
+
+        console.log(projects)
+
+        return projects
+    }
+
+    /*
+     * Get a project from the API
+     * @param {string} uuid - The UUID of the project
+     * @returns {Promise} - A promise that resolves to the project
+     * @throws {Error} - If the project does not exist
+     */
+    async getProject(uuid: string): Promise<Project> {
+        let response = await this._request("scripts/" + uuid + "/", "GET", {}, 200, false)
+
+        // Convert the response to a project
+        let project: Project = {
+            title: response["name"],
+            // TODO: Get the rating (requires a new field in the API or a
+            // computation on the client)
+            rating: 3.5,
+            description: response["description"],
+            author: response["author"],
+            files: response["files"],
+            uuid: response["id"],
+        }
+
+        return project
     }
 }
