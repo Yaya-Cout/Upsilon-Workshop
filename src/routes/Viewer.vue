@@ -12,11 +12,12 @@
         </v-row>
     </div>
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Markdown from '../components/Markdown.vue';
 import Simulator from '../components/Simulator.vue';
-import { useAPIStore } from '@/stores/api';
+import { useAPIStore } from '../stores/api';
 import { Project } from '../types';
 
 export default defineComponent({

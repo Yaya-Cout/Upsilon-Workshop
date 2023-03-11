@@ -18,19 +18,18 @@
 
                 <v-row>
                     <ProjectPreview
-                        v-for="project in projects.filter((project) => { return project.title.toUpperCase().includes(query.toUpperCase())}).slice(0,50)"
+                        v-for="project in projects.slice(0,50)"
                         :key="project.uuid" :project="project" />
                 </v-row>
             </v-col>
-
-
-
         </v-sheet>
     </div>
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useAPIStore } from '@/stores/api';
+import { useAPIStore } from '../stores/api';
+import { Project } from '../types';
 import ProjectPreview from '../components/ProjectPreview.vue';
 
 export default defineComponent({
@@ -38,13 +37,34 @@ export default defineComponent({
     components: { ProjectPreview },
     data() {
         return {
-            projects: [],
-            query: '',
+            projects: [] as Project[],
             api: useAPIStore().api,
+            timeout: null as any,
+            debouncedQuery: '' as string
         }
     },
     async mounted(){
         this.projects = await this.api.getProjects()
+    },
+
+    watch: {
+        debouncedQuery: async function (newQuery, oldQuery) {
+            console.log(newQuery)
+            this.projects = await this.api.getProjects(newQuery)
+        }
+    },
+    computed: {
+        query: {
+            get() {
+                return this.debouncedQuery;
+            },
+            set(value: string) {
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => {
+                    this.debouncedQuery = value;
+                }, 500);
+            }
+        }
     }
 });
 </script>

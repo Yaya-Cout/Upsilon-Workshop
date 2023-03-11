@@ -9,8 +9,7 @@
 <script lang="ts">
 
 import { defineComponent } from 'vue';
-import getProjects from '../data';
-import { useAPIStore } from '@/stores/api';
+import { useAPIStore } from '../stores/api';
 import ProjectPreview from '../components/ProjectPreview.vue';
 
 export default defineComponent({

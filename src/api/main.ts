@@ -118,10 +118,16 @@ export default class API {
 
     /*
      * Get projects from the API
+     * @param {string} query - The query to search for (optional)
      * @returns {Promise} - A promise that resolves to the projects
      */
-    async getProjects(): Promise<Project[]> {
-        let response = await this._request("scripts/", "GET", {}, 200, false)
+    async getProjects(
+        query: string = "",
+    ): Promise<Project[]> {
+        let response = await this._request(
+            "scripts/" + (query !== "" ? "?search=" + query : ""),
+            "GET", {}, 200, false
+        )
 
         // Convert the response to a list of projects
         let projects: Project[] = []
@@ -135,8 +141,6 @@ export default class API {
                 uuid: project["id"],
             })
         }
-
-        console.log(projects)
 
         return projects
     }

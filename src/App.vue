@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useAPIStore } from '@/stores/api';
+import { useAPIStore } from './stores/api';
 
 export default defineComponent({
     name: 'App',

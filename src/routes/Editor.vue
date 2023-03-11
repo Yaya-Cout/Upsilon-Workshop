@@ -46,12 +46,14 @@
         </v-container>
     </div>
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue';
 import DeviceInterface from '../components/DeviceInterface.vue';
 import MonacoEditor from '../components/MonacoEditor.vue';
 import Simulator from '../components/Simulator.vue';
-import { useAPIStore } from '@/stores/api';
+import { useAPIStore } from '../stores/api';
+import { Project } from '../types';
 
 export default defineComponent({
     name: 'EditorPage',
