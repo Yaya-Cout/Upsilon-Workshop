@@ -136,7 +136,7 @@ export default class API {
                 title: project["name"],
                 rating: 3.5,
                 description: project["description"],
-                author: project["author"],
+                author: project["author"].split("/").slice(-2)[0],
                 files: project["files"],
                 uuid: project["id"],
             })
@@ -161,7 +161,7 @@ export default class API {
             // computation on the client)
             rating: 3.5,
             description: response["description"],
-            author: response["author"],
+            author: response["author"].split("/").slice(-2)[0],
             files: response["files"],
             uuid: response["id"],
         }
