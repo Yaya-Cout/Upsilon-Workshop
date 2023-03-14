@@ -1,4 +1,4 @@
-import { Project } from "./types";
+import { Project, Script } from "./types";
 
 /*
  * Class to interact with the Workshop API
@@ -132,12 +132,21 @@ export default class API {
         // Convert the response to a list of projects
         let projects: Project[] = []
         for (let project of response.results) {
+            // Convert the files
+            let files: Script[] = []
+            for (let file of project["files"]) {
+                files.push({
+                    title: file["name"],
+                    content: file["content"],
+                })
+            }
+
             projects.push({
                 title: project["name"],
                 rating: 3.5,
                 description: project["description"],
                 author: project["author"].split("/").slice(-2)[0],
-                files: project["files"],
+                files: files,
                 uuid: project["id"],
             })
         }
@@ -154,6 +163,15 @@ export default class API {
     async getProject(uuid: string): Promise<Project> {
         let response = await this._request("scripts/" + uuid + "/", "GET", {}, 200, false)
 
+        // Convert the files
+        let files: Script[] = []
+        for (let file of response["files"]) {
+            files.push({
+                title: file["name"],
+                content: file["content"],
+            })
+        }
+
         // Convert the response to a project
         let project: Project = {
             title: response["name"],
@@ -162,7 +180,7 @@ export default class API {
             rating: 3.5,
             description: response["description"],
             author: response["author"].split("/").slice(-2)[0],
-            files: response["files"],
+            files: files,
             uuid: response["id"],
         }
 
