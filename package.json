@@ -11,6 +11,8 @@
   "dependencies": {
     "@intlify/unplugin-vue-i18n": "^0.6.0",
     "@mdi/font": "5.9.55",
+    "@types/lodash": "^4.14.191",
+    "lodash": "^4.17.21",
     "monaco-editor": "^0.34.0",
     "pinia": "^2.0.33",
     "roboto-fontface": "*",

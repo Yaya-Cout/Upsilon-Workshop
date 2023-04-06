@@ -1,6 +1,5 @@
 <template>
     <div id="login-page">
-        <!-- <v-sheet class="mx-auto"> -->
         <v-card class="mx-auto px-6 py-8" width="500">
             <h1 class="text-center">{{ $t('login.title') }}</h1>
 
@@ -23,14 +22,13 @@
                 </v-container>
             </v-form>
         </v-card>
-        <!-- </v-sheet> -->
         <v-snackbar v-model="snackbar" :timeout="timeout">
             <span>
                 {{ $t('login.error') }}
             </span>
             <template v-slot:actions>
                 <v-btn color="pink" variant="text" @click="snackbar = false">
-                    Close
+                    {{ $t('snackbar.close') }}
                 </v-btn>
             </template>
         </v-snackbar>

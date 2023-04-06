@@ -7,6 +7,7 @@ import vuetify from './plugins/vuetify';
 import pinia from './plugins/pinia';
 import { loadFonts } from './plugins/webfontloader';
 import About from './routes/About.vue';
+import Calculator from './routes/Calculator.vue';
 import Editor from './routes/Editor.vue';
 import Home from './routes/Home.vue';
 import Login from './routes/Login.vue';
@@ -20,6 +21,7 @@ const router = createRouter({
   routes: [
     { path: '/', component: Home, name: "home" },
     { path: '/about', component: About, name: "about" },
+    { path: '/calculator', component: Calculator, name: "calculator" },
     { path: '/edit/:uuid', component: Editor, name: "edit" },
     { path: '/search', component: Search, name: "search" },
     { path: '/view/:uuid', component: Viewer, name: "view" },

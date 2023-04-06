@@ -5,7 +5,8 @@
     "login": "Connexion",
     "signup": "Inscription",
     "logout": "Déconnexion",
-    "start": "Créez"
+    "start": "Créez",
+    "calculator": "Calculatrice"
   },
   "login": {
     "password": "Mot de passe",
@@ -14,6 +15,19 @@
     "title": "Connexion",
     "username": "Nom d'utilisateur",
     "error": "Nom d'utilisateur ou mot de passe incorrect",
+    "close": "Fermer"
+  },
+  "calculator": {
+    "title": "Calculatrice",
+    "no-webusb": "Pas de support WebUSB",
+    "no-webusb-text": "Votre navigateur ne supporte pas WebUSB. Veuillez utiliser un navigateur basé sur Chromium.",
+    "connect": "Connection",
+    "disconnect": "Déconnexion",
+    "numworks-of": "Numworks de",
+    "unknown": "Quelqu'un",
+    "script-deleted": "Script supprimé"
+  },
+  "snackbar": {
     "close": "Fermer"
   }
 }

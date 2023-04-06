@@ -13,6 +13,9 @@
                 <v-btn class="mx-2" to="/edit">
                     {{ $t('navbar.start') }}
                 </v-btn>
+                <v-btn class="mx-2" to="/calculator">
+                    {{ $t('navbar.calculator') }}
+                </v-btn>
                 <div v-if="!api.isLoggedIn()">
                     <v-btn class="mx-2" to="/login">
                         {{ $t('navbar.login') }}

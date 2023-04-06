@@ -7,3 +7,4 @@ declare module '*.vue' {
 }
 
 declare module 'upsilon.js';
+declare module 'lodash';

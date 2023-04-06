@@ -5,7 +5,8 @@
     "search": "Search",
     "login": "Log in",
     "signup": "Sign up",
-    "logout": "Log out"
+    "logout": "Log out",
+    "calculator": "Calculator"
   },
   "login": {
     "title": "Log in",
@@ -14,6 +15,19 @@
     "submit": "Log in",
     "register": "Don't have an account? Sign up",
     "error": "Invalid username or password",
+    "close": "Close"
+  },
+  "calculator": {
+    "title": "Calculator",
+    "no-webusb": "No WebUSB support",
+    "no-webusb-text": "Your browser does not support WebUSB. Please use a different browser based on Chromium.",
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "numworks-of": "Numworks of",
+    "unknown": "Someone",
+    "script-deleted": "Script deleted"
+  },
+  "snackbar": {
     "close": "Close"
   }
 }
