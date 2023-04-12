@@ -5,7 +5,7 @@
         <!-- I haven't yet found an easier way to acheive this. -->
         <iframe
             id="simulator-iframe"
-            src="/simulator/simulator.html"
+            :src="base_url + 'simulator/simulator.html'"
             frameborder="0"
         ></iframe>
     </div>
@@ -21,6 +21,11 @@ export default defineComponent({
             if (e.data === 'Loaded') {
                 _this.send();
             }
+        };
+    },
+    data() {
+        return {
+            base_url: import.meta.env.BASE_URL,
         };
     },
     methods: {

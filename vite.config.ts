@@ -11,6 +11,7 @@ import { fileURLToPath } from "node:url";
 import vuetify from 'vite-plugin-vuetify';
 // https://vitejs.dev/config/
 export default defineConfig({
+	base: process.env.BASE_URL || "/",
 	plugins: [
 		//@ts-ignore
 		monacoEditorPlugin.default({}),

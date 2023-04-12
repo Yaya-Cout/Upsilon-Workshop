@@ -1,14 +1,14 @@
 <template>
     <v-card class="ma-2 rounded-lg" elevation="4" :to="'/view/' + project.uuid">
         <div class="flex justify-between">
-            <v-img
+            <!-- <v-img
                 class="rounded-lg"
                 elevation="4"
                 :aspect-ratio="320 / 240"
                 width="260"
                 src="/assets/screenshot.png"
                 style="z-index: -1"
-            />
+            /> -->
             <div class="elevation-10">
                 <v-card-title class="pb-0">{{ project.title }}</v-card-title>
                 <v-card-text class="py-0">{{ project.author }}</v-card-text>

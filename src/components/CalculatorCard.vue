@@ -123,12 +123,12 @@ export default defineComponent({
             // We can't use @/assets/* because the path is not resolved correctly
             // when the app is built, so we load the images from the public folder
             if (this.firmware == "upsilon") {
-                return "/assets/upsilon.svg";
+                return import.meta.env.BASE_URL + "assets/upsilon.svg";
             } else if (this.firmware == "omega") {
                 // Omega logo is not available in SVG format yet (so we use PNG under MIT license)
-                return "/assets/omega.png";
+                return import.meta.env.BASE_URL + "assets/omega.png";
             } else {
-                return "/assets/epsilon.svg";
+                return import.meta.env.BASE_URL + "assets/epsilon.svg";
             }
         },
     },

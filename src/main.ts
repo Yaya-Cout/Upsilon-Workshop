@@ -17,7 +17,7 @@ import Viewer from './routes/Viewer.vue';
 loadFonts()
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL || "/"),
   routes: [
     { path: '/', component: Home, name: "home" },
     { path: '/about', component: About, name: "about" },
