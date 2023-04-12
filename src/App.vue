@@ -31,6 +31,16 @@
                 </div>
             </v-app-bar>
             <router-view></router-view>
+            <v-snackbar v-model="api.NOT_LOGGED_IN_ERROR" :timeout="timeout">
+                <span>
+                    {{ $t('app.not-logged-in-snackbar') }}
+                </span>
+                <template v-slot:actions>
+                    <v-btn color="pink" variant="text" @click="api.NOT_LOGGED_IN_ERROR = false">
+                        {{ $t('snackbar.close') }}
+                    </v-btn>
+                </template>
+            </v-snackbar>
         </v-main>
     </v-app>
 </template>
@@ -45,6 +55,7 @@ export default defineComponent({
     data() {
         return {
             api: useAPIStore().api,
+            timeout: 3000,
         };
     },
 });

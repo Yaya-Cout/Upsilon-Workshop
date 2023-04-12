@@ -29,7 +29,10 @@
                                 record.name + '.' + record.type
                             ">
                             <template v-slot:append>
-                                <v-btn icon="mdi-content-save" variant="text"></v-btn>
+                                <v-btn icon="mdi-content-save" variant="text"
+                                    @click="saveScript(record.name, record.type)"
+                                    :loading="savingScript" :disabled="savingScript">
+                                </v-btn>
                                 <v-btn icon="mdi-pencil" variant="text"></v-btn>
                                 <v-btn icon="mdi-delete" variant="text"
                                     @click="deleteScript(record.name, record.type)"></v-btn>
@@ -39,12 +42,25 @@
                 </div>
             </div>
         </v-card>
-        <v-snackbar v-model="snackbar" :timeout="timeout">
+        <v-snackbar v-model="deleted" :timeout="timeout">
             <span>
-                {{ $t('calculator.' + snackbarReason) }}
+                {{ $t('calculator.script-deleted') }}
             </span>
             <template v-slot:actions>
-                <v-btn color="pink" variant="text" @click="snackbar = false">
+                <v-btn color="pink" variant="text" @click="deleted = false">
+                    {{ $t('snackbar.close') }}
+                </v-btn>
+            </template>
+        </v-snackbar>
+        <v-snackbar v-model="scriptSaved" :timeout="timeout">
+            <span>
+                {{ $t('calculator.script-saved', { name: scriptSavedName }) }}
+            </span>
+            <template v-slot:actions>
+                <v-btn color="pink" variant="text" @click="openScript(scriptSavedId)">
+                    {{ $t('calculator.open') }}
+                </v-btn>
+                <v-btn color="pink" variant="text" @click="scriptSaved = false">
                     {{ $t('snackbar.close') }}
                 </v-btn>
             </template>
@@ -74,8 +90,11 @@ export default defineComponent({
             api: useAPIStore().api,
             showAll: false,
             timeout: 3000,
-            snackbar: false as boolean,
-            snackbarReason: "" as string,
+            deleted: false as boolean,
+            savingScript: false as boolean,
+            scriptSaved: false as boolean,
+            scriptSavedName: "",
+            scriptSavedId: "" as string,
         }
     },
     mounted() {
@@ -128,13 +147,46 @@ export default defineComponent({
             this.calculator.installStorage(cloneDeep(this.storage), this.deletedScriptHandler);
         },
         deletedScriptHandler() {
-            this.snackbar = true;
-            this.snackbarReason = "script-deleted";
+            this.deleted = true;
             this.reloadScripts();
         },
         installStorageHandler() {
             this.reloadScripts();
-        }
+        },
+        async saveScript(name: string, type: string) {
+            // Set the savingScript to true to disable the button.
+            this.savingScript = true;
+
+            // We use a try catch to make sure the savingScript is set to false.
+            try {
+                // Get the full record.
+                let record = this.storage.records.find((record: any) => record.name == name && record.type == type);
+
+                // TODO: Check if the record is valid. (assert)
+
+                let title = record.name + "." + record.type;
+
+                // TODO: Check if the script is already saved.
+
+                // Save the script.
+                let project_id = await this.api.createOneFileProject(title, record.code)
+                // Code to use if you want to test the saving script without actually saving it to the server.
+                // await new Promise(resolve => setTimeout(resolve, 1000));
+                // let project_id = "11fa071a-4b2f-4d85-8c2e-20a945e26550";
+
+                this.scriptSaved = false;
+                this.scriptSavedName = title;
+                this.scriptSavedId = project_id;
+                this.scriptSaved = true;
+            } catch (e) {
+                // TODO: Handle errors.
+                console.error(e);
+            }
+            this.savingScript = false;
+        },
+        openScript(id: string) {
+            this.$router.push({ name: 'view', params: { uuid: id } });
+        },
     },
 });
 </script>

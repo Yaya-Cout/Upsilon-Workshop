@@ -21,13 +21,18 @@
     "title": "Calculatrice",
     "no-webusb": "Pas de support WebUSB",
     "no-webusb-text": "Votre navigateur ne supporte pas WebUSB. Veuillez utiliser un navigateur basé sur Chromium.",
-    "connect": "Connection",
+    "connect": "Connexion",
     "disconnect": "Déconnexion",
     "numworks-of": "Numworks de",
     "unknown": "Quelqu'un",
-    "script-deleted": "Script supprimé"
+    "script-deleted": "Script supprimé",
+    "script-saved": "{name} enregistré",
+    "open": "Ouvrir"
   },
   "snackbar": {
     "close": "Fermer"
+  },
+  "app": {
+    "not-logged-in-snackbar": "Vous n'êtes pas connecté"
   }
 }

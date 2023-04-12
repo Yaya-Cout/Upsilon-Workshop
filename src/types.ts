@@ -5,6 +5,8 @@ export type Project = {
     author: string,
     files: Script[],
     uuid: string,
+    isPublic: boolean,
+    language: string,
 }
 export type Script = {
     title: string,

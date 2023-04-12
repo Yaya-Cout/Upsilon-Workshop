@@ -25,9 +25,14 @@
     "disconnect": "Disconnect",
     "numworks-of": "Numworks of",
     "unknown": "Someone",
-    "script-deleted": "Script deleted"
+    "script-deleted": "Script deleted",
+    "script-saved": "{name} saved",
+    "open": "Open"
   },
   "snackbar": {
     "close": "Close"
+  },
+  "app": {
+    "not-logged-in-snackbar": "You are not logged in"
   }
 }
