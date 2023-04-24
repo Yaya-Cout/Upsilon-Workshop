@@ -48,6 +48,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAPIStore } from './stores/api';
+import { useCalculatorStore } from './stores/calculator';
 
 export default defineComponent({
     name: 'App',
@@ -55,8 +56,39 @@ export default defineComponent({
     data() {
         return {
             api: useAPIStore().api,
+            calculatorStore: useCalculatorStore(),
+            calculator: useCalculatorStore().calculator,
             timeout: 3000,
         };
+    },
+    mounted() {
+        if ("usb" in navigator) {
+            this.calculator.autoConnect(this.connectedHandler);
+            const _this = this;
+            navigator.usb.addEventListener("disconnect", function (e: any) {
+                _this.calculator.onUnexpectedDisconnect(e, function () {
+                    console.log("Disconnected");
+                    _this.connected = false;
+                    _this.calculator.autoConnect(_this.connectedHandler);
+                });
+            });
+        }
+    },
+    methods: {
+        connectedHandler() {
+            console.log("Connected");
+            this.connected = true;
+        },
+    },
+    computed: {
+        connected: {
+            get() {
+                return this.calculatorStore.connected;
+            },
+            set(value: boolean) {
+                this.calculatorStore.connected = value;
+            },
+        },
     },
 });
 </script>

@@ -71,7 +71,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAPIStore } from '../stores/api';
-import NumWorks from "upsilon.js";
+import { useCalculatorStore } from "../stores/calculator";
 import cloneDeep from 'lodash/cloneDeep';
 import CalculatorCard from '../components/CalculatorCard.vue';
 
@@ -82,9 +82,9 @@ export default defineComponent({
     },
     data() {
         return {
-            calculator: new NumWorks(),
             webUSB: "usb" in navigator ? true : false,
-            connected: false,
+            calculatorStore: useCalculatorStore(),
+            calculator: useCalculatorStore().calculator,
             storage: [],
             platformInfo: {},
             api: useAPIStore().api,
@@ -97,13 +97,18 @@ export default defineComponent({
             scriptSavedId: "" as string,
         }
     },
-    mounted() {
-        if (this.webUSB) {
-            this.calculator.autoConnect(this.connectedHandler);
-            const _this = this;
-            navigator.usb.addEventListener("disconnect", function (e: any) {
-                _this.calculator.onUnexpectedDisconnect(e, _this.disconnectHandler);
-            });
+    watch: {
+        connected: {
+            handler: async function (connected) {
+                if (connected) {
+                    this.platformInfo = await this.calculator.getPlatformInfo();
+                    this.reloadScripts();
+                } else {
+                    this.platformInfo = {};
+                    this.storage = [];
+                }
+            },
+            immediate: true
         }
     },
     methods: {
@@ -112,8 +117,6 @@ export default defineComponent({
         },
         async connectedHandler() {
             this.connected = true;
-            this.platformInfo = await this.calculator.getPlatformInfo();
-            this.reloadScripts();
         },
         connectErrorHandler(error: any) {
             // TODO: Handle errors.
@@ -135,7 +138,6 @@ export default defineComponent({
             });
         },
         async deleteScript(name: string, type: string) {
-            // Delete the script from the list.
             for (let i = 0; i < this.storage.records.length; i++) {
                 if (this.storage.records[i].name == name && this.storage.records[i].type == type) {
                     this.storage.records.splice(i, 1);
@@ -143,23 +145,16 @@ export default defineComponent({
                 }
             }
 
-            // Install the new list to the calculator.
             this.calculator.installStorage(cloneDeep(this.storage), this.deletedScriptHandler);
         },
         deletedScriptHandler() {
             this.deleted = true;
             this.reloadScripts();
         },
-        installStorageHandler() {
-            this.reloadScripts();
-        },
         async saveScript(name: string, type: string) {
-            // Set the savingScript to true to disable the button.
             this.savingScript = true;
 
-            // We use a try catch to make sure the savingScript is set to false.
             try {
-                // Get the full record.
                 let record = this.storage.records.find((record: any) => record.name == name && record.type == type);
 
                 // TODO: Check if the record is valid. (assert)
@@ -168,7 +163,6 @@ export default defineComponent({
 
                 // TODO: Check if the script is already saved.
 
-                // Save the script.
                 let project_id = await this.api.createOneFileProject(title, record.code)
                 // Code to use if you want to test the saving script without actually saving it to the server.
                 // await new Promise(resolve => setTimeout(resolve, 1000));
@@ -186,6 +180,16 @@ export default defineComponent({
         },
         openScript(id: string) {
             this.$router.push({ name: 'view', params: { uuid: id } });
+        },
+    },
+    computed: {
+        connected: {
+            get() {
+                return this.calculatorStore.connected;
+            },
+            set(value: boolean) {
+                this.calculatorStore.connected = value;
+            },
         },
     },
 });
@@ -210,12 +214,10 @@ export default defineComponent({
 .script-button {
     float: right;
     vertical-align: middle;
-    /* display: table-cell; */
 }
 
 .script-label {
     display: table-cell;
     vertical-align: middle;
-    /* vertical-align: middle; */
 }
 </style>
