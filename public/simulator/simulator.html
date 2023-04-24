@@ -613,6 +613,11 @@
             if (emModule)
                 if (emModule.asm)
                     emModule._IonSimulatorEventsPushEvent(217);
+                else
+                    console.warn('IonSimulatorEventsPushEvent not found');
+            else
+                console.warn('emModule not found');
+            // We need to wait for the simulator to be stopped (using the
             delete emModule;
             emModule = undefined;
         }
@@ -669,6 +674,8 @@
 
             Epsilon(emModule);
 
+            console.log('Epsilon started');
+
             function eventHandler(keyHandler) {
                 return function(ev) {
                     var key = this.getAttribute('data-key');
@@ -710,17 +717,21 @@
             });
         }
 
-        //Communication with the host window to execute scripts
+        // Communication with the host window to execute scripts
         window.onmessage = function(e) {
             if (loaded) {
                 stop();
                 start(e.data);
             } else {
                 console.error('Simulator not ready yet!');
+                // Wait for the simulator to be ready
+                window.setTimeout(function() {
+                    window.onmessage(e);
+                }, 100);
             }
         };
 
-        //Download epsilon.js from the latest stable build so it doesn't have to be updated manually
+        // Download epsilon.js from the latest stable build so it doesn't have to be updated manually
 
         getDownloadURL(
             'https://firebasestorage.googleapis.com/v0/b/upsilon-binfiles.appspot.com/o/official%2Fsimulator%2Fepsilon.python.min.js'
