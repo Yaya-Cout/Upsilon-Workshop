@@ -1,5 +1,11 @@
 <template>
     <div id="viewer-page">
+        <v-progress-linear
+            :active="loading"
+            :indeterminate="loading"
+            bottom
+            color="deep-purple-accent-4"
+        ></v-progress-linear>
         <v-row>
             <v-col>
                 <h1>{{ project?.title }}</h1>
@@ -31,10 +37,12 @@ export default defineComponent({
             api: useAPIStore().api,
             calculatorStore: useCalculatorStore(),
             calculator: useCalculatorStore().calculator,
+            loading: true,
         };
     },
     async mounted() {
         this.project = await this.api.getProject(this.$route.params.uuid);
+        this.loading = false;
     },
     methods: {
         async upload() {
