@@ -39,6 +39,9 @@
       "message": "Trop de données sur la calculatrice",
       "manage": "Gérer les scripts"
     },
+    "generic-error": {
+      "message": "Une erreur innatendue est survenue"
+    },
     "installation-success": "Installation réussie",
     "close": "Fermer"
   },

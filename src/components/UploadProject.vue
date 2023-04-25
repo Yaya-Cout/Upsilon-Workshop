@@ -7,6 +7,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useCalculatorStore } from '../stores/calculator';
+import { useGlobalStore } from '../stores/global';
 import { Project } from '../types';
 
 export default defineComponent({
@@ -20,6 +21,7 @@ export default defineComponent({
         return {
             calculatorStore: useCalculatorStore(),
             calculator: useCalculatorStore().calculator,
+            globalStore: useGlobalStore(),
         };
     },
     computed: {
@@ -41,12 +43,12 @@ export default defineComponent({
                     this.calculatorStore.notConnectedError = true;
                 }
             } else {
+                this.globalStore.error = true;
                 // TODO: Handle this error. (wait ?)
                 console.error("No project to upload");
             }
         },
         async uploadProject(project: Project) {
-            // TODO: Make a component for this.
             let storage = await this.calculator.backupStorage();
 
             for (let file of project.files) {
@@ -63,7 +65,6 @@ export default defineComponent({
                 });
             }
 
-            // TODO: Handle errors like too much files.
             try {
                 await this.calculator.installStorage(storage, this.storageInstalled);
             } catch (error) {
@@ -74,13 +75,11 @@ export default defineComponent({
             this.calculatorStore.installationSuccess = true;
         },
         storageInstallError(error: any) {
-            // If the message is "Too much data!", it means that the calculator
-            // has too much files. We should handle this error.
             if (error.message === "Too much data!") {
                 this.calculatorStore.tooMuchDataError = true;
+            } else {
+                this.globalStore.error = true;
             }
-
-            // TODO: Handle other errors with a generic error message.
         },
     },
 });

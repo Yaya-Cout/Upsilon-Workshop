@@ -1,10 +1,10 @@
 <template>
-    <v-snackbar v-model="calculatorStore.tooMuchDataError" color="warning">
+    <v-snackbar v-model="calculatorStore.tooMuchDataError">
         <span>
             {{ $t('snackbar.too-much-data.message') }}
         </span>
         <template v-slot:actions>
-            <v-btn variant="text" @click="manage()">
+            <v-btn variant="text" @click="manage()" color="secondary">
                 {{ $t('snackbar.too-much-data.manage') }}
             </v-btn>
             <v-btn color="pink" variant="text" @click="calculatorStore.tooMuchDataError = false">

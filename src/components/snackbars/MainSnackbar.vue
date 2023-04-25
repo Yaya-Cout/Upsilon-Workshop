@@ -1,8 +1,9 @@
 <!-- This component is used to import the other snackbars -->
 <template>
-    <NotLoggedInSnackbar />
     <ConnectCalculatorSnackbar />
+    <GenericErrorSnackbar />
     <InstallationSuccessSnackbar />
+    <NotLoggedInSnackbar />
     <TooMuchDataErrorSnackbar />
 </template>
 
@@ -12,13 +13,15 @@ import NotLoggedInSnackbar from './NotLoggedInSnackbar.vue';
 import ConnectCalculatorSnackbar from './ConnectCalculatorSnackbar.vue';
 import InstallationSuccessSnackbar from './InstallationSuccessSnackbar.vue';
 import TooMuchDataErrorSnackbar from './TooMuchDataErrorSnackbar.vue';
+import GenericErrorSnackbar from './GenericErrorSnackbar.vue';
 
 export default defineComponent({
     components: {
         NotLoggedInSnackbar,
         ConnectCalculatorSnackbar,
         InstallationSuccessSnackbar,
-        TooMuchDataErrorSnackbar
+        TooMuchDataErrorSnackbar,
+        GenericErrorSnackbar
     }
 });
 </script>

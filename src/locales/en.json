@@ -39,6 +39,9 @@
       "message": "Too much data on the calculator",
       "manage": "Manage scripts"
     },
+    "generic-error": {
+      "message": "An unexpected error occurred"
+    },
     "installation-success": "Installation successful",
     "close": "Close"
   },
