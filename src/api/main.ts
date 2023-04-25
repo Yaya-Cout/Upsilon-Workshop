@@ -1,4 +1,4 @@
-import { Project, Script } from "./types";
+import { Project, Script } from "../types";
 
 /*
  * Class to interact with the Workshop API
@@ -7,14 +7,20 @@ import { Project, Script } from "./types";
  */
 export default class API {
     BASE_URL: string;
-    TOKEN: string | undefined;
     NOT_LOGGED_IN_ERROR: boolean = false;
+    LOGGED_IN: boolean = false;
 
     /*
      * Initialize the API client
      */
     constructor() {
         this.BASE_URL = "https://django-cdqivkhudi9mmk5gqgb0.apps.playground.napptive.dev/";
+
+        // Check if the user is logged in
+        if (this.isLoggedIn()) {
+            // TODO: Check if the token is valid using the API
+            this.LOGGED_IN = true;
+        }
     }
 
     /*
@@ -44,9 +50,51 @@ export default class API {
             throw new Error("Token not found")
         }
 
-        this.TOKEN = json["token"]
+        this.setToken(json["token"])
 
         return json["user"]["username"]
+    }
+
+    /*
+     * Logout of the API
+     * @returns {Promise} - A promise that resolves to true if the logout was successful
+     */
+    async logout(): Promise<boolean> {
+        // Check if the token is present
+        if (!this.isLoggedIn()) {
+            console.warn("Tried to log out when not logged in");
+            return true;
+        }
+
+        // Invalidate the token on the server
+        await this._request("api/auth/logout/", "POST", {}, 204)
+
+        // Remove the token
+        this.setToken("")
+        return true;
+    }
+
+    /*
+     * Get the token of the user
+     * @returns {string} - The token of the user
+     */
+    getToken(): string {
+        return sessionStorage.getItem("token") || "";
+    }
+
+    /*
+     * Set the token of the user
+     * @param {string} token - The token of the user
+     */
+    setToken(token: string): void {
+        if (token === "") {
+            sessionStorage.removeItem("token")
+            this.LOGGED_IN = false;
+            return;
+        } else {
+            this.LOGGED_IN = true;
+        }
+        sessionStorage.setItem("token", token);
     }
 
     /*
@@ -55,7 +103,12 @@ export default class API {
      */
     isLoggedIn(): boolean {
         // TODO: Check if the token is valid using the API
-        return this.TOKEN !== undefined;
+        if (this.getToken() === "") {
+            this.LOGGED_IN = false;
+        } else {
+            this.LOGGED_IN = true;
+        }
+        return this.LOGGED_IN;
     }
 
     /*
@@ -78,7 +131,7 @@ export default class API {
             }
         }
         if (this.isLoggedIn()) {
-            payload.headers["Authorization"] = "Token " + this.TOKEN
+            payload.headers["Authorization"] = "Token " + this.getToken()
         }
 
         if (method !== "GET" && method !== "HEAD") {
@@ -97,26 +150,6 @@ export default class API {
         catch (e) {
             return undefined
         }
-    }
-
-    /*
-     * Logout of the API
-     * @returns {Promise} - A promise that resolves to true if the logout was successful
-     */
-    async logout(): Promise<boolean> {
-        // Check if the token is present
-        if (!this.isLoggedIn()) {
-            console.warn("Tried to log out when not logged in");
-            return true;
-        }
-
-        // Invalidate the token on the server
-        await this._request("api/auth/logout/", "POST", {}, 204)
-
-        // Remove the token
-        this.TOKEN = undefined;
-
-        return true;
     }
 
     /*
