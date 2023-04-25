@@ -17,6 +17,26 @@
     "error": "Invalid username or password",
     "close": "Close"
   },
+  "register": {
+    "title": "Sign up",
+    "email": "Email",
+    "username": "Username",
+    "password": "Password",
+    "password-confirm": "Confirm password",
+    "submit": "Sign up",
+    "login": "Already have an account? Log in",
+    "least-8-chars": "At least 8 characters",
+    "least-8-chars-error": "Password must be at least 8 characters long",
+    "password-identical": "Passwords must be identical",
+    "password-identical-error": "Passwords do not match",
+    "password-required-error": "Password is required",
+    "username-required-error": "Username is required",
+    "username-pattern": "Username can only contain letters, numbers, {'@'}, + and -",
+    "username-invalid-error": "Username is invalid",
+    "username-too-long-error": "Username is too long",
+    "email-required-error": "Email is required",
+    "email-invalid-error": "Email is invalid"
+  },
   "calculator": {
     "title": "Calculator",
     "no-webusb": "No WebUSB support",

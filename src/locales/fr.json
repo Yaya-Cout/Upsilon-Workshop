@@ -17,6 +17,25 @@
     "error": "Nom d'utilisateur ou mot de passe incorrect",
     "close": "Fermer"
   },
+  "register": {
+    "title": "Inscription",
+    "email": "Email",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "password-confirm": "Confirmer le mot de passe",
+    "submit": "S'inscrire",
+    "least-8-chars": "Au moins 8 caractères",
+    "least-8-chars-error": "Le mot de passe doit contenir au moins 8 caractères",
+    "password-identical": "Les mots de passe doivent être identiques",
+    "password-identical-error": "Les mots de passe ne sont pas identiques",
+    "password-required-error": "Mot de passe requis",
+    "username-required-error": "Nom d'utilisateur requis",
+    "username-pattern": "Le nom d'utilisateur ne peut contenir que des lettres, des chiffres, des {'@'}, des + et des -",
+    "username-invalid-error": "Nom d'utilisateur invalide",
+    "username-too-long-error": "Nom d'utilisateur trop long",
+    "email-required-error": "Email requis",
+    "email-invalid-error": "Email invalide"
+  },
   "calculator": {
     "title": "Calculatrice",
     "no-webusb": "Pas de support WebUSB",

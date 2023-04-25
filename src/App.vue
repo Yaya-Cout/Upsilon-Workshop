@@ -38,6 +38,7 @@
           <v-btn
             class="mx-2"
             variant="outlined"
+            to="/register"
           >
             {{ $t('navbar.signup') }}
           </v-btn>

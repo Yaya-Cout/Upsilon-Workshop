@@ -284,4 +284,21 @@ export default class API {
             isPublic: false,
         })
     }
+
+    /* Register a user on the API
+     * @param {string} username - The username of the user
+     * @param {string} password - The password of the user
+     * @param {string} email - The email of the user
+     * @returns {Promise} - A promise that resolves to the username
+     * @throws {Error} - If the username is already taken
+     */
+    async register(username: string, password: string, email: string): Promise<string> {
+        const response = await this._request("register/", "POST", {
+            username: username,
+            password: password,
+            email: email,
+        }, 201, false)
+
+        return response["username"]
+    }
 }

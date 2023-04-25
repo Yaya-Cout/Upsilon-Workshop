@@ -11,6 +11,7 @@ import Calculator from './routes/Calculator.vue';
 import Editor from './routes/Editor.vue';
 import Home from './routes/Home.vue';
 import Login from './routes/Login.vue';
+import Register from './routes/Register.vue';
 import Search from './routes/Search.vue';
 import Viewer from './routes/Viewer.vue';
 
@@ -26,6 +27,7 @@ const router = createRouter({
     { path: '/search', component: Search, name: "search" },
     { path: '/view/:uuid', component: Viewer, name: "view" },
     { path: '/login', component: Login, name: "login" },
+    { path: '/register', component: Register, name: "register" },
   ]
 })
 
