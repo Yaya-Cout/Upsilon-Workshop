@@ -31,16 +31,7 @@
                 </div>
             </v-app-bar>
             <router-view></router-view>
-            <v-snackbar v-model="api.NOT_LOGGED_IN_ERROR" :timeout="timeout">
-                <span>
-                    {{ $t('app.not-logged-in-snackbar') }}
-                </span>
-                <template v-slot:actions>
-                    <v-btn color="pink" variant="text" @click="api.NOT_LOGGED_IN_ERROR = false">
-                        {{ $t('snackbar.close') }}
-                    </v-btn>
-                </template>
-            </v-snackbar>
+            <NotLoggedInSnackbar />
             <ConnectCalculatorSnackbar />
         </v-main>
     </v-app>
@@ -51,19 +42,20 @@ import { defineComponent } from 'vue';
 import { useAPIStore } from './stores/api';
 import { useCalculatorStore } from './stores/calculator';
 import ConnectCalculatorSnackbar from '@/components/snackbars/ConnectCalculatorSnackbar.vue';
+import NotLoggedInSnackbar from '@/components/snackbars/NotLoggedInSnackbar.vue';
 
 export default defineComponent({
     name: 'App',
 
     components: {
         ConnectCalculatorSnackbar,
+        NotLoggedInSnackbar,
     },
     data() {
         return {
             api: useAPIStore().api,
             calculatorStore: useCalculatorStore(),
             calculator: useCalculatorStore().calculator,
-            timeout: 3000,
         };
     },
     mounted() {
