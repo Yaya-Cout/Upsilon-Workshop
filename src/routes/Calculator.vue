@@ -2,15 +2,14 @@
     <div id="calculator-page">
         <v-card class="mx-auto px-6 py-8" width="500">
             <h1 class="text-center">{{ $t('calculator.title') }}</h1>
-
-            <div v-if="!webUSB">
-                <v-alert :title="$t('calculator.no-webusb')" :text="$t('calculator.no-webusb-text')" type="error"></v-alert>
-            </div>
-            <div v-else>
-                <v-btn @click="connect" block class="mt-2" variant="elevated" width="0%" color="primary" size="x-large"
-                    v-if="!connected">
-                    {{ $t('calculator.connect') }}
-                </v-btn>
+            <WebUSBNotSupported />
+            <div v-if="webUSB">
+                <ConnectCalculator v-if="!connected">
+                    <v-btn block class="mt-2" variant="elevated" width="0%" color="primary" size="x-large"
+                        v-if="!connected">
+                        {{ $t('calculator.connect') }}
+                    </v-btn>
+                </ConnectCalculator>
                 <v-btn @click="disconnect" block class="mt-2" variant="elevated" width="0%" color="primary" size="x-large"
                     v-else>
                     {{ $t('calculator.disconnect') }}
@@ -21,16 +20,15 @@
 
                     <v-list v-if="storage.records">
                         <v-checkbox v-model="showAll" label="Show all files" hide-details />
-                        <v-list-item class="records" v-for="
+                        <v-list-item class="records"
+                            v-for="
                                     //@ts-ignore
-                                            record in storage.records.filter((record) => record.type === 'py' || showAll)"
-                            :title="
-                                //@ts-ignore
-                                record.name + '.' + record.type
-                            ">
+                                        record in storage.records.filter((record) => record.type === 'py' || showAll)" :title="
+        //@ts-ignore
+        record.name + '.' + record.type
+        ">
                             <template v-slot:append>
-                                <v-btn icon="mdi-content-save" variant="text"
-                                    @click="saveScript(record.name, record.type)"
+                                <v-btn icon="mdi-content-save" variant="text" @click="saveScript(record.name, record.type)"
                                     :loading="savingScript" :disabled="savingScript">
                                 </v-btn>
                                 <v-btn icon="mdi-pencil" variant="text"></v-btn>
@@ -60,7 +58,7 @@
                 <v-btn color="pink" variant="text" @click="openScript(scriptSavedId)">
                     {{ $t('calculator.open') }}
                 </v-btn>
-                <v-btn color="pink" variant="text" @click="scriptSaved = false">
+                <v-btn color="pink" variant="text" @click="scriptSaved = false" class="flex-grow-1">
                     {{ $t('snackbar.close') }}
                 </v-btn>
             </template>
@@ -74,11 +72,15 @@ import { useAPIStore } from '../stores/api';
 import { useCalculatorStore } from "../stores/calculator";
 import cloneDeep from 'lodash/cloneDeep';
 import CalculatorCard from '../components/CalculatorCard.vue';
+import ConnectCalculator from '../components/ConnectCalculator.vue';
+import WebUSBNotSupported from '../components/WebUSBNotSupported.vue';
 
 export default defineComponent({
     name: 'LoginPage',
     components: {
         CalculatorCard,
+        ConnectCalculator,
+        WebUSBNotSupported,
     },
     data() {
         return {
@@ -112,9 +114,6 @@ export default defineComponent({
         }
     },
     methods: {
-        connect() {
-            this.calculator.detect(this.connectedHandler, this.connectErrorHandler);
-        },
         async connectedHandler() {
             this.connected = true;
         },

@@ -5,5 +5,6 @@ export const useCalculatorStore = defineStore('calculator', {
   state: () => ({
     calculator: new NumWorks(),
     connected: false,
+    notConnectedError: false,
   }),
 })

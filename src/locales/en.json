@@ -30,6 +30,11 @@
     "open": "Open"
   },
   "snackbar": {
+    "connect-calculator": {
+      "calculator-not-connected": "Calculator not connected",
+      "detect-calculator": "Detect calculator",
+      "dialog-details": "You need to connect your calculator to use this feature. Click on the button below to detect your calculator."
+    },
     "close": "Close"
   },
   "app": {

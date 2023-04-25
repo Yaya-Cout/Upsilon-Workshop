@@ -38,8 +38,15 @@ export default defineComponent({
     },
     methods: {
         async upload() {
-            if (this.project && this.connected) {
-                await this.uploadProject(this.project);
+            if (this.project) {
+                if (this.connected) {
+                    await this.uploadProject(this.project);
+                } else {
+                    this.calculatorStore.notConnectedError = true;
+                }
+            } else {
+                // TODO: Handle this error. (wait ?)
+                console.error("No project to upload");
             }
         },
         async uploadProject(project: Project) {

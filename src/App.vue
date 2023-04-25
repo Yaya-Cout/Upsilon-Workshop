@@ -41,6 +41,7 @@
                     </v-btn>
                 </template>
             </v-snackbar>
+            <ConnectCalculatorSnackbar />
         </v-main>
     </v-app>
 </template>
@@ -49,10 +50,14 @@
 import { defineComponent } from 'vue';
 import { useAPIStore } from './stores/api';
 import { useCalculatorStore } from './stores/calculator';
+import ConnectCalculatorSnackbar from '@/components/snackbars/ConnectCalculatorSnackbar.vue';
 
 export default defineComponent({
     name: 'App',
 
+    components: {
+        ConnectCalculatorSnackbar,
+    },
     data() {
         return {
             api: useAPIStore().api,
@@ -67,7 +72,6 @@ export default defineComponent({
             const _this = this;
             navigator.usb.addEventListener("disconnect", function (e: any) {
                 _this.calculator.onUnexpectedDisconnect(e, function () {
-                    console.log("Disconnected");
                     _this.connected = false;
                     _this.calculator.autoConnect(_this.connectedHandler);
                 });
@@ -76,7 +80,6 @@ export default defineComponent({
     },
     methods: {
         connectedHandler() {
-            console.log("Connected");
             this.connected = true;
         },
     },
