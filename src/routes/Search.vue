@@ -49,7 +49,6 @@ export default defineComponent({
 
     watch: {
         debouncedQuery: async function (newQuery, oldQuery) {
-            console.log(newQuery)
             this.projects = await this.api.getProjects(newQuery)
         }
     },

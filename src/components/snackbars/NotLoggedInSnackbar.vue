@@ -21,9 +21,6 @@ export default defineComponent({
             api: useAPIStore().api,
         };
     },
-    mounted() {
-        console.log(this.api);
-    },
 });
 </script>
 
