@@ -32,8 +32,7 @@
             </v-app-bar>
             <router-view></router-view>
             <MainManager />
-            <NotLoggedInSnackbar />
-            <ConnectCalculatorSnackbar />
+            <MainSnackbar />
         </v-main>
     </v-app>
 </template>
@@ -41,17 +40,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAPIStore } from './stores/api';
-import ConnectCalculatorSnackbar from '@/components/snackbars/ConnectCalculatorSnackbar.vue';
-import NotLoggedInSnackbar from '@/components/snackbars/NotLoggedInSnackbar.vue';
 import MainManager from './components/manager/MainManager.vue';
+import MainSnackbar from './components/snackbars/MainSnackbar.vue';
 
 export default defineComponent({
     name: 'App',
 
     components: {
-        ConnectCalculatorSnackbar,
-        NotLoggedInSnackbar,
-        MainManager
+        MainManager,
+        MainSnackbar
     },
     data() {
         return {
