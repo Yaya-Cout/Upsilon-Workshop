@@ -1,36 +1,52 @@
 <template>
-    <v-card class="mx-auto calculator-card">
-        <v-card-item :title="$t('calculator.numworks-of') + ' ' + username">
-        </v-card-item>
+  <v-card class="mx-auto calculator-card">
+    <v-card-item :title="$t('calculator.numworks-of') + ' ' + username" />
 
-        <v-card-text class="py-0">
-            <v-row align="center" no-gutters>
-                <v-col class="text-h2" cols="6">
-                    {{ storagePercentage }} %
-                </v-col>
+    <v-card-text class="py-0">
+      <v-row
+        align="center"
+        no-gutters
+      >
+        <v-col
+          class="text-h2"
+          cols="6"
+        >
+          {{ storagePercentage }} %
+        </v-col>
 
-                <v-col cols="6" class="text-right">
-                    <img :src="firmwareLogo" :alt="firmware" width="88" class="os-icon" />
-                </v-col>
+        <v-col
+          cols="6"
+          class="text-right"
+        >
+          <img
+            :src="firmwareLogo"
+            :alt="firmware"
+            width="88"
+            class="os-icon"
+          >
+        </v-col>
 
-                <v-col cols="12">
-                    <v-progress-linear
-                        :model-value="storagePercentage"
-                        :color="storagePercentage > 90 ? 'red' : 'primary'"
-                        height="8"
-                        class="my-2"
-                        rounded
-                    />
-                </v-col>
-            </v-row>
-        </v-card-text>
+        <v-col cols="12">
+          <v-progress-linear
+            :model-value="storagePercentage"
+            :color="storagePercentage > 90 ? 'red' : 'primary'"
+            height="8"
+            class="my-2"
+            rounded
+          />
+        </v-col>
+      </v-row>
+    </v-card-text>
 
-        <div class="d-flex py-3 justify-space-between">
-            <v-list-item density="compact" prepend-icon="mdi-source-branch">
-                <v-list-item-subtitle>{{ version }}</v-list-item-subtitle>
-            </v-list-item>
-        </div>
-    </v-card>
+    <div class="d-flex py-3 justify-space-between">
+      <v-list-item
+        density="compact"
+        prepend-icon="mdi-source-branch"
+      >
+        <v-list-item-subtitle>{{ version }}</v-list-item-subtitle>
+      </v-list-item>
+    </div>
+  </v-card>
 </template>
 
 <script lang="ts">

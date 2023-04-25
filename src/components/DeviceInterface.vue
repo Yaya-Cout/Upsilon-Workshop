@@ -1,49 +1,66 @@
 <template>
-    <div>
-        <v-btn @click="connect" v-if="!connected"> Select device </v-btn>
-        <v-btn @click="send" v-if="connected">Send scripts</v-btn>
-        <v-btn @click="disconnect" v-if="connected">Disconnect</v-btn>
-        <div id="info">
-            {{ connected ? descriptor : 'Not connected' }}
-        </div>
-        <div v-if="connected && storage" id="files">
-            <v-checkbox
-                v-model="showAll"
-                label="Show non-python files"
-                hide-details
-            />
-            <v-list>
-                <v-list-item
-                    density="compact"
-                    class="records"
-                    v-for="
-                    //@ts-ignore
-                    record in storage.records.filter((record)=>record.type === 'py' || showAll)"
-                    @click="onRecordSelect(record)"
-                    :title="
-                        //@ts-ignore
-                        record.name + '.' + record.type
-                    "
-                >
-                    <template v-slot:append>
-                        <v-btn
-                            density="compact"
-                            icon="mdi-pencil"
-                            variant="text"
-                        ></v-btn>
-                        <v-btn
-                            density="compact"
-                            icon="mdi-delete"
-                            variant="text"
-                        ></v-btn>
-                    </template>
-                </v-list-item>
-            </v-list>
-        </div>
+  <div>
+    <v-btn
+      v-if="!connected"
+      @click="connect"
+    >
+      Select device
+    </v-btn>
+    <v-btn
+      v-if="connected"
+      @click="send"
+    >
+      Send scripts
+    </v-btn>
+    <v-btn
+      v-if="connected"
+      @click="disconnect"
+    >
+      Disconnect
+    </v-btn>
+    <div id="info">
+      {{ connected ? descriptor : 'Not connected' }}
     </div>
+    <div
+      v-if="connected && storage"
+      id="files"
+    >
+      <v-checkbox
+        v-model="showAll"
+        label="Show non-python files"
+        hide-details
+      />
+      <v-list>
+        <v-list-item
+          v-for="
+            (record, index) in storage.records.filter((record)=>record.type === 'py' || showAll)"
+          :key="index"
+          density="compact"
+          class="records"
+          :title="
+            //@ts-ignore
+            record.name + '.' + record.type
+          "
+          @click="onRecordSelect(record)"
+        >
+          <template #append>
+            <v-btn
+              density="compact"
+              icon="mdi-pencil"
+              variant="text"
+            />
+            <v-btn
+              density="compact"
+              icon="mdi-delete"
+              variant="text"
+            />
+          </template>
+        </v-list-item>
+      </v-list>
+    </div>
+  </div>
 </template>
 <script lang="ts">
-import { connect } from 'http2';
 import Numworks from 'upsilon.js';
 import { defineComponent, PropType } from 'vue';
 import { Script } from '../types';
@@ -51,8 +68,12 @@ import { Script } from '../types';
 export default defineComponent({
     name: 'DeviceInterface',
     props: {
-        scripts: { type: Object as PropType<Script[]>, default: [] },
+        scripts: {
+            type: Object as PropType<Script[]>,
+            default: () => {},
+        },
     },
+    emits: ['record-select'],
     data() {
         return {
             connected: false,
@@ -130,7 +151,7 @@ export default defineComponent({
             });
         },
         onRecordSelect(record: any) {
-            this.$emit('recordSelect', record);
+            this.$emit('record-select', record);
         },
         onError(err: any) {
             console.error(err);

@@ -1,18 +1,15 @@
 <template>
-    <div ref="markdown"></div>
+  <div ref="markdown" />
 </template>
 <script lang="ts">
 import showdown from 'showdown';
 import { defineComponent } from 'vue';
 export default defineComponent({
     props: {
-        content: String,
-    },
-    mounted() {
-        //@ts-ignore
-        this.$refs.markdown.innerHTML = new showdown.Converter().makeHtml(
-            this.content!
-        );
+        content: {
+            type: String,
+            default: '',
+        },
     },
     watch: {
         content() {
@@ -21,6 +18,12 @@ export default defineComponent({
                 this.content!
             );
         },
+    },
+    mounted() {
+        //@ts-ignore
+        this.$refs.markdown.innerHTML = new showdown.Converter().makeHtml(
+            this.content!
+        );
     },
 });
 </script>

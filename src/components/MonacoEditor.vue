@@ -1,13 +1,21 @@
 <template>
-    <v-tabs v-model="tab" @update:model-value="setTab">
-        <v-tab v-for="script in scripts" :key="script.title">
-            {{ script.title }}
-        </v-tab>
-        <v-btn @click="update">Update</v-btn>
-    </v-tabs>
-    <div class="monaco-editor-wrapper">
-        <div id="monaco-editor"></div>
-    </div>
+  <v-tabs
+    v-model="tab"
+    @update:model-value="setTab"
+  >
+    <v-tab
+      v-for="script in scripts"
+      :key="script.title"
+    >
+      {{ script.title }}
+    </v-tab>
+    <v-btn @click="update">
+      Update
+    </v-btn>
+  </v-tabs>
+  <div class="monaco-editor-wrapper">
+    <div id="monaco-editor" />
+  </div>
 </template>
 <script lang="ts">
 import * as monaco from 'monaco-editor';
@@ -29,19 +37,10 @@ export default defineComponent({
             oldTab: 0,
         };
     },
-    mounted() {
-        const editorElement = document.getElementById('monaco-editor');
-        if (editorElement === null) return;
-        editor = monaco.editor.create(editorElement, {
-            language: 'python',
-            automaticLayout: true,
-        });
-        this.createModels();
-    },
     watch: {
         scripts: {
             deep: true,
-            handler(before, after) {
+            handler() {
                 //FIXME this will break with script renaming
                 if (this.scripts.length != models.length) {
                     // Delete and re create all models
@@ -60,6 +59,15 @@ export default defineComponent({
                 }
             },
         },
+    },
+    mounted() {
+        const editorElement = document.getElementById('monaco-editor');
+        if (editorElement === null) return;
+        editor = monaco.editor.create(editorElement, {
+            language: 'python',
+            automaticLayout: true,
+        });
+        this.createModels();
     },
     methods: {
         createModels() {

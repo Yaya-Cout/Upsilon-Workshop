@@ -1,7 +1,7 @@
 <template>
-    <div @click="connect">
-        <slot></slot>
-    </div>
+  <div @click="connect">
+    <slot />
+  </div>
 </template>
 
 <script lang="ts">
@@ -15,6 +15,16 @@ export default defineComponent({
             calculator: useCalculatorStore().calculator,
         };
     },
+    computed: {
+        connected: {
+            get() {
+                return this.calculatorStore.connected;
+            },
+            set(value: boolean) {
+                this.calculatorStore.connected = value;
+            },
+        },
+    },
     methods: {
         connect() {
             this.calculator.detect(this.connectedHandler, this.connectErrorHandler);
@@ -25,16 +35,6 @@ export default defineComponent({
         },
         async connectedHandler() {
             this.connected = true;
-        },
-    },
-    computed: {
-        connected: {
-            get() {
-                return this.calculatorStore.connected;
-            },
-            set(value: boolean) {
-                this.calculatorStore.connected = value;
-            },
         },
     },
 });

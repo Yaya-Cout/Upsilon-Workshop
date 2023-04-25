@@ -1,69 +1,125 @@
 <template>
-    <div id="calculator-page">
-        <v-card class="mx-auto px-6 py-8" width="500">
-            <h1 class="text-center">{{ $t('calculator.title') }}</h1>
-            <WebUSBNotSupported />
-            <div v-if="webUSB">
-                <ConnectCalculator v-if="!connected">
-                    <v-btn block class="mt-2" variant="elevated" width="0%" color="primary" size="x-large"
-                        v-if="!connected">
-                        {{ $t('calculator.connect') }}
-                    </v-btn>
-                </ConnectCalculator>
-                <v-btn @click="disconnect" block class="mt-2" variant="elevated" width="0%" color="primary" size="x-large"
-                    v-else>
-                    {{ $t('calculator.disconnect') }}
-                </v-btn>
+  <div id="calculator-page">
+    <v-card
+      class="mx-auto px-6 py-8"
+      width="500"
+    >
+      <h1 class="text-center">
+        {{ $t('calculator.title') }}
+      </h1>
+      <WebUSBNotSupported />
+      <div v-if="webUSB">
+        <ConnectCalculator v-if="!connected">
+          <v-btn
+            v-if="!connected"
+            block
+            class="mt-2"
+            variant="elevated"
+            width="0%"
+            color="primary"
+            size="x-large"
+          >
+            {{ $t('calculator.connect') }}
+          </v-btn>
+        </ConnectCalculator>
+        <v-btn
+          v-else
+          block
+          class="mt-2"
+          variant="elevated"
+          width="0%"
+          color="primary"
+          size="x-large"
+          @click="disconnect"
+        >
+          {{ $t('calculator.disconnect') }}
+        </v-btn>
 
-                <div v-if="connected">
-                    <CalculatorCard :calculator="calculator" :platformInfo="platformInfo" :storage="storage" />
+        <div v-if="connected">
+          <CalculatorCard
+            :calculator="calculator"
+            :platform-info="platformInfo"
+            :storage="storage"
+          />
 
-                    <v-list v-if="storage.records">
-                        <v-checkbox v-model="showAll" label="Show all files" hide-details />
-                        <v-list-item class="records"
-                            v-for="
-                                    //@ts-ignore
-                                        record in storage.records.filter((record) => record.type === 'py' || showAll)" :title="
-        //@ts-ignore
-        record.name + '.' + record.type
-        ">
-                            <template v-slot:append>
-                                <v-btn icon="mdi-content-save" variant="text" @click="saveScript(record.name, record.type)"
-                                    :loading="savingScript" :disabled="savingScript">
-                                </v-btn>
-                                <v-btn icon="mdi-pencil" variant="text"></v-btn>
-                                <v-btn icon="mdi-delete" variant="text"
-                                    @click="deleteScript(record.name, record.type)"></v-btn>
-                            </template>
-                        </v-list-item>
-                    </v-list>
-                </div>
-            </div>
-        </v-card>
-        <v-snackbar v-model="deleted" :timeout="timeout">
-            <span>
-                {{ $t('calculator.script-deleted') }}
-            </span>
-            <template v-slot:actions>
-                <v-btn color="pink" variant="text" @click="deleted = false">
-                    {{ $t('snackbar.close') }}
-                </v-btn>
-            </template>
-        </v-snackbar>
-        <v-snackbar v-model="scriptSaved" :timeout="timeout">
-            <span>
-                {{ $t('calculator.script-saved', { name: scriptSavedName }) }}
-            </span>
-            <template v-slot:actions>
-                <v-btn color="pink" variant="text" @click="openScript(scriptSavedId)">
-                    {{ $t('calculator.open') }}
-                </v-btn>
-                <v-btn color="pink" variant="text" @click="scriptSaved = false" class="flex-grow-1">
-                    {{ $t('snackbar.close') }}
-                </v-btn>
-            </template>
-        </v-snackbar>
-    </div>
+          <v-list v-if="storage.records">
+            <v-checkbox
+              v-model="showAll"
+              label="Show all files"
+              hide-details
+            />
+            <v-list-item
+              v-for="(record, index) in storage.records.filter((record) => record.type === 'py' || showAll)"
+              :key="index"
+              class="records"
+              :title="record.name + '.' + record.type"
+            >
+              <template #append>
+                <v-btn
+                  icon="mdi-content-save"
+                  variant="text"
+                  :loading="savingScript"
+                  :disabled="savingScript"
+                  @click="saveScript(record.name, record.type)"
+                />
+                <v-btn
+                  icon="mdi-pencil"
+                  variant="text"
+                />
+                <v-btn
+                  icon="mdi-delete"
+                  variant="text"
+                  @click="deleteScript(record.name, record.type)"
+                />
+              </template>
+            </v-list-item>
+          </v-list>
+        </div>
+      </div>
+    </v-card>
+    <v-snackbar
+      v-model="deleted"
+      :timeout="timeout"
+    >
+      <span>
+        {{ $t('calculator.script-deleted') }}
+      </span>
+      <template #actions>
+        <v-btn
+          color="pink"
+          variant="text"
+          @click="deleted = false"
+        >
+          {{ $t('snackbar.close') }}
+        </v-btn>
+      </template>
+    </v-snackbar>
+    <v-snackbar
+      v-model="scriptSaved"
+      :timeout="timeout"
+    >
+      <span>
+        {{ $t('calculator.script-saved', { name: scriptSavedName }) }}
+      </span>
+      <template #actions>
+        <v-btn
+          color="pink"
+          variant="text"
+          @click="openScript(scriptSavedId)"
+        >
+          {{ $t('calculator.open') }}
+        </v-btn>
+        <v-btn
+          color="pink"
+          variant="text"
+          class="flex-grow-1"
+          @click="scriptSaved = false"
+        >
+          {{ $t('snackbar.close') }}
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
 </template>
 
 <script lang="ts">
@@ -98,6 +154,16 @@ export default defineComponent({
             scriptSavedName: "",
             scriptSavedId: "" as string,
         }
+    },
+    computed: {
+        connected: {
+            get() {
+                return this.calculatorStore.connected;
+            },
+            set(value: boolean) {
+                this.calculatorStore.connected = value;
+            },
+        },
     },
     watch: {
         connected: {
@@ -179,16 +245,6 @@ export default defineComponent({
         },
         openScript(id: string) {
             this.$router.push({ name: 'view', params: { uuid: id } });
-        },
-    },
-    computed: {
-        connected: {
-            get() {
-                return this.calculatorStore.connected;
-            },
-            set(value: boolean) {
-                this.calculatorStore.connected = value;
-            },
         },
     },
 });

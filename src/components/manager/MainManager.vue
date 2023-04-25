@@ -1,6 +1,6 @@
 <!-- This manager includes all the other managers -->
 <template>
-    <CalculatorManager />
+  <CalculatorManager />
 </template>
 
 <script lang="ts">

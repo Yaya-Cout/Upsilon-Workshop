@@ -1,10 +1,14 @@
 <template>
-    <!-- We use a div to avoid the v-card being a direct child of the v-row and
+  <!-- We use a div to avoid the v-card being a direct child of the v-row and
         being affected by other v-cards in the same row -->
-    <div>
-        <v-card class="ma-2 rounded-lg" elevation="4" :to="'/view/' + project.uuid">
-            <div class="flex justify-between">
-                <!-- <v-img
+  <div>
+    <v-card
+      class="ma-2 rounded-lg"
+      elevation="4"
+      :to="'/view/' + project.uuid"
+    >
+      <div class="flex justify-between">
+        <!-- <v-img
                 class="rounded-lg"
                 elevation="4"
                 :aspect-ratio="320 / 240"
@@ -12,17 +16,24 @@
                 src="/assets/screenshot.png"
                 style="z-index: -1"
             /> -->
-                <div class="elevation-10">
-                    <v-card-title class="pb-0">{{ project.title }}</v-card-title>
-                    <v-card-text class="py-0">{{ project.author }}</v-card-text>
-                    <v-card-subtitle>{{ project.description }}</v-card-subtitle>
-                    <v-card-actions>
-                        <v-rating length="5" v-model="project.rating"></v-rating>
-                    </v-card-actions>
-                </div>
-            </div>
-        </v-card>
-    </div>
+        <div class="elevation-10">
+          <v-card-title class="pb-0">
+            {{ project.title }}
+          </v-card-title>
+          <v-card-text class="py-0">
+            {{ project.author }}
+          </v-card-text>
+          <v-card-subtitle>{{ project.description }}</v-card-subtitle>
+          <v-card-actions>
+            <v-rating
+              v-model="project.rating"
+              length="5"
+            />
+          </v-card-actions>
+        </div>
+      </div>
+    </v-card>
+  </div>
 </template>
 
 <script lang="ts">

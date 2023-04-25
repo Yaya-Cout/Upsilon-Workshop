@@ -1,14 +1,18 @@
 <template>
-    <v-snackbar v-model="calculatorStore.installationSuccess">
-        <span>
-            {{ $t('snackbar.installation-success') }}
-        </span>
-        <template v-slot:actions>
-            <v-btn color="pink" variant="text" @click="calculatorStore.installationSuccess = false">
-                {{ $t('snackbar.close') }}
-            </v-btn>
-        </template>
-    </v-snackbar>
+  <v-snackbar v-model="calculatorStore.installationSuccess">
+    <span>
+      {{ $t('snackbar.installation-success') }}
+    </span>
+    <template #actions>
+      <v-btn
+        color="pink"
+        variant="text"
+        @click="calculatorStore.installationSuccess = false"
+      >
+        {{ $t('snackbar.close') }}
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 <script lang="ts">

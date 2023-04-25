@@ -1,5 +1,7 @@
 <!-- This manager manage auto-connection and disconnection of the calculator -->
-<template></template>
+<template>
+  <div />
+</template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';

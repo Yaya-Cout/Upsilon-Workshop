@@ -1,17 +1,25 @@
 <template>
-    <v-snackbar v-model="calculatorStore.tooMuchDataError">
-        <span>
-            {{ $t('snackbar.too-much-data.message') }}
-        </span>
-        <template v-slot:actions>
-            <v-btn variant="text" @click="manage()" color="secondary">
-                {{ $t('snackbar.too-much-data.manage') }}
-            </v-btn>
-            <v-btn color="pink" variant="text" @click="calculatorStore.tooMuchDataError = false">
-                {{ $t('snackbar.close') }}
-            </v-btn>
-        </template>
-    </v-snackbar>
+  <v-snackbar v-model="calculatorStore.tooMuchDataError">
+    <span>
+      {{ $t('snackbar.too-much-data.message') }}
+    </span>
+    <template #actions>
+      <v-btn
+        variant="text"
+        color="secondary"
+        @click="manage()"
+      >
+        {{ $t('snackbar.too-much-data.manage') }}
+      </v-btn>
+      <v-btn
+        color="pink"
+        variant="text"
+        @click="calculatorStore.tooMuchDataError = false"
+      >
+        {{ $t('snackbar.close') }}
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 <script lang="ts">

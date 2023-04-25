@@ -1,49 +1,75 @@
 <template>
-    <div class="text-center">
-        <v-dialog v-model="dialog" width="auto">
-            <template v-slot:activator="{ props }" v-if="calculatorStore.notConnectedError">
-                <v-snackbar v-model="calculatorStore.notConnectedError">
-                    <span>
-                        {{ $t('snackbar.connect-calculator.calculator-not-connected') }}
-                    </span>
-                    <template v-slot:actions>
-                        <v-btn color="secondary" variant="text" v-bind="props">
-                            {{ $t('snackbar.connect-calculator.detect-calculator') }}
-                        </v-btn>
-                        <v-btn color="pink" variant="text" @click="calculatorStore.notConnectedError = false">
-                            {{ $t('snackbar.close') }}
-                        </v-btn>
-                    </template>
-                </v-snackbar>
-            </template>
+  <div class="text-center">
+    <v-dialog
+      v-model="dialog"
+      width="auto"
+    >
+      <template
+        v-if="calculatorStore.notConnectedError"
+        #activator="{ props }"
+      >
+        <v-snackbar v-model="calculatorStore.notConnectedError">
+          <span>
+            {{ $t('snackbar.connect-calculator.calculator-not-connected') }}
+          </span>
+          <template #actions>
+            <v-btn
+              color="secondary"
+              variant="text"
+              v-bind="props"
+            >
+              {{ $t('snackbar.connect-calculator.detect-calculator') }}
+            </v-btn>
+            <v-btn
+              color="pink"
+              variant="text"
+              @click="calculatorStore.notConnectedError = false"
+            >
+              {{ $t('snackbar.close') }}
+            </v-btn>
+          </template>
+        </v-snackbar>
+      </template>
 
-            <v-card>
-                <div v-if="webUSB">
-                    <v-card-text>
-                        <!-- TODO: Link to driver installation page -->
-                        {{ $t('snackbar.connect-calculator.dialog-details') }}
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <ConnectCalculator>
-                            <v-btn color="primary">{{ $t('snackbar.connect-calculator.detect-calculator') }}</v-btn>
-                        </ConnectCalculator>
-                        <v-btn color="" @click="dialog = false">{{ $t('snackbar.close') }}</v-btn>
-                    </v-card-actions>
-                </div>
-                <div v-else>
-                    <WebUSBNotSupported />
-                    <v-card-actions>
-                        <v-btn color="primary" block @click="dialog = false">{{ $t('snackbar.close') }}</v-btn>
-                    </v-card-actions>
-                </div>
-            </v-card>
-        </v-dialog>
-    </div>
+      <v-card>
+        <div v-if="webUSB">
+          <v-card-text>
+            <!-- TODO: Link to driver installation page -->
+            {{ $t('snackbar.connect-calculator.dialog-details') }}
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <ConnectCalculator>
+              <v-btn color="primary">
+                {{ $t('snackbar.connect-calculator.detect-calculator') }}
+              </v-btn>
+            </ConnectCalculator>
+            <v-btn
+              color=""
+              @click="dialog = false"
+            >
+              {{ $t('snackbar.close') }}
+            </v-btn>
+          </v-card-actions>
+        </div>
+        <div v-else>
+          <WebUSBNotSupported />
+          <v-card-actions>
+            <v-btn
+              color="primary"
+              block
+              @click="dialog = false"
+            >
+              {{ $t('snackbar.close') }}
+            </v-btn>
+          </v-card-actions>
+        </div>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script lang="ts">
-import { cp } from 'fs';
 import { defineComponent } from 'vue';
 import { useCalculatorStore } from '../../stores/calculator';
 import ConnectCalculator from '../ConnectCalculator.vue';
@@ -62,6 +88,16 @@ export default defineComponent({
             webUSB: 'usb' in navigator ? true : false,
         };
     },
+    computed: {
+        connected: {
+            get() {
+                return this.calculatorStore.connected;
+            },
+            set(value: boolean) {
+                this.calculatorStore.connected = value;
+            },
+        },
+    },
     watch: {
         connected: {
             handler(connected: boolean) {
@@ -71,16 +107,6 @@ export default defineComponent({
                 }
             },
             immediate: true,
-        },
-    },
-    computed: {
-        connected: {
-            get() {
-                return this.calculatorStore.connected;
-            },
-            set(value: boolean) {
-                this.calculatorStore.connected = value;
-            },
         },
     },
 });

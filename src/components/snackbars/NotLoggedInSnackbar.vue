@@ -1,14 +1,18 @@
 <template>
-    <v-snackbar v-model="api.NOT_LOGGED_IN_ERROR">
-        <span>
-            {{ $t('app.not-logged-in-snackbar') }}
-        </span>
-        <template v-slot:actions>
-            <v-btn color="pink" variant="text" @click="api.NOT_LOGGED_IN_ERROR = false">
-                {{ $t('snackbar.close') }}
-            </v-btn>
-        </template>
-    </v-snackbar>
+  <v-snackbar v-model="api.NOT_LOGGED_IN_ERROR">
+    <span>
+      {{ $t('app.not-logged-in-snackbar') }}
+    </span>
+    <template #actions>
+      <v-btn
+        color="pink"
+        variant="text"
+        @click="api.NOT_LOGGED_IN_ERROR = false"
+      >
+        {{ $t('snackbar.close') }}
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 <script lang="ts">

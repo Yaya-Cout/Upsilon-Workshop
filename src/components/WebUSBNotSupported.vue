@@ -1,7 +1,11 @@
 <template>
-    <div v-if="!webUSB">
-        <v-alert :title="$t('calculator.no-webusb')" :text="$t('calculator.no-webusb-text')" type="error"></v-alert>
-    </div>
+  <div v-if="!webUSB">
+    <v-alert
+      :title="$t('calculator.no-webusb')"
+      :text="$t('calculator.no-webusb-text')"
+      type="error"
+    />
+  </div>
 </template>
 
 <script lang="ts">

@@ -1,14 +1,18 @@
 <template>
-    <v-snackbar v-model="globalStore.error">
-        <span>
-            {{ $t('snackbar.generic-error.message') }}
-        </span>
-        <template v-slot:actions>
-            <v-btn color="pink" variant="text" @click="globalStore.error = false">
-                {{ $t('snackbar.close') }}
-            </v-btn>
-        </template>
-    </v-snackbar>
+  <v-snackbar v-model="globalStore.error">
+    <span>
+      {{ $t('snackbar.generic-error.message') }}
+    </span>
+    <template #actions>
+      <v-btn
+        color="pink"
+        variant="text"
+        @click="globalStore.error = false"
+      >
+        {{ $t('snackbar.close') }}
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 <script lang="ts">

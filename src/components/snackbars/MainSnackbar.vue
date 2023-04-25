@@ -1,10 +1,10 @@
 <!-- This component is used to import the other snackbars -->
 <template>
-    <ConnectCalculatorSnackbar />
-    <GenericErrorSnackbar />
-    <InstallationSuccessSnackbar />
-    <NotLoggedInSnackbar />
-    <TooMuchDataErrorSnackbar />
+  <ConnectCalculatorSnackbar />
+  <GenericErrorSnackbar />
+  <InstallationSuccessSnackbar />
+  <NotLoggedInSnackbar />
+  <TooMuchDataErrorSnackbar />
 </template>
 
 <script lang="ts">

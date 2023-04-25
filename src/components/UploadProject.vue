@@ -1,11 +1,11 @@
 <template>
-    <span @click="upload()">
-        <slot></slot>
-    </span>
+  <span @click="upload()">
+    <slot />
+  </span>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { useCalculatorStore } from '../stores/calculator';
 import { useGlobalStore } from '../stores/global';
 import { Project } from '../types';
