@@ -31,6 +31,7 @@
                 </div>
             </v-app-bar>
             <router-view></router-view>
+            <MainManager />
             <NotLoggedInSnackbar />
             <ConnectCalculatorSnackbar />
         </v-main>
@@ -40,9 +41,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAPIStore } from './stores/api';
-import { useCalculatorStore } from './stores/calculator';
 import ConnectCalculatorSnackbar from '@/components/snackbars/ConnectCalculatorSnackbar.vue';
 import NotLoggedInSnackbar from '@/components/snackbars/NotLoggedInSnackbar.vue';
+import MainManager from './components/manager/MainManager.vue';
 
 export default defineComponent({
     name: 'App',
@@ -50,43 +51,16 @@ export default defineComponent({
     components: {
         ConnectCalculatorSnackbar,
         NotLoggedInSnackbar,
+        MainManager
     },
     data() {
         return {
             api: useAPIStore().api,
-            calculatorStore: useCalculatorStore(),
-            calculator: useCalculatorStore().calculator,
         };
-    },
-    mounted() {
-        if ("usb" in navigator) {
-            this.calculator.autoConnect(this.connectedHandler);
-            const _this = this;
-            navigator.usb.addEventListener("disconnect", function (e: any) {
-                _this.calculator.onUnexpectedDisconnect(e, function () {
-                    _this.connected = false;
-                    _this.calculator.autoConnect(_this.connectedHandler);
-                });
-            });
-        }
-    },
-    methods: {
-        connectedHandler() {
-            this.connected = true;
-        },
-    },
-    computed: {
-        connected: {
-            get() {
-                return this.calculatorStore.connected;
-            },
-            set(value: boolean) {
-                this.calculatorStore.connected = value;
-            },
-        },
     },
 });
 </script>
+
 <style>
 .v-main {
     background-image: url('./assets/background_light.webp') !important;
