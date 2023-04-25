@@ -35,6 +35,11 @@
       "detect-calculator": "Detect calculator",
       "dialog-details": "You need to connect your calculator to use this feature. Click on the button below to detect your calculator."
     },
+    "too-much-data": {
+      "message": "Too much data on the calculator",
+      "manage": "Manage scripts"
+    },
+    "installation-success": "Installation successful",
     "close": "Close"
   },
   "app": {

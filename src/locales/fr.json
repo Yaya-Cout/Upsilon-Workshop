@@ -35,6 +35,11 @@
       "detect-calculator": "Détecter la calculatrice",
       "dialog-details": "Vous devez connecter votre calculatrice à votre ordinateur pour pouvoir utiliser cette fonctionnalité. Appuyez sur le bouton de connexion ci-dessous pour connecter votre calculatrice."
     },
+    "too-much-data": {
+      "message": "Trop de données sur la calculatrice",
+      "manage": "Gérer les scripts"
+    },
+    "installation-success": "Installation réussie",
     "close": "Fermer"
   },
   "app": {
