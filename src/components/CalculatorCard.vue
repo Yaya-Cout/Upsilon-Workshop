@@ -34,7 +34,6 @@
 </template>
 
 <script lang="ts">
-import { cp } from 'fs';
 import { defineComponent } from 'vue';
 export default defineComponent({
     props: {
@@ -77,6 +76,7 @@ export default defineComponent({
             if (this.$props.storage && this.$props.storage.records) {
                 for (let i = 0; i < this.$props.storage.records.length; i++) {
                     if (this.$props.storage.records[i].data) {
+                        usedSize += this.$props.storage.records[i].data.size;
                     } else if (this.$props.storage.records[i].code) {
                         usedSize += this.$props.storage.records[i].code.length;
                     } else {
