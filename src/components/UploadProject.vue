@@ -54,6 +54,7 @@ export default defineComponent({
             for (let file of project.files) {
                 let name = file.title.split('.').shift();
                 let type = file.title.split('.').pop();
+                // TODO: Prevent duplicate script names.
                 storage.records.push({
                     name: name,
                     type: type,

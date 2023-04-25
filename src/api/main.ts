@@ -44,7 +44,7 @@ export default class API {
             throw new Error("Invalid credentials");
         }
 
-        let json = await response.json()
+        const json = await response.json()
 
         if (json["token"] === undefined) {
             throw new Error("Token not found")
@@ -67,10 +67,14 @@ export default class API {
         }
 
         // Invalidate the token on the server
-        await this._request("api/auth/logout/", "POST", {}, 204)
+        const request = this._request("api/auth/logout/", "POST", {}, 204)
 
         // Remove the token
         this.setToken("")
+
+        // Await the request
+        await request
+
         return true;
     }
 
@@ -124,7 +128,7 @@ export default class API {
             throw new Error("Not logged in");
         }
 
-        let payload = {
+        const payload = {
             method: method,
             headers: {
                 "Content-Type": "application/json",
@@ -140,7 +144,7 @@ export default class API {
 
         const response = await fetch(this.BASE_URL + endpoint, payload)
 
-        if (response.status !== expectedStatus) {
+        if (response.status !== expectedStatus && expectedStatus !== 0) {
             throw new Error("API request failed");
         }
 
@@ -160,17 +164,17 @@ export default class API {
     async getProjects(
         query: string = "",
     ): Promise<Project[]> {
-        let response = await this._request(
+        const response = await this._request(
             "scripts/" + (query !== "" ? "?search=" + query : ""),
             "GET", {}, 200, false
         )
 
         // Convert the response to a list of projects
-        let projects: Project[] = []
-        for (let project of response.results) {
+        const projects: Project[] = []
+        for (const project of response.results) {
             // Convert the files
-            let files: Script[] = []
-            for (let file of project["files"]) {
+            const files: Script[] = []
+            for (const file of project["files"]) {
                 files.push({
                     title: file["name"],
                     content: file["content"],
@@ -199,11 +203,11 @@ export default class API {
      * @throws {Error} - If the project does not exist
      */
     async getProject(uuid: string): Promise<Project> {
-        let response = await this._request("scripts/" + uuid + "/", "GET", {}, 200, false)
+        const response = await this._request("scripts/" + uuid + "/", "GET", {}, 200, false)
 
         // Convert the files
-        let files: Script[] = []
-        for (let file of response["files"]) {
+        const files: Script[] = []
+        for (const file of response["files"]) {
             files.push({
                 title: file["name"],
                 content: file["content"],
@@ -211,7 +215,7 @@ export default class API {
         }
 
         // Convert the response to a project
-        let project: Project = {
+        const project: Project = {
             title: response["name"],
             // TODO: Get the rating (requires a new field in the API or a
             // computation on the client)
@@ -234,8 +238,8 @@ export default class API {
      */
     async createProject(project: Project): Promise<string> {
         // Convert the files
-        let files: object[] = []
-        for (let file of project.files) {
+        const files: object[] = []
+        for (const file of project.files) {
             files.push({
                 name: file.title,
                 content: file.content,
@@ -243,7 +247,7 @@ export default class API {
         }
 
         // Create the project
-        let response = await this._request("scripts/", "POST", {
+        const response = await this._request("scripts/", "POST", {
             name: project.title,
             description: project.description,
             files: files,
@@ -289,16 +293,31 @@ export default class API {
      * @param {string} username - The username of the user
      * @param {string} password - The password of the user
      * @param {string} email - The email of the user
-     * @returns {Promise} - A promise that resolves to the username
+     * @returns {Promise} - A promise that resolves to request status (boolean)
+     *                      and response (json)
      * @throws {Error} - If the username is already taken
      */
-    async register(username: string, password: string, email: string): Promise<string> {
+    async register(username: string, password: string, email: string): Promise<{ success: boolean, response: object }> {
         const response = await this._request("register/", "POST", {
             username: username,
             password: password,
             email: email,
-        }, 201, false)
+        }, 0, false)
 
-        return response["username"]
+        // Check if the request was successful
+        if (response === undefined) {
+            throw new Error("API request failed");
+        }
+
+        if (!response["username"] || response["username"] !== username) {
+            return {
+                success: false,
+                response: response,
+            }
+        }
+        return {
+            success: true,
+            response: response,
+        }
     }
 }

@@ -61,6 +61,12 @@
     "generic-error": {
       "message": "Une erreur innatendue est survenue"
     },
+    "account-created": {
+      "message": "Compte créé avec succès"
+    },
+    "username-taken": {
+      "message": "Nom d'utilisateur déjà pris"
+    },
     "installation-success": "Installation réussie",
     "close": "Fermer"
   },

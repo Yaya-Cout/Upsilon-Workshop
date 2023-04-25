@@ -62,6 +62,12 @@
     "generic-error": {
       "message": "An unexpected error occurred"
     },
+    "account-created": {
+      "message": "Account created successfully"
+    },
+    "username-taken": {
+      "message": "Username already taken"
+    },
     "installation-success": "Installation successful",
     "close": "Close"
   },

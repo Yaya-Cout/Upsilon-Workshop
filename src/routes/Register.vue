@@ -94,7 +94,6 @@ export default defineComponent({
         (v: string) => !!v || this.$t('register.username-required-error'),
         (v: string) => /^[a-zA-Z0-9@+-]+$/.test(v) || this.$t('register.username-invalid-error'),
         (v: string) => v.length <= 150 || this.$t('register.username-too-long-error'),
-        // TODO: Check if username is already taken
       ],
       passwordRules: [
         (v: string) => !!v || this.$t('register.password-required-error'),
@@ -122,19 +121,24 @@ export default defineComponent({
         return
       }
 
-      await this.api.register(this.username, this.password, this.email)
-        .then(this.registrationSuccess)
-        .catch(this.registrationFailed);
-
+      let { success, response } = await this.api.register(this.username, this.password, this.email).catch(this.registrationFailed)
+      if (!success) {
+        this.registrationFailed(response)
+      } else {
+        this.registrationSuccess()
+      }
       this.loading = false
     },
     registrationSuccess() {
-      // TODO: Use snackbar to show success message
+      this.globalStore.accountCreated = true;
       this.$router.push({ name: 'login' })
     },
-    registrationFailed() {
-      // TODO: Handle errors
-      this.snackbar = true
+    registrationFailed(response: any) {
+      if (response["username"] && response["username"][0] === "A user with that username already exists.") {
+        this.globalStore.usernameTaken = true;
+      } else {
+        this.globalStore.error = true;
+      }
     }
   }
 });
