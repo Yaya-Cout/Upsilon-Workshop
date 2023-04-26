@@ -19,23 +19,26 @@
 
 import { defineComponent } from 'vue';
 import { useAPIStore } from '../stores/api';
+import { useGlobalStore } from '../stores/global';
 import ProjectPreview from '../components/ProjectPreview.vue';
+import { Project } from '../types';
 
 export default defineComponent({
-    name: 'HomePage',
-    components: { ProjectPreview }
-    , data() {
-        return {
-            projects: [],
-            api: useAPIStore().api
-        }
-    },
-    async mounted() {
-        this.projects = await this.api.getProjects()
-    },
+  name: 'HomePage',
+  components: { ProjectPreview },
+  data() {
+    return {
+      projects: [] as Project[],
+      api: useAPIStore().api,
+      globalStore: useGlobalStore(),
+    }
+  },
+  async mounted() {
+    this.globalStore.progress = true;
+    this.projects = await this.api.getProjects()
+    this.globalStore.progress = false;
+  },
 });
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

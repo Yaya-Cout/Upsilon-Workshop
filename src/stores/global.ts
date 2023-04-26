@@ -8,5 +8,7 @@ export const useGlobalStore = defineStore('global', {
     accountCreated: false,
     // True when the username is already taken
     usernameTaken: false,
+    // Show the global progress bar (boolean or number between 0 and 100)
+    progress: false as boolean | number,
   }),
 })

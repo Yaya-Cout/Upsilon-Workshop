@@ -83,32 +83,35 @@ import EditProjectDialog from '../components/EditProjectDialog.vue';
 import MonacoEditor from '../components/MonacoEditor.vue';
 import SimulatorView from '../components/SimulatorView.vue';
 import { useAPIStore } from '../stores/api';
+import { useGlobalStore } from '../stores/global';
 import { Project } from '../types';
 
 export default defineComponent({
-    name: 'EditorPage',
-    components: { MonacoEditor, SimulatorView, DeviceInterface, EditProjectDialog },
-    data() {
-        return {
-            tab: null,
-            project: null as Project | null,
-            api: useAPIStore().api,
-            dialog: false,
-        };
+  name: 'EditorPage',
+  components: { MonacoEditor, SimulatorView, DeviceInterface, EditProjectDialog },
+  data() {
+    return {
+      tab: null,
+      project: null as Project | null,
+      api: useAPIStore().api,
+      globalStore: useGlobalStore(),
+      dialog: false,
+    };
+  },
+  async mounted() {
+    this.globalStore.progress = true;
+    this.project = await this.api.getProject(this.$route.params.uuid);
+    this.globalStore.progress = false;
+  },
+  methods: {
+    onRecordSelect(record: any) {
+      if (record.type === 'py') {
+        this.project?.files.push({
+          title: record.name + '.py',
+          content: record.code,
+        });
+      }
     },
-    async mounted() {
-        this.project = await this.api.getProject(this.$route.params.uuid);
-    },
-    methods: {
-        launch() {},
-        onRecordSelect(record: any) {
-            if (record.type === 'py') {
-                this.project?.files.push({
-                    title: record.name + '.py',
-                    content: record.code,
-                });
-            }
-        },
-    },
+  },
 });
 </script>

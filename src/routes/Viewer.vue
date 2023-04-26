@@ -1,11 +1,5 @@
 <template>
   <div id="viewer-page">
-    <v-progress-linear
-      :active="loading"
-      :indeterminate="loading"
-      bottom
-      color="deep-purple-accent-4"
-    />
     <v-row>
       <v-col>
         <h1>{{ project?.title }}</h1>
@@ -29,6 +23,7 @@ import { defineComponent } from 'vue';
 import MarkdownView from '../components/MarkdownView.vue';
 import SimulatorView from '../components/SimulatorView.vue';
 import { useAPIStore } from '../stores/api';
+import { useGlobalStore } from '../stores/global';
 import { Project } from '../types';
 import UploadProject from '../components/UploadProject.vue';
 
@@ -43,12 +38,14 @@ export default defineComponent({
         return {
             project: null as Project | null,
             api: useAPIStore().api,
-            loading: true,
+            globalStore: useGlobalStore(),
+            uuid: this.$route.params.uuid as string,
         };
     },
     async mounted() {
-        this.project = await this.api.getProject(this.$route.params.uuid);
-        this.loading = false;
+        this.globalStore.progress = true;
+        this.project = await this.api.getProject(this.uuid);
+        this.globalStore.progress = false;
     },
 });
 </script>

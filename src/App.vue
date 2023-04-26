@@ -2,6 +2,7 @@
   <v-app>
     <v-main>
       <v-app-bar>
+        <ProgressbarComponent />
         <v-app-bar-title>
           <router-link
             to="/"
@@ -66,32 +67,34 @@ import { defineComponent } from 'vue';
 import { useAPIStore } from './stores/api';
 import MainManager from './components/manager/MainManager.vue';
 import MainSnackbar from './components/snackbars/MainSnackbar.vue';
+import ProgressbarComponent from './components/ProgressbarComponent.vue';
 
 export default defineComponent({
-    name: 'App',
+  name: 'App',
 
-    components: {
-        MainManager,
-        MainSnackbar
-    },
-    data() {
-        return {
-            api: useAPIStore().api,
-        };
-    },
+  components: {
+    MainManager,
+    MainSnackbar,
+    ProgressbarComponent
+  },
+  data() {
+    return {
+      api: useAPIStore().api,
+    };
+  },
 });
 </script>
 
 <style>
 .v-main {
-    background-image: url('./assets/background_light.webp') !important;
-    background-size: cover;
+  background-image: url('./assets/background_light.webp') !important;
+  background-size: cover;
 }
 </style>
 
 <style scoped>
 .home-link {
-    color: var(--v-primary-base);
-    text-decoration: none;
+  color: var(--v-primary-base);
+  text-decoration: none;
 }
 </style>

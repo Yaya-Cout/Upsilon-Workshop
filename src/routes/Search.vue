@@ -4,9 +4,7 @@
       Search
     </h1>
     <v-sheet class="pa-4">
-      <v-col
-        class="v-col-xs-12 v-col-lg-8 v-col-xl-6 v-col-sm-10 offset-xs-0 offset-sm-1 offset-lg-2 offset-xl-3"
-      >
+      <v-col class="v-col-xs-12 v-col-lg-8 v-col-xl-6 v-col-sm-10 offset-xs-0 offset-sm-1 offset-lg-2 offset-xl-3">
         <v-text-field
           v-model="query"
           variant="solo"
@@ -42,7 +40,7 @@
 
         <v-row>
           <ProjectPreview
-            v-for="project in projects.slice(0,50)"
+            v-for="project in projects.slice(0, 50)"
             :key="project.uuid"
             :project="project"
           />
@@ -55,41 +53,52 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAPIStore } from '../stores/api';
+import { useGlobalStore } from '../stores/global';
 import { Project } from '../types';
 import ProjectPreview from '../components/ProjectPreview.vue';
 
 export default defineComponent({
-    name: "SearchPage",
-    components: { ProjectPreview },
-    data() {
-        return {
-            projects: [] as Project[],
-            api: useAPIStore().api,
-            timeout: null as any,
-            debouncedQuery: '' as string
-        }
-    },
-    computed: {
-        query: {
-            get() {
-                return this.debouncedQuery;
-            },
-            set(value: string) {
-                clearTimeout(this.timeout);
-                this.timeout = setTimeout(() => {
-                    this.debouncedQuery = value;
-                }, 500);
-            }
-        }
-    },
-
-    watch: {
-        debouncedQuery: async function (newQuery: string) {
-            this.projects = await this.api.getProjects(newQuery)
-        }
-    },
-    async mounted(){
-        this.projects = await this.api.getProjects()
+  name: "SearchPage",
+  components: { ProjectPreview },
+  data() {
+    return {
+      projects: [] as Project[],
+      api: useAPIStore().api,
+      globalStore: useGlobalStore(),
+      timeout: null as any,
+      debouncedQuery: '' as string,
     }
+  },
+  computed: {
+    query: {
+      get() {
+        return this.debouncedQuery;
+      },
+      set(value: string) {
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          this.debouncedQuery = value;
+        }, 500);
+      }
+    }
+  },
+
+  watch: {
+    debouncedQuery: async function (newQuery: string) {
+      this.globalStore.progress = true;
+      // TODO: Pagination
+      // TODO: No results
+      this.projects = await this.api.getProjects(newQuery)
+      // If the query is the same as the one we just searched for, we can stop the loading animation
+      if (this.debouncedQuery === this.query) {
+        this.globalStore.progress = false;
+      }
+    }
+  },
+  async mounted() {
+    this.globalStore.progress = true;
+    this.projects = await this.api.getProjects()
+    this.globalStore.progress = false;
+  }
 });
 </script>
