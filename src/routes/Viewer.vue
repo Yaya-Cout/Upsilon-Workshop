@@ -3,7 +3,7 @@
     <v-row>
       <v-col>
         <h1>{{ project?.title }}</h1>
-        <v-btn :to="'/edit/' + project?.uuid">
+        <v-btn :to="'/edit/' + uuid">
           Edit
         </v-btn>
         <UploadProject :project="project">
