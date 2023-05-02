@@ -14,7 +14,9 @@ export default defineConfig({
 	base: process.env.BASE_URL || "/",
 	plugins: [
 		//@ts-ignore
-		monacoEditorPlugin.default({}),
+		monacoEditorPlugin.default({
+			languages: ['python']
+		}),
 		vue(),
 		vuetify({ autoImport: true }),
 		VueI18nPlugin({

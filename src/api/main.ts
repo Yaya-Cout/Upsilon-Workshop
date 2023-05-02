@@ -289,7 +289,36 @@ export default class API {
         })
     }
 
-    /* Register a user on the API
+    /*
+     * Update a project on the API
+     * @param {Project} project - The project to update
+     * @returns {Promise} - A promise that resolves to the response
+     * @throws {Error} - If an error occurred
+     */
+    async updateProject(project: Project): Promise<object> {
+        // Convert the files
+        const files: object[] = []
+        for (const file of project.files) {
+            files.push({
+                name: file.title,
+                content: file.content,
+            })
+        }
+
+        // Update the project
+        const response = await this._request("scripts/" + project.uuid + "/", "PUT", {
+            name: project.title,
+            description: project.description,
+            files: files,
+            is_public: project.isPublic,
+            language: project.language,
+        }, 200, true)
+
+        return response
+    }
+
+    /*
+     * Register a user on the API
      * @param {string} username - The username of the user
      * @param {string} password - The password of the user
      * @param {string} email - The email of the user

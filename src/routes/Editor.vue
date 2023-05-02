@@ -69,7 +69,7 @@
           style="display: flex; flex-direction: column; flex: 1"
           class="bg-background elevation-3 rounded-lg mx-4 pa-1"
         >
-          <MonacoEditor :scripts="project?.files ?? []" />
+          <MonacoEditor :project="project" />
         </div>
       </v-row>
     </v-container>
@@ -115,3 +115,5 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped></style>

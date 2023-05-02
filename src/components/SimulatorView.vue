@@ -2,7 +2,7 @@
   <div>
     <!-- Using an iframe makes it so that all simulator-related javascript is unloaded as soon as the user leaves the page. -->
     <!-- This prevents tons of useless javascript being shipped when it's not necessary, and it's better for performance on the rest of the site. -->
-    <!-- I haven't yet found an easier way to acheive this. -->
+    <!-- I haven't yet found an easier way to achieve this. -->
     <iframe
       id="simulator-iframe"
       :src="base_url + 'simulator/simulator.html'"

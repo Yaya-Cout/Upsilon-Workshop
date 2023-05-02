@@ -61,7 +61,7 @@
   </div>
 </template>
 <script lang="ts">
-import Numworks from 'upsilon.js';
+import { useCalculatorStore } from '../stores/calculator';
 import { defineComponent, PropType } from 'vue';
 import { Script } from '../types';
 
@@ -76,21 +76,22 @@ export default defineComponent({
     emits: ['record-select'],
     data() {
         return {
-            connected: false,
             showAll: false,
             storage: null,
-            calculator: new Numworks(),
             descriptor: '',
+            calculatorStore: useCalculatorStore(),
+            calculator: useCalculatorStore().calculator,
         };
     },
-    mounted() {
-        this.calculator.autoConnect(this.onConnect);
-        const _this = this;
-        // @ts-ignore
-        navigator.usb.addEventListener('disconnect', function (e: Event) {
-            _this.calculator.autoConnect(_this.onConnect);
-            _this.calculator.onUnexpectedDisconnect(e, _this.onDisconnect);
-        });
+    computed: {
+        connected: {
+            get() {
+                return this.calculatorStore.connected;
+            },
+            set(value: boolean) {
+                this.calculatorStore.connected = value;
+            },
+        },
     },
     methods: {
         onDisconnect() {
@@ -116,7 +117,7 @@ export default defineComponent({
             this.descriptor = 'Connected to ';
             if (platformInfo.magik == false) {
                 this.descriptor =
-                    "Can't get scritps from device. Check that the calculator is in the right mode for receiving scripts.";
+                    "Can't get scripts from device. Check that the calculator is in the right mode for receiving scripts.";
                 return;
             }
             if (

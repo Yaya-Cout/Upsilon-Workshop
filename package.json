@@ -19,7 +19,7 @@
     "eslint": "^8.39.0",
     "eslint-plugin-vue": "^9.11.0",
     "lodash": "^4.17.21",
-    "monaco-editor": "^0.34.0",
+    "monaco-editor": "^0.37.1",
     "pinia": "^2.0.33",
     "roboto-fontface": "*",
     "showdown": "^2.1.0",

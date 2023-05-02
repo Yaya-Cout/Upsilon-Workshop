@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <v-app-bar>
+      <v-app-bar elevation="5">
         <ProgressbarComponent />
         <v-app-bar-title>
           <router-link
