@@ -41,6 +41,7 @@ import * as monaco from 'monaco-editor';
 import { defineComponent, PropType } from 'vue';
 import { Script, Project } from '../types';
 import SaveProject from './SaveProject.vue';
+import cloneDeep from 'lodash/cloneDeep';
 
 // Those variables are declared there instead of in data because otherwise it causes endless loops.
 // TODO: Clear those variables when the component is destroyed
@@ -57,6 +58,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["run"],
   data() {
     return {
       tab: 0,
@@ -104,9 +106,19 @@ export default defineComponent({
       language: "python",
       automaticLayout: true,
     });
+    editor.onDidChangeModelContent(this.contentChanged);
     this.createModels();
   },
   methods: {
+    contentChanged() {
+      for (const model of models) {
+        for (var i = 0; i < this.scripts.length; i++) {
+          if (this.scripts[i].title === model.uri.path.substring(1)) {
+            this.project.files[i].content = model.getValue();
+          }
+        }
+      }
+    },
     createModels() {
       models = [];
       for (const script of this.scripts) {
@@ -124,13 +136,7 @@ export default defineComponent({
       editor.restoreViewState(states[tab]);
     },
     run() {
-      for (const model of models) {
-        for (var i = 0; i < this.scripts.length; i++) {
-          if (this.scripts[i].title === model.uri.path.substring(1)) {
-            this.scripts[i].content = model.getValue();
-          }
-        }
-      }
+      this.$emit("run");
     },
   }
 });

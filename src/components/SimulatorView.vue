@@ -24,13 +24,23 @@ export default defineComponent({
     data() {
         return {
             base_url: import.meta.env.BASE_URL,
+            last_scripts_empty: true
         };
     },
     watch: {
         scripts: {
             deep: true,
             handler() {
-                this.send();
+                if (this.scripts?.length === 0) {
+                    this.last_scripts_empty = true;
+                    return;
+                } else if (this.last_scripts_empty) {
+                    this.last_scripts_empty = false;
+                    this.send();
+                }
+                // If a project is already loaded, we don't update the simulator
+                // because it would cause the simulator to reload and lose its state.
+                // You should call send() from the parent component to force an update.
             },
         },
     },
@@ -54,7 +64,9 @@ export default defineComponent({
             );
         },
     },
+    expose: ['send'],
 });
+
 </script>
 
 <style scoped>

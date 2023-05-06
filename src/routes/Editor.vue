@@ -54,7 +54,10 @@
           </v-tabs>
           <v-window v-model="tab">
             <v-window-item value="simulator">
-              <SimulatorView :scripts="project?.files" />
+              <SimulatorView
+                ref="simulator"
+                :scripts="project?.files"
+              />
             </v-window-item>
 
             <v-window-item value="device">
@@ -69,7 +72,10 @@
           style="display: flex; flex-direction: column; flex: 1"
           class="bg-background elevation-3 rounded-lg mx-4 pa-1"
         >
-          <MonacoEditor :project="project" />
+          <MonacoEditor
+            :project="project"
+            @run="run"
+          />
         </div>
       </v-row>
     </v-container>
@@ -112,6 +118,13 @@ export default defineComponent({
         });
       }
     },
+    run() {
+      if (this.$refs.simulator && this.$refs.simulator.send) {
+        this.$refs.simulator.send();
+      } else {
+        console.error('Simulator component not found');
+      }
+    }
   },
 });
 </script>
