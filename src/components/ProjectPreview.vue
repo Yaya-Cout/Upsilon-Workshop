@@ -19,11 +19,26 @@
         <div class="elevation-10">
           <v-card-title class="pb-0">
             {{ project.title }}
+            <!-- TODO: Improve the lock icon -->
+            <v-icon
+              v-if="!project.isPublic"
+              small
+            >
+              mdi-lock
+            </v-icon>
           </v-card-title>
           <v-card-text class="py-0">
+            <v-icon small>
+              mdi-account
+            </v-icon>
             {{ project.author }}
           </v-card-text>
-          <v-card-subtitle>{{ project.description }}</v-card-subtitle>
+          <v-card-subtitle v-if="project.description">
+            <v-icon small>
+              mdi-image-text
+            </v-icon>
+            {{ project.description }}
+          </v-card-subtitle>
           <v-card-actions>
             <v-rating
               v-model="project.rating"
@@ -41,13 +56,13 @@ import { defineComponent, PropType } from 'vue';
 import { Project } from '../types';
 
 export default defineComponent({
-    name: 'ProjectPreview',
-    props: {
-        project: {
-            type: Object as PropType<Project>,
-            required: true
-        }
-    },
+  name: 'ProjectPreview',
+  props: {
+    project: {
+      type: Object as PropType<Project>,
+      required: true
+    }
+  },
 });
 </script>
 
