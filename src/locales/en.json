@@ -68,6 +68,9 @@
     "username-taken": {
       "message": "Username already taken"
     },
+    "script-saved": {
+      "message": "Script saved successfully"
+    },
     "installation-success": "Installation successful",
     "close": "Close"
   },

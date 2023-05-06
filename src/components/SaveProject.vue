@@ -8,6 +8,7 @@
 import { defineComponent, PropType } from 'vue';
 import { Project } from '../types';
 import { useAPIStore } from '../stores/api';
+import { useGlobalStore } from '../stores/global';
 
 export default defineComponent({
   props: {
@@ -19,11 +20,17 @@ export default defineComponent({
   data() {
     return {
       api: useAPIStore().api,
+      globalStore: useGlobalStore(),
     };
   },
   methods: {
     save() {
-      this.api.updateProject(this.project);
+      this.api.updateProject(this.project).then(() => {
+        this.globalStore.scriptSaved = true;
+      }).catch((error) => {
+        this.globalStore.error = true;
+        console.error(error);
+      });
     },
   },
 
