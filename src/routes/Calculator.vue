@@ -58,9 +58,9 @@
                 <v-btn
                   icon="mdi-content-save"
                   variant="text"
-                  :loading="savingScript"
-                  :disabled="savingScript"
-                  @click="saveScript(record.name, record.type)"
+                  :loading="savingScript[index]"
+                  :disabled="savingScript[index]"
+                  @click="saveScript(record.name, record.type, index)"
                 />
                 <v-btn
                   icon="mdi-pencil"
@@ -149,7 +149,7 @@ export default defineComponent({
             showAll: false,
             timeout: 3000,
             deleted: false as boolean,
-            savingScript: false as boolean,
+            savingScript: [] as boolean[],
             scriptSaved: false as boolean,
             scriptSavedName: "",
             scriptSavedId: "" as string,
@@ -200,6 +200,7 @@ export default defineComponent({
         reloadScripts() {
             this.calculator.backupStorage().then((storage: any) => {
                 this.storage = storage;
+                this.savingScript = new Array(this.storage.records.length).fill(false);
             });
         },
         async deleteScript(name: string, type: string) {
@@ -216,8 +217,8 @@ export default defineComponent({
             this.deleted = true;
             this.reloadScripts();
         },
-        async saveScript(name: string, type: string) {
-            this.savingScript = true;
+        async saveScript(name: string, type: string, index: number) {
+            this.savingScript[index] = true;
 
             try {
                 let record = this.storage.records.find((record: any) => record.name == name && record.type == type);
@@ -241,7 +242,7 @@ export default defineComponent({
                 // TODO: Handle errors.
                 console.error(e);
             }
-            this.savingScript = false;
+            this.savingScript[index] = false;
         },
         openScript(id: string) {
             this.$router.push({ name: 'view', params: { uuid: id } });
