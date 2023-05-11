@@ -5,22 +5,23 @@ import { Project, Script } from "../types";
  *
  * @class API
  */
-export default class API {
+export default class API extends EventTarget {
     BASE_URL: string;
     NOT_LOGGED_IN_ERROR: boolean = false;
     LOGGED_IN: boolean = false;
+    USERNAME: string = "";
+    READY: boolean = false;
 
     /*
      * Initialize the API client
      */
     constructor() {
+        super()
+
         this.BASE_URL = "https://django-cdqivkhudi9mmk5gqgb0.apps.playground.napptive.dev/";
 
-        // Check if the user is logged in
-        if (this.isLoggedIn()) {
-            // TODO: Check if the token is valid using the API
-            this.LOGGED_IN = true;
-        }
+        // Update user info
+        this.updateUserInfo()
     }
 
     /*
@@ -60,6 +61,7 @@ export default class API {
      * @returns {Promise} - A promise that resolves to true if the logout was successful
      */
     async logout(): Promise<boolean> {
+        console.log("Logging out")
         // Check if the token is present
         if (!this.isLoggedIn()) {
             console.warn("Tried to log out when not logged in");
@@ -67,13 +69,16 @@ export default class API {
         }
 
         // Invalidate the token on the server
-        const request = this._request("api/auth/logout/", "POST", {}, 204)
+        try {
+            const request = await this._request("api/auth/logout/", "POST", {}, 204)
+        } catch (e) {
+            console.error("Failed to invalidate token on server");
+        }
 
         // Remove the token
         this.setToken("")
 
-        // Await the request
-        await request
+        this.LOGGED_IN = false;
 
         return true;
     }
@@ -122,7 +127,17 @@ export default class API {
      * @param {object} body - The body of the request
      * @returns {Promise} - A promise that resolves to the response
      */
-    async _request(endpoint: string, method: string, body: object, expectedStatus: number = 200, loginRequired: boolean = true): Promise<any> {
+    async _request(endpoint: string, method: string, body: object, expectedStatus: number = 200, loginRequired: boolean = true, skipReady: boolean = false): Promise<any> {
+        // If the login is required, wait for the API to be ready
+        if (!this.READY && !skipReady) {
+            // Wait for the event to be emitted
+            await new Promise((resolve) => {
+                this.addEventListener("ready", () => {
+                    resolve()
+                })
+            })
+        }
+
         if (!this.isLoggedIn() && loginRequired) {
             this.NOT_LOGGED_IN_ERROR = true;
             throw new Error("Not logged in");
@@ -348,5 +363,33 @@ export default class API {
             success: true,
             response: response,
         }
+    }
+
+    /*
+     * Update user information on the API
+     * @returns {Promise} - A promise that resolves when the request is done
+     */
+    async updateUserInfo(): Promise<void> {
+        if (!this.isLoggedIn()) {
+            this.LOGGED_IN = false
+            this.USERNAME = ""
+        } else {
+            try {
+                const response = await this._request("current_user/", "GET", {}, 200, false, true)
+                this.LOGGED_IN = true
+                this.USERNAME = response["username"]
+            } catch (e) {
+                this.logout()
+                // TODO: Better error handling
+            }
+        }
+
+        console.log("User info updated")
+
+        // Mark the API as initialized
+        this.READY = true
+
+        // Notify that the API is ready
+        this.dispatchEvent(new CustomEvent("ready"))
     }
 }

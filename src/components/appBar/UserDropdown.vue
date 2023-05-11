@@ -1,0 +1,64 @@
+<template>
+  <div class="text-center">
+    <v-menu
+      v-model="menu"
+      :close-on-content-click="true"
+    >
+      <template #activator="{ props }">
+        <v-btn
+          v-bind="props"
+          icon
+        >
+          <AvatarView :username="api.USERNAME" />
+        </v-btn>
+      </template>
+      <v-card min-width="300">
+        <v-list>
+          <v-list-item
+            :title="api.USERNAME"
+            :to="`/user/${api.USERNAME}`"
+          >
+            <template #prepend>
+              <AvatarView :username="api.USERNAME" />
+            </template>
+          </v-list-item>
+        </v-list>
+
+        <v-divider />
+
+        <v-list>
+          <DisconnectConfirmVue>
+            <v-list-item
+              prepend-icon="mdi-logout"
+              @click="null"
+            >
+              {{ $t('navbar.logout') }}
+            </v-list-item>
+          </DisconnectConfirmVue>
+        </v-list>
+      </v-card>
+    </v-menu>
+  </div>
+</template>
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { useAPIStore } from '../../stores/api';
+import AvatarView from '../AvatarView.vue';
+import DisconnectConfirmVue from '../DisconnectConfirm.vue';
+
+export default defineComponent({
+  components: {
+    AvatarView,
+    DisconnectConfirmVue
+  },
+  data() {
+    return {
+      api: useAPIStore().api,
+      menu: false
+    };
+  },
+  expose: ["displayMenu"]
+});
+</script>
+
+<style scoped></style>

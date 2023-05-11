@@ -41,7 +41,6 @@ import * as monaco from 'monaco-editor';
 import { defineComponent, PropType } from 'vue';
 import { Script, Project } from '../types';
 import SaveProject from './SaveProject.vue';
-import cloneDeep from 'lodash/cloneDeep';
 
 // Those variables are declared there instead of in data because otherwise it causes endless loops.
 // TODO: Clear those variables when the component is destroyed
