@@ -13,6 +13,7 @@ import Home from './routes/Home.vue';
 import Login from './routes/Login.vue';
 import Register from './routes/Register.vue';
 import Search from './routes/Search.vue';
+import User from './routes/User.vue';
 import Viewer from './routes/Viewer.vue';
 
 loadFonts()
@@ -28,6 +29,7 @@ const router = createRouter({
     { path: '/view/:uuid', component: Viewer, name: "view" },
     { path: '/login', component: Login, name: "login" },
     { path: '/register', component: Register, name: "register" },
+    { path: '/user/:username', component: User, name: "user" },
   ]
 })
 

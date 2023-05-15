@@ -1,4 +1,4 @@
-import { Project, Script } from "../types";
+import { Project, Script, User, Group } from "../types";
 
 /*
  * Class to interact with the Workshop API
@@ -392,4 +392,173 @@ export default class API extends EventTarget {
         // Notify that the API is ready
         this.dispatchEvent(new CustomEvent("ready"))
     }
+
+
+    /*
+     * Return a lasy-loaded user
+     * @param {string} username - The username of the user
+     * @returns {User} - The user
+     * @throws {Error} - If the user does not exist
+     */
+    getUser(username: string): User {
+        // Create the user object
+        const user: User = {
+            username: username,
+            groups: [],
+            projects: [],
+            collaborations: [],
+            ratings: [],
+            _loaded: false,
+            _loading: false,
+        }
+
+        // Create the proxy
+        return new Proxy(user, {
+            get: async (target, prop) => {
+                // Load the user if needed
+                if (!target._loaded && !target._loading) {
+                    target._loading = true
+
+                    // Get the user data
+                    const user = await this._getUser(target.username)
+
+                    // Update the user
+                    target._loaded = true
+                    target._loading = false
+                    target.groups = user.groups
+                    target.projects = user.projects
+                    target.collaborations = user.collaborations
+                    target.ratings = user.ratings
+                } else if (target._loading) {
+                    // Wait for the user to load
+                    await new Promise((resolve) => {
+                        const interval = setInterval(() => {
+                            if (target._loaded) {
+                                clearInterval(interval)
+                                resolve()
+                            }
+                        }, 100)
+                    })
+                }
+
+                // Return the property
+                return target[prop]
+            }
+        })
+    }
+
+
+    /*
+     * Get an user from the API (internal)
+     * @param {string} username - The username of the user
+     * @returns {Promise} - A promise that resolves to the user
+     * @throws {Error} - If the user does not exist
+     */
+    async _getUser(username: string): Promise<User> {
+        const response = await this._request("users/" + username + "/", "GET", {}, 200, false)
+
+        // Convert the response to a user
+        const user: User = {
+            username: response["username"],
+            groups: response["groups"],
+            projects: response["scripts"],
+            collaborations: response["collaborations"],
+            ratings: response["ratings"],
+        }
+
+        // Convert the groups
+        const groups: Group[] = []
+        for (const group of user.groups) {
+            const groupId = parseInt(group.split("/").at(-2))
+            groups.push(this.getGroup(groupId))
+        }
+
+        user.groups = groups
+
+        return user
+    }
+
+    /*
+     * Return a lasy-loaded group object
+     * @param {number} id - The ID of the group
+     * @returns {Proxy} - A proxy that fetches the group data from the API when
+     *                    needed
+     * @throws {Error} - If the group does not exist
+     */
+    getGroup(id: number): Group {
+        // Create the group object
+        const group: Group = {
+            id: id,
+            url: this.BASE_URL + "groups/" + id + "/",
+            name: "",
+            user_set: [],
+            _loaded: false,
+            _loading: false,
+        }
+
+        // Create the proxy
+        return new Proxy(group, {
+            get: async (target, prop) => {
+
+                // Load the group if needed
+                if (!target._loaded && !target._loading) {
+                    target._loading = true
+
+                    // Get the group data
+                    const group = await this._getGroup(target.id)
+
+                    // Update the group
+                    target._loaded = true
+                    target._loading = false
+                    target.name = group.name
+                    target.user_set = group.user_set
+                } else if (target._loading) {
+                    // Wait for the group to load
+                    await new Promise((resolve) => {
+                        const interval = setInterval(() => {
+                            if (target._loaded) {
+                                clearInterval(interval)
+                                resolve()
+                            }
+                        }, 100)
+                    })
+                }
+
+                // Return the property
+                return target[prop]
+            }
+        })
+    }
+
+    /*
+     * Get a group from the API (internal)
+     * @param {number} id - The ID of the group
+     * @returns {Promise} - A promise that resolves to the group
+     * @throws {Error} - If the group does not exist
+     * @private
+     */
+    async _getGroup(id: number): Promise<Group> {
+        const response = await this._request("groups/" + id + "/", "GET", {}, 200, false)
+
+        // Convert the user set
+        const userSet: User[] = []
+        for (const user of response["user_set"]) {
+            const username = user.split("/").at(-2)
+            userSet.push(this.getUser(username))
+        }
+
+        // Convert the response to a group
+        const group: Group = {
+            id: response["url"].split("/").at(-2),
+            url: response["url"],
+            name: response["name"],
+            user_set: userSet,
+            _loaded: true,
+            _loading: false,
+        }
+
+        return group
+    }
+
 }
+
