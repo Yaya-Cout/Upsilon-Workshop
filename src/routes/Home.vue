@@ -35,7 +35,12 @@ export default defineComponent({
   },
   async mounted() {
     this.globalStore.progress = true;
-    this.projects = await this.api.getProjects()
+    try {
+      this.projects = await this.api.getProjects()
+    } catch (e) {
+      console.error("Failed to fetch projects:", e)
+      this.globalStore.error = "snackbar.error.home.fetch-projects-failed"
+    }
     this.globalStore.progress = false;
   },
 });

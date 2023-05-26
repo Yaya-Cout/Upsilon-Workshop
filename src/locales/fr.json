@@ -58,8 +58,11 @@
       "message": "Trop de données sur la calculatrice",
       "manage": "Gérer les scripts"
     },
-    "generic-error": {
-      "message": "Une erreur innatendue est survenue"
+    "error": {
+      "generic-message": "Une erreur innatendue est survenue",
+      "home": {
+        "fetch-projects-failed": "Impossible de récupérer les projets"
+      }
     },
     "account-created": {
       "message": "Compte créé avec succès"

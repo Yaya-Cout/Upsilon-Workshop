@@ -59,8 +59,11 @@
       "message": "Too much data on the calculator",
       "manage": "Manage scripts"
     },
-    "generic-error": {
-      "message": "An unexpected error occurred"
+    "error": {
+      "generic-message": "An unexpected error occurred",
+      "home": {
+        "fetch-projects-failed": "Failed to fetch projects"
+      }
     },
     "account-created": {
       "message": "Account created successfully"

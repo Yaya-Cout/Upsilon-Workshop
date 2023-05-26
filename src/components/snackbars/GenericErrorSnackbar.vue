@@ -1,7 +1,7 @@
 <template>
   <v-snackbar v-model="globalStore.error">
     <span>
-      {{ $t('snackbar.generic-error.message') }}
+      {{ $t(lastMessage) }}
     </span>
     <template #actions>
       <v-btn
@@ -20,11 +20,25 @@ import { defineComponent } from 'vue';
 import { useGlobalStore } from '../../stores/global';
 
 export default defineComponent({
-    data() {
-        return {
-            globalStore: useGlobalStore(),
-        };
-    }
+  data() {
+      return {
+          globalStore: useGlobalStore(),
+          lastMessage: "",
+      };
+  },
+  watch: {
+    "globalStore.error": function() {
+      // If the error is a string, set the last message to that string
+      if (typeof this.globalStore.error === 'string') {
+        this.lastMessage = this.globalStore.error;
+      }
+
+      // If the value is true, set the last message to the default error message
+      if (this.globalStore.error === true) {
+        this.lastMessage = "snackbar.error.generic-message";
+      }
+    },
+  }
 });
 </script>
 

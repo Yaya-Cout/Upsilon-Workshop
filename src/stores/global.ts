@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 
 export const useGlobalStore = defineStore('global', {
   state: () => ({
-    // Generic error message
-    error: false,
+    // Error message (i18n string or boolean for generic error)
+    error: false as string | boolean,
     // True when the account was successfully created
     accountCreated: false,
     // True when the username is already taken
