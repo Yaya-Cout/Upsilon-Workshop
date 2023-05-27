@@ -20,6 +20,7 @@ export default defineConfig({
 		}),
 		checker({
 			typescript: true,
+			// vueTsc: true,
 		}),
 		vue(),
 		vuetify({ autoImport: true }),
