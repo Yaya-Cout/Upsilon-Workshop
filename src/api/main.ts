@@ -143,7 +143,7 @@ export default class API extends EventTarget {
         // If the login is required, wait for the API to be ready
         if (!this.READY && !skipReady) {
             // Wait for the event to be emitted
-            await new Promise((resolve) => {
+            await new Promise<void>((resolve) => {
                 this.addEventListener("ready", () => {
                     resolve()
                 })
@@ -159,7 +159,9 @@ export default class API extends EventTarget {
             method: method,
             headers: {
                 "Content-Type": "application/json",
-            }
+                "Authorization": "" as string,
+            },
+            body: undefined as any | undefined,
         }
         if (this.isLoggedIn()) {
             payload.headers["Authorization"] = "Token " + this.getToken()
@@ -217,6 +219,8 @@ export default class API extends EventTarget {
                 uuid: project["id"],
                 isPublic: project["is_public"],
                 language: project["language"],
+                _loaded: true,
+                _loading: false,
             })
         }
 
@@ -278,6 +282,11 @@ export default class API extends EventTarget {
                 content: content,
             }],
             isPublic: false,
+            rating: 3.5,
+            author: this.USERNAME,
+            _loaded: true,
+            _loading: false,
+            uuid: "",
         })
     }
 
@@ -394,15 +403,17 @@ export default class API extends EventTarget {
         // Convert the response to a user
         const user: User = {
             username: response["username"],
-            groups: response["groups"],
             projects: response["scripts"],
+            groups: [],
             collaborations: response["collaborations"],
             ratings: response["ratings"],
+            _loaded: true,
+            _loading: false,
         }
 
         // Convert the groups
         const groups: Group[] = []
-        for (const group of user.groups) {
+        for (const group of response["groups"]) {
             const groupId = parseInt(group.split("/").at(-2))
             groups.push(this.getGroup(groupId))
         }
@@ -495,6 +506,8 @@ export default class API extends EventTarget {
             uuid: response["id"],
             isPublic: response["is_public"],
             language: response["language"],
+            _loaded: true,
+            _loading: false,
         }
 
         return project
@@ -522,7 +535,7 @@ export default class API extends EventTarget {
                 // If not, check if the target is loading
                 if (target._loading) {
                     // Wait for the target to load
-                    await new Promise((resolve) => {
+                    await new Promise<void>((resolve) => {
                         const interval = setInterval(() => {
                             if (target._loaded) {
                                 clearInterval(interval)
@@ -539,6 +552,7 @@ export default class API extends EventTarget {
                 target._loading = true
 
                 // Call the function
+                // @ts-ignore - This have to be a valid function
                 const result = await this[func](...args)
 
                 // Store the result for every property
@@ -573,6 +587,8 @@ export default class API extends EventTarget {
         for (const prop of Object.keys(await obj)) {
             // Get the property
             const value = await obj[prop]
+            // @ts-ignore - This is a valid assignment, but TypeScript does not
+            //              recognize it
             objLoaded[prop] = await value
         }
 

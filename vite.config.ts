@@ -6,6 +6,7 @@ import monacoEditorPlugin from 'vite-plugin-monaco-editor';
 import path from "node:path";
 //@ts-ignore
 import { fileURLToPath } from "node:url";
+import checker from 'vite-plugin-checker'
 
 // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
 import vuetify from 'vite-plugin-vuetify';
@@ -16,6 +17,9 @@ export default defineConfig({
 		//@ts-ignore
 		monacoEditorPlugin.default({
 			languages: ['python']
+		}),
+		checker({
+			typescript: true,
 		}),
 		vue(),
 		vuetify({ autoImport: true }),
