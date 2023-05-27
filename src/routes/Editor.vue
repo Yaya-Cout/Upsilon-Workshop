@@ -14,7 +14,7 @@
         >
           <v-card>
             <v-card-title>
-              <h3>{{ project?.title }}</h3>
+              <h3>{{ project.title }}</h3>
             </v-card-title>
             <v-card-item>
               <v-chip
@@ -56,13 +56,13 @@
             <v-window-item value="simulator">
               <SimulatorView
                 ref="simulator"
-                :scripts="project?.files"
+                :scripts="project.files"
               />
             </v-window-item>
 
             <v-window-item value="device">
               <DeviceInterface
-                :scripts="project?.files"
+                :scripts="project.files"
                 @record-select="onRecordSelect"
               />
             </v-window-item>
@@ -98,7 +98,7 @@ export default defineComponent({
   data() {
     return {
       tab: null,
-      project: null as Project | null,
+      project: useAPIStore().api.EMPTY_PROJECT as Project,
       api: useAPIStore().api,
       globalStore: useGlobalStore(),
       dialog: false,
@@ -106,13 +106,13 @@ export default defineComponent({
   },
   async mounted() {
     this.globalStore.progress = true;
-    this.project = await this.api.getProject(this.$route.params.uuid);
+    this.project = await this.api.loadLazyLoadingObject(this.api.getProject(this.$route.params.uuid));
     this.globalStore.progress = false;
   },
   methods: {
     onRecordSelect(record: any) {
       if (record.type === 'py') {
-        this.project?.files.push({
+        this.project.files.push({
           title: record.name + '.py',
           content: record.code,
         });

@@ -2,17 +2,17 @@
   <div id="viewer-page">
     <v-row>
       <v-col>
-        <h1>{{ project?.title }}</h1>
+        <h1>{{ project.title }}</h1>
         <v-btn :to="'/edit/' + uuid">
           Edit
         </v-btn>
         <UploadProject :project="project">
           <v-btn>Upload to calculator</v-btn>
         </UploadProject>
-        <MarkdownView :content="project?.description" />
+        <MarkdownView :content="project.description" />
       </v-col>
       <v-col>
-        <SimulatorView :scripts="project?.files" />
+        <SimulatorView :scripts="project.files" />
       </v-col>
     </v-row>
   </div>
@@ -28,25 +28,25 @@ import { Project } from '../types';
 import UploadProject from '../components/UploadProject.vue';
 
 export default defineComponent({
-    name: 'ViewerPage',
-    components: {
-        SimulatorView,
-        MarkdownView,
-        UploadProject,
-    },
-    data() {
-        return {
-            project: null as Project | null,
-            api: useAPIStore().api,
-            globalStore: useGlobalStore(),
-            uuid: this.$route.params.uuid as string,
-        };
-    },
-    async mounted() {
-        this.globalStore.progress = true;
-        this.project = await this.api.getProject(this.uuid);
-        this.globalStore.progress = false;
-    },
+  name: 'ViewerPage',
+  components: {
+    SimulatorView,
+    MarkdownView,
+    UploadProject,
+  },
+  data() {
+    return {
+      project: useAPIStore().api.EMPTY_PROJECT as Project,
+      api: useAPIStore().api,
+      globalStore: useGlobalStore(),
+      uuid: this.$route.params.uuid as string,
+    };
+  },
+  async mounted() {
+    this.globalStore.progress = true;
+    this.project = await this.api.loadLazyLoadingObject(this.api.getProject(this.uuid));
+    this.globalStore.progress = false;
+  },
 });
 </script>
 

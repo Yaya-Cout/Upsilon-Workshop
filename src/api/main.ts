@@ -11,6 +11,18 @@ export default class API extends EventTarget {
     LOGGED_IN: boolean = false;
     USERNAME: string = "";
     READY: boolean = false;
+    EMPTY_PROJECT: Project = {
+        title: "",
+        rating: 0,
+        description: "",
+        author: "",
+        files: [],
+        uuid: "",
+        isPublic: false,
+        language: "",
+        _loaded: false,
+        _loading: false,
+    };
 
     /*
      * Initialize the API client
@@ -70,7 +82,7 @@ export default class API extends EventTarget {
 
         // Invalidate the token on the server
         try {
-            const request = await this._request("api/auth/logout/", "POST", {}, 204)
+            await this._request("api/auth/logout/", "POST", {}, 204)
         } catch (e) {
             console.error("Failed to invalidate token on server");
         }
@@ -209,41 +221,6 @@ export default class API extends EventTarget {
         }
 
         return projects
-    }
-
-    /*
-     * Get a project from the API
-     * @param {string} uuid - The UUID of the project
-     * @returns {Promise} - A promise that resolves to the project
-     * @throws {Error} - If the project does not exist
-     */
-    async getProject(uuid: string): Promise<Project> {
-        const response = await this._request("scripts/" + uuid + "/", "GET", {}, 200, false)
-
-        // Convert the files
-        const files: Script[] = []
-        for (const file of response["files"]) {
-            files.push({
-                title: file["name"],
-                content: file["content"],
-            })
-        }
-
-        // Convert the response to a project
-        const project: Project = {
-            title: response["name"],
-            // TODO: Get the rating (requires a new field in the API or a
-            // computation on the client)
-            rating: 3.5,
-            description: response["description"],
-            author: response["author"].split("/").slice(-2)[0],
-            files: files,
-            uuid: response["id"],
-            isPublic: response["is_public"],
-            language: response["language"],
-        }
-
-        return project
     }
 
     /*
@@ -401,50 +378,7 @@ export default class API extends EventTarget {
      * @throws {Error} - If the user does not exist
      */
     getUser(username: string): User {
-        // Create the user object
-        const user: User = {
-            username: username,
-            groups: [],
-            projects: [],
-            collaborations: [],
-            ratings: [],
-            _loaded: false,
-            _loading: false,
-        }
-
-        // Create the proxy
-        return new Proxy(user, {
-            get: async (target, prop) => {
-                // Load the user if needed
-                if (!target._loaded && !target._loading) {
-                    target._loading = true
-
-                    // Get the user data
-                    const user = await this._getUser(target.username)
-
-                    // Update the user
-                    target._loaded = true
-                    target._loading = false
-                    target.groups = user.groups
-                    target.projects = user.projects
-                    target.collaborations = user.collaborations
-                    target.ratings = user.ratings
-                } else if (target._loading) {
-                    // Wait for the user to load
-                    await new Promise((resolve) => {
-                        const interval = setInterval(() => {
-                            if (target._loaded) {
-                                clearInterval(interval)
-                                resolve()
-                            }
-                        }, 100)
-                    })
-                }
-
-                // Return the property
-                return target[prop]
-            }
-        })
+        return this.getLazy("_getUser", username)
     }
 
 
@@ -486,48 +420,7 @@ export default class API extends EventTarget {
      * @throws {Error} - If the group does not exist
      */
     getGroup(id: number): Group {
-        // Create the group object
-        const group: Group = {
-            id: id,
-            url: this.BASE_URL + "groups/" + id + "/",
-            name: "",
-            user_set: [],
-            _loaded: false,
-            _loading: false,
-        }
-
-        // Create the proxy
-        return new Proxy(group, {
-            get: async (target, prop) => {
-
-                // Load the group if needed
-                if (!target._loaded && !target._loading) {
-                    target._loading = true
-
-                    // Get the group data
-                    const group = await this._getGroup(target.id)
-
-                    // Update the group
-                    target._loaded = true
-                    target._loading = false
-                    target.name = group.name
-                    target.user_set = group.user_set
-                } else if (target._loading) {
-                    // Wait for the group to load
-                    await new Promise((resolve) => {
-                        const interval = setInterval(() => {
-                            if (target._loaded) {
-                                clearInterval(interval)
-                                resolve()
-                            }
-                        }, 100)
-                    })
-                }
-
-                // Return the property
-                return target[prop]
-            }
-        })
+        return this.getLazy("_getGroup", id)
     }
 
     /*
@@ -538,6 +431,7 @@ export default class API extends EventTarget {
      * @private
      */
     async _getGroup(id: number): Promise<Group> {
+        console.log(this)
         const response = await this._request("groups/" + id + "/", "GET", {}, 200, false)
 
         // Convert the user set
@@ -559,6 +453,133 @@ export default class API extends EventTarget {
 
         return group
     }
+
+    /*
+     * Return a lasy-loaded project object
+     * @param {uuid} uuid - The UUID of the project
+     * @returns {Proxy} - A proxy that fetches the project data from the API
+     *                    when needed
+     * @throws {Error} - If the project does not exist
+     */
+    getProject(uuid: string): Project {
+        return this.getLazy("_getProject", uuid)
+    }
+
+    /*
+     * Get a project from the API (internal)
+     * @param {string} uuid - The UUID of the project
+     * @returns {Promise} - A promise that resolves to the project
+     * @throws {Error} - If the project does not exist
+     */
+    async _getProject(uuid: string): Promise<Project> {
+        const response = await this._request("scripts/" + uuid + "/", "GET", {}, 200, false)
+
+        // Convert the files
+        const files: Script[] = []
+        for (const file of response["files"]) {
+            files.push({
+                title: file["name"],
+                content: file["content"],
+            })
+        }
+
+        // Convert the response to a project
+        const project: Project = {
+            title: response["name"],
+            // TODO: Get the rating (requires a new field in the API or a
+            // computation on the client)
+            rating: 3.5,
+            description: response["description"],
+            author: response["author"].split("/").slice(-2)[0],
+            files: files,
+            uuid: response["id"],
+            isPublic: response["is_public"],
+            language: response["language"],
+        }
+
+        return project
+    }
+
+    /*
+     * Return an object that is lasy-loaded from another function
+     * @param {string} func - The name of the function to call
+     * @param {...any} args - The arguments to pass to the function
+     * @returns {Proxy} - A proxy that calls the function when needed
+     */
+    getLazy(func: string, ...args: any[]): any {
+        // Create the proxy
+        return new Proxy({
+            _loaded: false,
+            _loading: false,
+        } as any, {
+            get: async (target, prop) => {
+                // Check if the target is loaded
+                if (target._loaded) {
+                    // Return the property
+                    return target[prop]
+                }
+
+                // If not, check if the target is loading
+                if (target._loading) {
+                    // Wait for the target to load
+                    await new Promise((resolve) => {
+                        const interval = setInterval(() => {
+                            if (target._loaded) {
+                                clearInterval(interval)
+                                resolve()
+                            }
+                        }, 100)
+                    })
+
+                    // Return the property
+                    return target[prop]
+                }
+
+                // If not, load the target
+                target._loading = true
+
+                // Call the function
+                const result = await this[func](...args)
+
+                // Store the result for every property
+                for (const prop of Object.keys(result)) {
+                    target[prop] = result[prop]
+                }
+
+                // Mark the target as loaded
+                target._loaded = true
+                target._loading = false
+
+                // Return the property
+                return target[prop]
+            }
+        })
+    }
+
+    /*
+     * Load a lazy-loaded object
+     * @param {Proxy} obj - The object to load
+     * @returns {Promise} - A promise that resolves when the object is loaded
+     */
+    async loadLazyLoadingObject(obj: any): Promise<any> {
+        // Wait for the object to load
+        const objLoaded = {}
+
+        // Force the object to load
+        await obj
+        await obj._loaded
+
+        // Iterate over each property
+        for (const prop of Object.keys(await obj)) {
+            // Get the property
+            const value = await obj[prop]
+            objLoaded[prop] = await value
+        }
+
+
+        return objLoaded
+    }
+
 
 }
 

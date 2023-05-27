@@ -67,7 +67,7 @@ export default defineComponent({
   computed: {
     scripts: {
       get(): Script[] {
-        return this.project?.files ?? [];
+        return this.project.files ?? [];
       },
       set(value: Script[]) {
         // TODO: Avoid using mutation

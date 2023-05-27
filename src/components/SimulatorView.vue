@@ -31,7 +31,7 @@ export default defineComponent({
         scripts: {
             deep: true,
             handler() {
-                if (this.scripts?.length === 0) {
+                if (this.scripts.length === 0) {
                     this.last_scripts_empty = true;
                     return;
                 } else if (this.last_scripts_empty) {
@@ -58,7 +58,7 @@ export default defineComponent({
                 'simulator-iframe'
             ) as HTMLIFrameElement;
             iframe.contentWindow?.postMessage(
-                this.scripts?.map((script) => {
+                this.scripts.map((script) => {
                     return { name: script.title, content: script.content };
                 })
             );

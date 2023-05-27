@@ -21,6 +21,11 @@ export type Project = {
     isPublic: boolean,
     // The language of the project (python, xcas, etc.)
     language: string,
+
+    // Internal field to know if the project is loaded or not
+    _loaded: boolean,
+    // Internal field to know if the project is loading or not
+    _loading: boolean,
 }
 
 // A script is a file in a project. It is composed of a title and a content.

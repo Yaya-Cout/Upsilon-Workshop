@@ -1,19 +1,43 @@
 <template>
   <div id="user-page">
-    <v-card class="user-card">
-      <v-card-title>
-        <AvatarView :username="username" />
-        <span class="ml-2">{{ username }}</span>
-      </v-card-title>
-      <v-card-text>
-        <v-list>
-          <v-list-item>
-            <v-list-item-title>Groups</v-list-item-title>
-            <v-list-item-subtitle>{{ groups }}</v-list-item-subtitle>
-          </v-list-item>
-        </v-list>
-      </v-card-text>
-    </v-card>
+    <v-container>
+      <v-row no-gutters>
+        <v-col class="user-col col-1">
+          <v-card>
+            <v-card-title>
+              <AvatarView :username="username" />
+              <span class="ml-2">{{ username }}</span>
+            </v-card-title>
+            <v-card-text>
+              <v-list>
+                <v-list-item>
+                  <v-list-item-title>Groups</v-list-item-title>
+                  <v-list-item-subtitle>{{ groups }}</v-list-item-subtitle>
+                </v-list-item>
+              </v-list>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col class="col-1">
+          <v-card>
+            <v-card-title>
+              <h3>Projects</h3>
+            </v-card-title>
+            <v-card-text>
+              <v-list>
+                <v-list-item
+                  v-for="project in userData?.projects"
+                  :key="project.uuid"
+                >
+                  <v-list-item-title>{{ project.title }}</v-list-item-title>
+                  <v-list-item-subtitle>{{ project.description }}</v-list-item-subtitle>
+                </v-list-item>
+              </v-list>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
@@ -61,18 +85,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#user-page {
-  /* Center vertically */
-  display: flex;
-  vertical-align: middle;
-  height: 100%;
+.user-col {
+  max-width: 400px;
 }
 
-.user-card {
-  width: 100%;
-  max-width: 400px;
-  height: fit-content;
-  margin-top: 16px;
-  margin-left: 16px;
+.col-1 {
+  margin: 16px;
 }
 </style>
