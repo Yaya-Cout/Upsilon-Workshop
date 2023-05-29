@@ -272,6 +272,9 @@ export default class API extends EventTarget {
             language = "python";
         }
 
+        // TODO: Remove the extension from the name and add a capital letter at
+        // the start of the name and set the title to that
+
         // Create the project
         return await this.createProject({
             title: name,
@@ -403,22 +406,32 @@ export default class API extends EventTarget {
         // Convert the response to a user
         const user: User = {
             username: response["username"],
-            projects: response["scripts"],
+            projects: [],
             groups: [],
-            collaborations: response["collaborations"],
+            collaborations: [],
             ratings: response["ratings"],
             _loaded: true,
             _loading: false,
         }
 
-        // Convert the groups
-        const groups: Group[] = []
-        for (const group of response["groups"]) {
-            const groupId = parseInt(group.split("/").at(-2))
-            groups.push(this.getGroup(groupId))
+        // Convert the projects
+        for (const project of response["scripts"]) {
+            const projectId = project.split("/").at(-2)
+            user.projects.push(this.getProject(projectId))
         }
 
-        user.groups = groups
+        // Convert the collaborations
+        for (const project of response["collaborations"]) {
+            const projectId = project.split("/").at(-2)
+            user.collaborations.push(this.getProject(projectId))
+        }
+
+
+        // Convert the groups
+        for (const group of response["groups"]) {
+            const groupId = parseInt(group.split("/").at(-2))
+            user.groups.push(this.getGroup(groupId))
+        }
 
         return user
     }

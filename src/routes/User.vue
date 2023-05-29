@@ -12,7 +12,13 @@
               <v-list>
                 <v-list-item>
                   <v-list-item-title>Groups</v-list-item-title>
-                  <v-list-item-subtitle>{{ groups }}</v-list-item-subtitle>
+                  <v-skeleton-loader
+                    :loading="!groups"
+                    type="text"
+                    width="100"
+                  >
+                    <v-list-item-subtitle>{{ groups }}</v-list-item-subtitle>
+                  </v-skeleton-loader>
                 </v-list-item>
               </v-list>
             </v-card-text>
@@ -25,13 +31,13 @@
             </v-card-title>
             <v-card-text>
               <v-list>
-                <v-list-item
-                  v-for="project in userData?.projects"
-                  :key="project.uuid"
-                >
-                  <v-list-item-title>{{ project.title }}</v-list-item-title>
-                  <v-list-item-subtitle>{{ project.description }}</v-list-item-subtitle>
-                </v-list-item>
+                <v-row class="mx-2 my-0">
+                  <ProjectPreviewVue
+                    v-for="project in projects"
+                    :key="project.uuid"
+                    :project="project"
+                  />
+                </v-row>
               </v-list>
             </v-card-text>
           </v-card>
@@ -43,21 +49,27 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { User } from '../types';
+import { User, Project } from '../types';
 import { useAPIStore } from '../stores/api';
 import AvatarView from '../components/AvatarView.vue';
+import ProjectPreviewVue from '../components/ProjectPreview.vue';
+import { VSkeletonLoader } from 'vuetify/lib/labs/components.mjs';
 
 export default defineComponent({
   name: 'UserPage',
   components: {
     AvatarView,
+    ProjectPreviewVue,
+    VSkeletonLoader
   },
   data() {
     return {
       api: useAPIStore().api,
       username: this.$route.params.username as string,
-      userData: null as User | null,
+      userData: null as User,
       groups: '',
+      // TODO: Factorize this
+      projects: [useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT] as Project[]
     }
   },
   watch: {
@@ -79,8 +91,29 @@ export default defineComponent({
     },
   },
   async mounted() {
-    this.userData = await this.api.getUser(this.username);
+    this.userData = await this.api.loadLazyLoadingObject(this.api.getUser(this.username));
+    let projects = [] as Project[];
+
+    // Iterate over the project and start loading them
+    for (const project of await this.userData.projects) {
+      this.api.loadLazyLoadingObject(project);
+      projects.push(this.api.EMPTY_PROJECT);
+      projects[projects.length - 1]._loading = true;
+    }
+    this.projects = projects;
+
+    let index = 0;
+    for (const project of await this.userData.projects) {
+      this.loadProject(project, index);
+      index++;
+    }
+
   },
+  methods: {
+    async loadProject(project: Project, index: number) {
+      this.projects[index] = await this.api.loadLazyLoadingObject(project);
+    }
+  }
 });
 </script>
 
