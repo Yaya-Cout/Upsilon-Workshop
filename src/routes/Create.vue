@@ -24,10 +24,28 @@
 
           <v-autocomplete
             v-model="language"
-            :items="['python']"
+            :items="languages"
             :label="$t('create.language')"
             :rules="languageRules"
-            prepend-inner-icon="mdi-translate"
+            clearable
+            item-title="name"
+            item-
+          >
+            <template #prepend-inner>
+              <img :src="languages.find(l => l.name === language)?.icon" height="24">
+            </template>
+            <template #item="{ props, item }">
+              <v-list-item
+                v-bind="props"
+                :prepend-avatar="item.raw.icon"
+                :title="item.title"
+              />
+            </template>
+          </v-autocomplete>
+
+          <v-switch
+            v-model="isPublic"
+            :label="$t('create.is-public')"
             clearable
           />
 
@@ -56,74 +74,79 @@ import { useAPIStore } from '../stores/api';
 import { Project, Script } from '../types';
 
 export default defineComponent({
-    name: 'CreatePage',
-    data() {
-        return {
-            name: '',
-            language: 'python',
-            nameRules: [
-                (v: string) => !!v || 'Name is required',
-                (v: string) => (v && v.length <= 100) || 'Project name must be less than 100 characters'
-            ],
-            languageRules: [
-                (v: string) => !!v || 'Language is required',
-              (v: string) => ['python', 'micropython-khicas', 'xcas-python-pow', 'xcas-python-xor', 'xcas', 'xcas-session'].includes(v) || 'Language must be one of the following: python, micropython-khicas, xcas-python-pow, xcas-python-xor, xcas, xcas-session'
-            ],
-            loading: false,
-            form: false,
-            api: useAPIStore().api,
-        }
-    },
-    methods: {
-        async create() {
-            this.loading = true
-            const { valid } = await this.$refs.createForm.validate()
-
-            if (!valid) {
-                this.loading = false
-                return
-            }
-
-            // Create empty project
-            const project: Project = {
-                title: this.name,
-                language: this.language,
-                files: [
-                  {
-                    title: this.name.toLowerCase()+'.py',
-                    content: '',
-                  }
-                ] as Script[],
-                description: '',
-                isPublic: false,
-                // Everything else is set to avoid type errors and is not used
-                rating: 0,
-                author: '',
-                uuid: '',
-                _loaded: false,
-                _loading: false,
-            }
-            try {
-              let id = await this.api.createProject(project)
-              this.$router.push({ name: 'view', params: { uuid: id } })
-            } catch (e) {
-              console.error(e)
-            }
-
-            this.loading = false
-        },
+  name: 'CreatePage',
+  data() {
+    return {
+      name: '',
+      language: 'python',
+      isPublic: false,
+      nameRules: [
+        (v: string) => !!v || 'Name is required',
+        (v: string) => (v && v.length <= 100) || 'Project name must be less than 100 characters'
+      ],
+      languageRules: [
+        (v: string) => !!v || 'Language is required',
+        (v: string) => ['python', 'micropython-khicas', 'xcas-python-pow', 'xcas-python-xor', 'xcas', 'xcas-session'].includes(v) || 'Language must be one of the following: python, micropython-khicas, xcas-python-pow, xcas-python-xor, xcas, xcas-session'
+      ],
+      languages: [
+        { name: "python", icon: "/assets/python.svg" },
+        { name: "xcas", icon: "/assets/xcas.svg" },
+      ],
+      loading: false,
+      form: false,
+      api: useAPIStore().api,
     }
+  },
+  methods: {
+    async create() {
+      this.loading = true
+      const { valid } = await this.$refs.createForm.validate()
+
+      if (!valid) {
+        this.loading = false
+        return
+      }
+
+      // Create empty project
+      const project: Project = {
+        title: this.name,
+        language: this.language,
+        files: [
+          {
+            title: this.name.toLowerCase() + '.py',
+            content: '',
+          }
+        ] as Script[],
+        description: '',
+        isPublic: this.isPublic,
+        // Everything else is set to avoid type errors and is not used
+        rating: 0,
+        author: '',
+        uuid: '',
+        _loaded: false,
+        _loading: false,
+      }
+      try {
+        let id = await this.api.createProject(project)
+        this.$router.push({ name: 'view', params: { uuid: id } })
+      } catch (e) {
+        console.error(e)
+      }
+
+      this.loading = false
+    },
+  }
 });
 </script>
 
 <style>
 #create-page {
-    display: flex;
-    vertical-align: middle;
-    height: 100%;
+  display: flex;
+  vertical-align: middle;
+  height: 100%;
 }
 
 #create-page>div {
-    margin: auto;
+  margin: auto;
 }
 </style>
