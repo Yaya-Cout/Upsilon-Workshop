@@ -79,5 +79,11 @@
   },
   "app": {
     "not-logged-in-snackbar": "You are not logged in"
+  },
+  "create": {
+    "title": "Create a new project",
+    "name": "Project name",
+    "language": "Language",
+    "create": "Create"
   }
 }

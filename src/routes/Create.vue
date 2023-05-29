@@ -1,0 +1,129 @@
+<template>
+  <div id="create-page">
+    <v-card
+      class="mx-auto px-6 py-8"
+      width="500"
+    >
+      <h1 class="text-center">
+        {{ $t('create.title') }}
+      </h1>
+
+      <v-form
+        ref="createForm"
+        v-model="form"
+        @submit.prevent="create"
+      >
+        <v-container fluid>
+          <v-text-field
+            v-model="name"
+            prepend-inner-icon="mdi-pencil"
+            :label="$t('create.name')"
+            :rules="nameRules"
+            clearable
+          />
+
+          <v-autocomplete
+            v-model="language"
+            :items="['python']"
+            :label="$t('create.language')"
+            :rules="languageRules"
+            prepend-inner-icon="mdi-translate"
+            clearable
+          />
+
+          <v-btn
+            :loading="loading"
+            :disabled="!form || loading"
+            type="submit"
+            block
+            class="mt-2"
+            variant="elevated"
+            width="0%"
+            color="primary"
+            size="x-large"
+          >
+            {{ $t('create.create') }}
+          </v-btn>
+        </v-container>
+      </v-form>
+    </v-card>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { useAPIStore } from '../stores/api';
+import { Project, Script } from '../types';
+
+export default defineComponent({
+    name: 'CreatePage',
+    data() {
+        return {
+            name: '',
+            language: 'python',
+            nameRules: [
+                (v: string) => !!v || 'Name is required',
+                (v: string) => (v && v.length <= 100) || 'Project name must be less than 100 characters'
+            ],
+            languageRules: [
+                (v: string) => !!v || 'Language is required',
+              (v: string) => ['python', 'micropython-khicas', 'xcas-python-pow', 'xcas-python-xor', 'xcas', 'xcas-session'].includes(v) || 'Language must be one of the following: python, micropython-khicas, xcas-python-pow, xcas-python-xor, xcas, xcas-session'
+            ],
+            loading: false,
+            form: false,
+            api: useAPIStore().api,
+        }
+    },
+    methods: {
+        async create() {
+            this.loading = true
+            const { valid } = await this.$refs.createForm.validate()
+
+            if (!valid) {
+                this.loading = false
+                return
+            }
+
+            // Create empty project
+            const project: Project = {
+                title: this.name,
+                language: this.language,
+                files: [
+                  {
+                    title: this.name.toLowerCase()+'.py',
+                    content: '',
+                  }
+                ] as Script[],
+                description: '',
+                isPublic: false,
+                // Everything else is set to avoid type errors and is not used
+                rating: 0,
+                author: '',
+                uuid: '',
+                _loaded: false,
+                _loading: false,
+            }
+            try {
+              let id = await this.api.createProject(project)
+              this.$router.push({ name: 'view', params: { uuid: id } })
+            } catch (e) {
+              console.error(e)
+            }
+
+            this.loading = false
+        },
+    }
+});
+</script>
+
+<style>
+#create-page {
+    display: flex;
+    vertical-align: middle;
+    height: 100%;
+}
+
+#create-page>div {
+    margin: auto;
+}
+</style>

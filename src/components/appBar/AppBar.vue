@@ -17,7 +17,7 @@
     </v-btn>
     <v-btn
       class="mx-2"
-      to="/edit"
+      to="/create"
     >
       {{ $t('navbar.start') }}
     </v-btn>
