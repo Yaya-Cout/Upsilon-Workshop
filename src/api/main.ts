@@ -30,7 +30,7 @@ export default class API extends EventTarget {
     constructor() {
         super()
 
-        this.BASE_URL = "https://django-cdqivkhudi9mmk5gqgb0.apps.playground.napptive.dev/";
+        this.BASE_URL = "https://yann.n1n1.xyz/"
 
         // Update user info
         this.updateUserInfo()
