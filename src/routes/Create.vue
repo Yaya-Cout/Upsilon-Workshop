@@ -71,6 +71,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAPIStore } from '../stores/api';
+import { useGlobalStore } from '../stores/global';
 import { Project, Script } from '../types';
 
 export default defineComponent({
@@ -95,6 +96,7 @@ export default defineComponent({
       loading: false,
       form: false,
       api: useAPIStore().api,
+      globalStore: useGlobalStore(),
     }
   },
   methods: {
@@ -128,9 +130,11 @@ export default defineComponent({
       }
       try {
         let id = await this.api.createProject(project)
+        this.globalStore.projectCreated = true
         this.$router.push({ name: 'view', params: { uuid: id } })
       } catch (e) {
         console.error(e)
+        this.globalStore.error = true
       }
 
       this.loading = false

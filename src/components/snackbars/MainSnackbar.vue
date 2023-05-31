@@ -5,6 +5,7 @@
   <GenericErrorSnackbar />
   <InstallationSuccessSnackbar />
   <NotLoggedInSnackbar />
+  <ProjectCreatedSnackbar />
   <ScriptSavedSnackbar />
   <TooMuchDataErrorSnackbar />
   <UsernameTakenSnackbar />
@@ -17,6 +18,7 @@ import ConnectCalculatorSnackbar from './ConnectCalculatorSnackbar.vue';
 import GenericErrorSnackbar from './GenericErrorSnackbar.vue';
 import InstallationSuccessSnackbar from './InstallationSuccessSnackbar.vue';
 import NotLoggedInSnackbar from './NotLoggedInSnackbar.vue';
+import ProjectCreatedSnackbar from './ProjectCreatedSnackbar.vue';
 import ScriptSavedSnackbar from './ScriptSavedSnackbar.vue';
 import TooMuchDataErrorSnackbar from './TooMuchDataErrorSnackbar.vue';
 import UsernameTakenSnackbar from './UsernameTakenSnackbar.vue';
@@ -28,6 +30,7 @@ export default defineComponent({
     GenericErrorSnackbar,
     InstallationSuccessSnackbar,
     NotLoggedInSnackbar,
+    ProjectCreatedSnackbar,
     ScriptSavedSnackbar,
     TooMuchDataErrorSnackbar,
     UsernameTakenSnackbar

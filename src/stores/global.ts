@@ -12,5 +12,7 @@ export const useGlobalStore = defineStore('global', {
     progress: false as boolean | number,
     // True when the script is saved successfully
     scriptSaved: false,
+    // True when the script is created successfully
+    projectCreated: false,
   }),
 })

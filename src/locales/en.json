@@ -74,6 +74,9 @@
     "script-saved": {
       "message": "Script saved successfully"
     },
+    "project-created": {
+      "message": "Project created successfully"
+    },
     "installation-success": "Installation successful",
     "close": "Close"
   },
