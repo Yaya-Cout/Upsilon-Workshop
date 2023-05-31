@@ -32,7 +32,10 @@
             item-
           >
             <template #prepend-inner>
-              <img :src="languages.find(l => l.name === language)?.icon" height="24">
+              <img
+                :src="languages.find(l => l.name === language)?.icon"
+                height="24"
+              >
             </template>
             <template #item="{ props, item }">
               <v-list-item
@@ -90,8 +93,8 @@ export default defineComponent({
         (v: string) => ['python', 'micropython-khicas', 'xcas-python-pow', 'xcas-python-xor', 'xcas', 'xcas-session'].includes(v) || 'Language must be one of the following: python, micropython-khicas, xcas-python-pow, xcas-python-xor, xcas, xcas-session'
       ],
       languages: [
-        { name: "python", icon: "/assets/python.svg" },
-        { name: "xcas", icon: "/assets/xcas.svg" },
+        { name: "python", icon: import.meta.env.BASE_URL + "assets/python.svg" },
+        { name: "xcas", icon: import.meta.env.BASE_URL + "assets/xcas.svg" },
       ],
       loading: false,
       form: false,
