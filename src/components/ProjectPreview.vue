@@ -45,12 +45,14 @@
               </v-icon>
               {{ project.description }}
             </v-card-subtitle>
-            <v-card-actions>
-              <v-rating
-                v-model="project.rating"
-                length="5"
-              />
-            </v-card-actions>
+            <v-card-item>
+              <v-chip
+                v-for="tag in tags"
+                :key="tag.name"
+              >
+                {{ tag.name }}
+              </v-chip>
+            </v-card-item>
           </div>
         </div>
       </v-skeleton-loader>
@@ -60,7 +62,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Project } from '../types';
+import { Project, Tag } from '../types';
+import { useAPIStore } from '../stores/api';
 import { VSkeletonLoader } from 'vuetify/lib/labs/components.mjs';
 
 export default defineComponent({
@@ -72,6 +75,27 @@ export default defineComponent({
     project: {
       type: Object as PropType<Project>,
       required: true
+    }
+  },
+  data() {
+    return {
+      api: useAPIStore().api,
+      tags: [] as Tag[],
+    };
+  },
+  watch: {
+    project: {
+      immediate: true,
+      async handler(project: Project) {
+        for (const tag of project.tags) {
+          this.api.loadLazyLoadingObject(tag);
+        }
+        for (const tag of project.tags) {
+          this.tags.push(await this.api.loadLazyLoadingObject(tag));
+        }
+
+        console.log(this.tags);
+      }
     }
   }
 });

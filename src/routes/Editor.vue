@@ -86,7 +86,8 @@
 import { defineComponent } from 'vue';
 import DeviceInterface from '../components/DeviceInterface.vue';
 import EditProjectDialog from '../components/EditProjectDialog.vue';
-const MonacoEditor = () => import('../components/MonacoEditor.vue');
+// const MonacoEditor = () => import('../components/MonacoEditor.vue');
+import MonacoEditor from '../components/MonacoEditor.vue';
 import SimulatorView from '../components/SimulatorView.vue';
 import { useAPIStore } from '../stores/api';
 import { useGlobalStore } from '../stores/global';

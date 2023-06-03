@@ -1,4 +1,4 @@
-import { Project, Script, User, Group } from "../types";
+import { Project, Script, User, Group, Tag } from "../types";
 
 /*
  * Class to interact with the Workshop API
@@ -20,6 +20,7 @@ export default class API extends EventTarget {
         uuid: "",
         isPublic: false,
         language: "",
+        tags: [],
         _loaded: false,
         _loading: false,
     };
@@ -219,9 +220,15 @@ export default class API extends EventTarget {
                 uuid: project["id"],
                 isPublic: project["is_public"],
                 language: project["language"],
+                tags: [],
                 _loaded: true,
                 _loading: false,
             })
+
+            // Convert the tags
+            for (const tag of project["tags"]) {
+                projects[projects.length - 1].tags.push(this.getTag(tag.split("/").at(-2)))
+            }
         }
 
         return projects
@@ -297,6 +304,7 @@ export default class API extends EventTarget {
             isPublic: false,
             rating: 3.5,
             author: this.USERNAME,
+            tags: [],
             _loaded: true,
             _loading: false,
             uuid: "",
@@ -529,11 +537,55 @@ export default class API extends EventTarget {
             uuid: response["id"],
             isPublic: response["is_public"],
             language: response["language"],
+            tags: [],
             _loaded: true,
             _loading: false,
         }
 
+        // Convert the tags
+        for (const tag of response["tags"]) {
+            project.tags.push(this.getTag(tag.split("/").at(-2)))
+        }
+
         return project
+    }
+
+    /*
+     * Get a tag from the API
+     * @param {string} name - The name of the tag
+     * @returns {Promise} - A promise that resolves to the tag
+     * @throws {Error} - If the tag does not exist
+     */
+    getTag(name: string): Tag {
+        return this.getLazy("_getTag", name)
+    }
+
+    /*
+     * Get a tag from the API (internal)
+     * @param {string} name - The name of the tag
+     * @returns {Promise} - A promise that resolves to the tag
+     * @throws {Error} - If the tag does not exist
+     */
+    async _getTag(name: string): Promise<Tag> {
+        const response = await this._request("tags/" + name + "/", "GET", {}, 200, false)
+
+        // Convert the response to a tag
+        const tag: Tag = {
+            name: response["name"],
+            description: response["description"],
+            projects: [],
+            _loaded: true,
+            _loading: false,
+        }
+
+        // Convert the projects
+        for (const project of response["script_set"]) {
+            const projectId = project.split("/").at(-2)
+            tag.projects.push(this.getProject(projectId))
+        }
+
+
+        return tag
     }
 
     /*

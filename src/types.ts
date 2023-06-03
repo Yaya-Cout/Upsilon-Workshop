@@ -21,6 +21,8 @@ export type Project = {
     isPublic: boolean,
     // The language of the project (python, xcas, etc.)
     language: string,
+    // The list of tags of the project
+    tags: Tag[],
 
     // Internal field to know if the project is loaded or not
     _loaded: boolean,
@@ -71,5 +73,21 @@ export type User = {
     // Internal field to know if the user is loaded or not
     _loaded: boolean,
     // Internal field to know if the user is loading or not
+    _loading: boolean,
+}
+
+// A tag is a tag that can be added to a project. It is composed of a name, a
+// list of projects and a description.
+export type Tag = {
+    // The name of the tag
+    name: string,
+    // The list of projects that have this tag
+    projects: Project[],
+    // The description of the tag
+    description: string,
+
+    // Internal field to know if the tag is loaded or not
+    _loaded: boolean,
+    // Internal field to know if the tag is loading or not
     _loading: boolean,
 }
