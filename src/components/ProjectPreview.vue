@@ -93,8 +93,6 @@ export default defineComponent({
         for (const tag of project.tags) {
           this.tags.push(await this.api.loadLazyLoadingObject(tag));
         }
-
-        console.log(this.tags);
       }
     }
   }

@@ -113,7 +113,6 @@ export default defineComponent({
             this.connected = true;
             const platformInfo = await this.calculator.getPlatformInfo();
 
-            console.log(platformInfo);
             this.descriptor = 'Connected to ';
             if (platformInfo.magik == false) {
                 this.descriptor =

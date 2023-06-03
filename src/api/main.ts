@@ -473,7 +473,6 @@ export default class API extends EventTarget {
      * @private
      */
     async _getGroup(id: number): Promise<Group> {
-        console.log(this)
         const response = await this._request("groups/" + id + "/", "GET", {}, 200, false)
 
         // Convert the user set
