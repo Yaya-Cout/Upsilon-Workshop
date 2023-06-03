@@ -227,6 +227,16 @@ export default class API extends EventTarget {
         return projects
     }
 
+    /* Delete a project from the API
+     * @param {Project} project - The project to delete
+     * @returns {Promise} - A promise that resolves to true if the project was deleted
+     * @throws {Error} - If the project could not be deleted/the user is not the owner
+     */
+    async deleteProject(project: Project): Promise<boolean> {
+        await this._request("scripts/" + project.uuid + "/", "DELETE", {}, 204)
+        return true
+    }
+
     /*
      * Create a project on the API
      * @param {Project} project - The project to create

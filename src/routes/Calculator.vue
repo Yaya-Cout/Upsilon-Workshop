@@ -132,7 +132,7 @@ import ConnectCalculator from '../components/ConnectCalculator.vue';
 import WebUSBNotSupported from '../components/WebUSBNotSupported.vue';
 
 export default defineComponent({
-    name: 'LoginPage',
+    name: 'CalculatorPage',
     components: {
         CalculatorCard,
         ConnectCalculator,

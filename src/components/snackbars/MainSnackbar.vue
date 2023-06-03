@@ -6,6 +6,7 @@
   <InstallationSuccessSnackbar />
   <NotLoggedInSnackbar />
   <ProjectCreatedSnackbar />
+  <ProjectDeletedSnackbar />
   <ScriptSavedSnackbar />
   <TooMuchDataErrorSnackbar />
   <UsernameTakenSnackbar />
@@ -19,6 +20,7 @@ import GenericErrorSnackbar from './GenericErrorSnackbar.vue';
 import InstallationSuccessSnackbar from './InstallationSuccessSnackbar.vue';
 import NotLoggedInSnackbar from './NotLoggedInSnackbar.vue';
 import ProjectCreatedSnackbar from './ProjectCreatedSnackbar.vue';
+import ProjectDeletedSnackbar from './ProjectDeletedSnackbar.vue';
 import ScriptSavedSnackbar from './ScriptSavedSnackbar.vue';
 import TooMuchDataErrorSnackbar from './TooMuchDataErrorSnackbar.vue';
 import UsernameTakenSnackbar from './UsernameTakenSnackbar.vue';
@@ -31,6 +33,7 @@ export default defineComponent({
     InstallationSuccessSnackbar,
     NotLoggedInSnackbar,
     ProjectCreatedSnackbar,
+    ProjectDeletedSnackbar,
     ScriptSavedSnackbar,
     TooMuchDataErrorSnackbar,
     UsernameTakenSnackbar

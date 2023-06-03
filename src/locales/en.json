@@ -77,6 +77,9 @@
     "project-created": {
       "message": "Project created successfully"
     },
+    "project-deleted": {
+      "message": "Project deleted successfully"
+    },
     "installation-success": "Installation successful",
     "close": "Close"
   },

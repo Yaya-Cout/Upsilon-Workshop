@@ -9,6 +9,9 @@
         <UploadProject :project="project">
           <v-btn>Upload to calculator</v-btn>
         </UploadProject>
+        <DeleteProject :project="project">
+          <v-btn>Delete</v-btn>
+        </DeleteProject>
         <MarkdownView :content="project.description" />
       </v-col>
       <v-col>
@@ -26,6 +29,7 @@ import { useAPIStore } from '../stores/api';
 import { useGlobalStore } from '../stores/global';
 import { Project } from '../types';
 import UploadProject from '../components/UploadProject.vue';
+import DeleteProject from '../components/DeleteProject.vue';
 
 export default defineComponent({
   name: 'ViewerPage',
@@ -33,6 +37,7 @@ export default defineComponent({
     SimulatorView,
     MarkdownView,
     UploadProject,
+    DeleteProject,
   },
   data() {
     return {

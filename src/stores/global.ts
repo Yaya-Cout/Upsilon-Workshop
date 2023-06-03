@@ -14,5 +14,7 @@ export const useGlobalStore = defineStore('global', {
     scriptSaved: false,
     // True when the script is created successfully
     projectCreated: false,
+    // True when the script is deleted successfully
+    projectDeleted: false,
   }),
 })
