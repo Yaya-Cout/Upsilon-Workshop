@@ -11,8 +11,14 @@
         <RenameScript
           :script="script"
         >
-          <template #default="">
+          <template #default>
             {{ script.title }}
+            <v-tooltip
+              activator="parent"
+              location="bottom"
+            >
+              Click to rename
+            </v-tooltip>
           </template>
         </RenameScript>
       </v-tab>
