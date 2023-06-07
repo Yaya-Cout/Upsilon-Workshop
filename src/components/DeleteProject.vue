@@ -18,9 +18,7 @@
       <v-card-actions>
         <v-spacer />
 
-        <v-btn
-          @click="dialog = false"
-        >
+        <v-btn @click="dialog = false">
           Cancel
         </v-btn>
         <br>
@@ -43,33 +41,34 @@ import { useAPIStore } from '../stores/api';
 import { Project } from '../types';
 
 export default defineComponent({
-    props: {
-        project: {
-            type: Object as PropType<Project>,
-            required: true
-        }
+  props: {
+    project: {
+      type: Object as PropType<Project>,
+      required: true
+    }
+  },
+  data() {
+    return {
+      globalStore: useGlobalStore(),
+      api: useAPIStore().api,
+      dialog: false,
+    };
+  },
+  methods: {
+    async deleteFromAPI() {
+      this.globalStore.progress = true;
+      try {
+        await this.api.deleteProject(this.project);
+        this.$router.push('/');
+        this.globalStore.projectDeleted = true;
+      } catch (e) {
+        // TODO: Handle not logged in error
+        this.globalStore.error = true;
+        console.error(e);
+      }
+      this.globalStore.progress = false;
     },
-    data() {
-        return {
-            globalStore: useGlobalStore(),
-            api: useAPIStore().api,
-            dialog: false,
-        };
-    },
-    methods: {
-        async deleteFromAPI() {
-            this.globalStore.progress = true;
-            try {
-                await this.api.deleteProject(this.project);
-                this.$router.push('/');
-            } catch (e) {
-                this.globalStore.error = true;
-                console.error(e);
-            }
-            this.globalStore.progress = false;
-            this.globalStore.projectDeleted = true;
-        },
-    },
+  },
 });
 </script>
 
