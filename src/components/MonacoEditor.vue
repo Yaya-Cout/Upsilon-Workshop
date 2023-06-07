@@ -8,7 +8,13 @@
         v-for="script in scripts"
         :key="script.title"
       >
-        {{ script.title }}
+        <RenameScript
+          :script="script"
+        >
+          <template #default="">
+            {{ script.title }}
+          </template>
+        </RenameScript>
       </v-tab>
       <v-btn
         icon
@@ -41,6 +47,7 @@ import * as monaco from 'monaco-editor';
 import { defineComponent, PropType } from 'vue';
 import { Script, Project } from '../types';
 import SaveProject from './SaveProject.vue';
+import RenameScript from './RenameScript.vue';
 
 // Those variables are declared there instead of in data because otherwise it causes endless loops.
 // TODO: Clear those variables when the component is destroyed
@@ -50,7 +57,10 @@ var states: monaco.editor.ICodeEditorViewState[] = [];
 
 export default defineComponent({
   name: "MonacoEditor",
-  components: { SaveProject },
+  components: {
+    SaveProject,
+    RenameScript,
+  },
   props: {
     project: {
       type: Object as PropType<Project>,
@@ -63,6 +73,7 @@ export default defineComponent({
       tab: 0,
       oldTab: 0,
       skipScriptUpdate: false,
+      scriptToRename: null as Script | null,
     };
   },
   computed: {
@@ -142,6 +153,9 @@ export default defineComponent({
     },
     run() {
       this.$emit("run");
+    },
+    renameScript(script: Script) {
+      this.scriptToRename = script;
     },
   }
 });
