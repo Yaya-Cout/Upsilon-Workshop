@@ -62,6 +62,7 @@ export default defineComponent({
     return {
       tab: 0,
       oldTab: 0,
+      skipScriptUpdate: false,
     };
   },
   computed: {
@@ -79,6 +80,10 @@ export default defineComponent({
     scripts: {
       deep: true,
       handler() {
+        if (this.skipScriptUpdate) {
+          this.skipScriptUpdate = false;
+          return;
+        }
         // FIXME this will break with script renaming
         if (this.scripts.length != models.length) {
           // Delete and re create all models
@@ -113,6 +118,7 @@ export default defineComponent({
       for (const model of models) {
         for (var i = 0; i < this.scripts.length; i++) {
           if (this.scripts[i].title === model.uri.path.substring(1)) {
+            this.skipScriptUpdate = true;
             this.project.files[i].content = model.getValue();
           }
         }
