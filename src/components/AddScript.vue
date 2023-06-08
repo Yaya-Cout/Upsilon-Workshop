@@ -10,14 +10,14 @@
     </template>
     <v-card>
       <v-card-title class="headline">
-        Rename
+        Add script
       </v-card-title>
 
       <v-card-text>Enter the new name for the script:</v-card-text>
 
       <v-card-text>
         <v-text-field
-          v-model="newName"
+          v-model="name"
           label="New name"
           outlined
         />
@@ -32,7 +32,7 @@
 
         <v-btn
           color="error"
-          @click="rename"
+          @click="add"
         >
           OK
         </v-btn>
@@ -43,34 +43,28 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Script } from '../types';
+import { Project } from '../types';
 
 export default defineComponent({
-  name: 'RenameScript',
+  name: 'AddScript',
   props: {
-    script: {
-      type: Object as () => Script,
+    project: {
+      type: Object as () => Project,
       required: true,
     },
   },
   data() {
     return {
       dialog: false,
-      newName: '',
+      name: '',
     };
   },
-  watch: {
-    script: {
-      immediate: true,
-      handler() {
-        this.newName = this.script.title;
-      },
-    },
-  },
   methods: {
-    rename() {
-      // TODO: Use an event instead of mutating the prop
-      this.script.title = this.newName;
+    add() {
+      this.project.files.push({
+        title: this.name,
+        content: '',
+      });
       this.dialog = false;
     },
   },

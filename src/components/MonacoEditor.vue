@@ -8,9 +8,7 @@
         v-for="script in scripts"
         :key="script.title"
       >
-        <RenameScript
-          :script="script"
-        >
+        <RenameScript :script="script">
           <template #default>
             {{ script.title }}
             <v-tooltip
@@ -47,12 +45,17 @@
           Save project
         </v-tooltip>
       </SaveProject>
-      <!-- <v-btn
-        icon
-        @click="addScript"
-      >
-        <v-icon>mdi-plus</v-icon>
-      </v-btn> -->
+      <AddScript :project="project">
+        <v-btn icon>
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+        <v-tooltip
+          activator="parent"
+          location="bottom"
+        >
+          Add script
+        </v-tooltip>
+      </AddScript>
     </v-tabs>
     <div class="monaco-editor-wrapper">
       <div id="monaco-editor" />
@@ -66,6 +69,7 @@ import { defineComponent, PropType } from 'vue';
 import { Script, Project } from '../types';
 import SaveProject from './SaveProject.vue';
 import RenameScript from './RenameScript.vue';
+import AddScript from './AddScript.vue';
 
 // Those variables are declared there instead of in data because otherwise it causes endless loops.
 // TODO: Clear those variables when the component is destroyed
@@ -78,6 +82,7 @@ export default defineComponent({
   components: {
     SaveProject,
     RenameScript,
+    AddScript,
   },
   props: {
     project: {
@@ -115,7 +120,7 @@ export default defineComponent({
         }
         // FIXME this will break with script renaming
         if (this.scripts.length != models.length) {
-          // Delete and re create all models
+          // Update models
           this.createModels();
         }
         else {
@@ -154,8 +159,23 @@ export default defineComponent({
       }
     },
     createModels() {
-      models = [];
       for (const script of this.scripts) {
+        // Get if model already exists
+        let exists = false;
+        for (const model of models) {
+          if (model.uri.path.substring(1) === script.title) {
+            // If it exists, update it
+            console.log("Updating model " + script.title);
+            model.setValue(script.content);
+            exists = true;
+            break;
+          }
+        }
+        if (exists) {
+          continue;
+        }
+        console.log("Creating model " + script.title);
+        // If it doesn't exist, create it
         models.push(monaco.editor.createModel(script.content, "python", monaco.Uri.from({ scheme: "file", path: script.title })));
       }
       editor?.setModel(models[0]);
