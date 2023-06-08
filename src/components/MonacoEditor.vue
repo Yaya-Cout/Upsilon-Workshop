@@ -26,7 +26,13 @@
         icon
         @click="run"
       >
-        <v-icon>mdi-reload</v-icon>
+        <v-icon>mdi-play</v-icon>
+        <v-tooltip
+          activator="parent"
+          location="bottom"
+        >
+          Run project
+        </v-tooltip>
       </v-btn>
       <!-- TODO: Save button should be disabled when there are no changes -->
       <!-- TODO: Save button should call run before saving -->
@@ -34,6 +40,12 @@
         <v-btn icon>
           <v-icon>mdi-content-save</v-icon>
         </v-btn>
+        <v-tooltip
+          activator="parent"
+          location="bottom"
+        >
+          Save project
+        </v-tooltip>
       </SaveProject>
       <!-- <v-btn
         icon
