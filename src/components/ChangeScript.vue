@@ -24,14 +24,26 @@
       </v-card-text>
 
       <v-card-actions>
+        <DeleteConfirm
+          :project="project"
+          :script-index="scriptIndex"
+        >
+          <v-btn
+            color="error"
+          >
+            Delete
+          </v-btn>
+        </DeleteConfirm>
+
         <v-spacer />
 
-        <v-btn @click="dialog = false">
+        <v-btn
+          @click="dialog = false"
+        >
           Cancel
         </v-btn>
 
         <v-btn
-          color="error"
           @click="rename"
         >
           OK
@@ -43,13 +55,21 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Script } from '../types';
+import DeleteConfirm from './confirmations/DeleteConfirm.vue';
+import { Project } from '../types';
 
 export default defineComponent({
-  name: 'RenameScript',
+  name: 'ChangeScript',
+  components: {
+    DeleteConfirm,
+  },
   props: {
-    script: {
-      type: Object as () => Script,
+    project: {
+      type: Object as () => Project,
+      required: true,
+    },
+    scriptIndex: {
+      type: Number,
       required: true,
     },
   },
@@ -63,14 +83,14 @@ export default defineComponent({
     script: {
       immediate: true,
       handler() {
-        this.newName = this.script.title;
+        this.newName = this.project.files[this.scriptIndex].title;
       },
     },
   },
   methods: {
     rename() {
       // TODO: Use an event instead of mutating the prop
-      this.script.title = this.newName;
+      this.project.files[this.scriptIndex].title = this.newName;
       this.dialog = false;
     },
   },

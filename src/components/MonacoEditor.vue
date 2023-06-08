@@ -5,20 +5,23 @@
       @update:model-value="setTab"
     >
       <v-tab
-        v-for="script in scripts"
+        v-for="(script, scriptIndex) in project.files"
         :key="script.title"
       >
-        <RenameScript :script="script">
+        <ChangeScript
+          :project="project"
+          :script-index="scriptIndex"
+        >
           <template #default>
             {{ script.title }}
             <v-tooltip
               activator="parent"
               location="bottom"
             >
-              Click to rename
+              Click to rename or delete
             </v-tooltip>
           </template>
-        </RenameScript>
+        </ChangeScript>
       </v-tab>
       <v-btn
         icon
@@ -68,7 +71,7 @@ import * as monaco from 'monaco-editor';
 import { defineComponent, PropType } from 'vue';
 import { Script, Project } from '../types';
 import SaveProject from './SaveProject.vue';
-import RenameScript from './RenameScript.vue';
+import ChangeScript from './ChangeScript.vue';
 import AddScript from './AddScript.vue';
 
 // Those variables are declared there instead of in data because otherwise it causes endless loops.
@@ -81,7 +84,7 @@ export default defineComponent({
   name: "MonacoEditor",
   components: {
     SaveProject,
-    RenameScript,
+    ChangeScript,
     AddScript,
   },
   props: {

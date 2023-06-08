@@ -27,14 +27,14 @@
         <v-divider />
 
         <v-list>
-          <DisconnectConfirmVue>
+          <DisconnectConfirm>
             <v-list-item
               prepend-icon="mdi-logout"
               @click="null"
             >
               {{ $t('navbar.logout') }}
             </v-list-item>
-          </DisconnectConfirmVue>
+          </DisconnectConfirm>
         </v-list>
       </v-card>
     </v-menu>
@@ -44,12 +44,12 @@
 import { defineComponent } from 'vue';
 import { useAPIStore } from '../../stores/api';
 import AvatarView from '../AvatarView.vue';
-import DisconnectConfirmVue from '../DisconnectConfirm.vue';
+import DisconnectConfirm from '../confirmations/DisconnectConfirm.vue';
 
 export default defineComponent({
   components: {
     AvatarView,
-    DisconnectConfirmVue
+    DisconnectConfirm
   },
   data() {
     return {
