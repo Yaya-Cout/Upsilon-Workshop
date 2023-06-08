@@ -5,7 +5,7 @@
     </span>
     <template #actions>
       <v-btn
-        color="pink"
+        color="error"
         variant="text"
         @click="globalStore.error = false"
       >

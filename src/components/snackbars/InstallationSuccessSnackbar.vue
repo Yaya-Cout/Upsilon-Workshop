@@ -5,7 +5,7 @@
     </span>
     <template #actions>
       <v-btn
-        color="pink"
+        color="success"
         variant="text"
         @click="calculatorStore.installationSuccess = false"
       >

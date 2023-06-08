@@ -6,13 +6,13 @@
     <template #actions>
       <v-btn
         variant="text"
-        color="secondary"
+        color=""
         @click="manage()"
       >
         {{ $t('snackbar.too-much-data.manage') }}
       </v-btn>
       <v-btn
-        color="pink"
+        color="error"
         variant="text"
         @click="calculatorStore.tooMuchDataError = false"
       >

@@ -14,14 +14,14 @@
           </span>
           <template #actions>
             <v-btn
-              color="secondary"
+              color=""
               variant="text"
               v-bind="props"
             >
               {{ $t('snackbar.connect-calculator.detect-calculator') }}
             </v-btn>
             <v-btn
-              color="pink"
+              color="error"
               variant="text"
               @click="calculatorStore.notConnectedError = false"
             >

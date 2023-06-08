@@ -5,7 +5,7 @@
     </span>
     <template #actions>
       <v-btn
-        color="pink"
+        color="error"
         variant="text"
         @click="api.NOT_LOGGED_IN_ERROR = false"
       >
