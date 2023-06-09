@@ -20,8 +20,8 @@ export default defineComponent({
     svg(): string {
       let svg = toSvg(this.username, 100);
       // Ensure that the SVG is not larger than the avatar
-      svg = svg.replace('width="100"', 'width="50"');
-      svg = svg.replace('height="100"', 'height="50"');
+      svg = svg.replace('width="100"', 'width="100%"');
+      svg = svg.replace('height="100"', 'height="100%"');
       return svg;
     },
   },
@@ -29,4 +29,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
+div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 40px;
+}
 </style>
