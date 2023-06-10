@@ -1,4 +1,5 @@
 {
+  "upsilon-workshop": "Upsilon Workshop",
   "navbar": {
     "explore": "Search",
     "start": "Start scripting",
@@ -7,6 +8,9 @@
     "signup": "Sign up",
     "logout": "Log out",
     "calculator": "Calculator"
+  },
+  "about": {
+    "title": "About"
   },
   "login": {
     "title": "Log in",
@@ -47,7 +51,8 @@
     "unknown": "Someone",
     "script-deleted": "Script deleted",
     "script-saved": "{name} saved",
-    "open": "Open"
+    "open": "Open",
+    "show-all-files": "Show all files",
   },
   "viewer": {
     "created-on": "Created on {date}",
@@ -56,7 +61,13 @@
     "version": "Version {version}",
     "edit": "Edit",
     "upload": "Upload to calculator",
-    "delete": "Delete"
+    "delete": "Delete",
+    "delete-project": {
+      "title": "Delete project",
+      "message": "Are you sure you want to delete this project? ({name})",
+      "cancel": "Cancel",
+      "delete": "OK"
+    }
   },
   "snackbar": {
     "connect-calculator": {
@@ -122,5 +133,35 @@
     "language": "Language",
     "create": "Create",
     "is-public": "Public"
+  },
+  "editor": {
+    "edit-project-info": "Edit project info",
+    "simulator": "Simulator",
+    "device": "Device",
+    "add-script": {
+      "title": "Add script",
+      "enter-name": "Enter the new name for the script:",
+      "name": "Name",
+      "cancel": "Cancel",
+      "add": "OK"
+    },
+    "change-script": {
+      "title": "Rename",
+      "description": "Enter the new name for the script:",
+      "new-name": "New name",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "rename": "Rename"
+    },
+    "monaco-editor": {
+      "change-tooltip": "Click to rename or delete",
+      "run-tooltip": "Run project",
+      "save-tooltip": "Save project",
+      "add-script-tooltip": "Add script"
+    }
+  },
+  "user": {
+    "groups": "Groups",
+    "projects": "Projects"
   }
 }

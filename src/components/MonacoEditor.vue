@@ -18,7 +18,7 @@
               activator="parent"
               location="bottom"
             >
-              Click to rename or delete
+              {{ $t('editor.monaco-editor.change-tooltip') }}
             </v-tooltip>
           </template>
         </ChangeScript>
@@ -32,7 +32,7 @@
           activator="parent"
           location="bottom"
         >
-          Run project
+          {{ $t('editor.monaco-editor.run-tooltip') }}
         </v-tooltip>
       </v-btn>
       <!-- TODO: Save button should be disabled when there are no changes -->
@@ -45,7 +45,7 @@
           activator="parent"
           location="bottom"
         >
-          Save project
+          {{ $t('editor.monaco-editor.save-tooltip') }}
         </v-tooltip>
       </SaveProject>
       <AddScript :project="project">
@@ -56,7 +56,7 @@
           activator="parent"
           location="bottom"
         >
-          Add script
+          {{ $t('editor.monaco-editor.add-script-tooltip') }}
         </v-tooltip>
       </AddScript>
     </v-tabs>

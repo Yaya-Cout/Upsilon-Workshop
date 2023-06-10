@@ -37,7 +37,7 @@
               <v-dialog v-model="dialog">
                 <template #activator="{ props }">
                   <v-btn v-bind="props">
-                    Edit project info
+                    {{ $t('editor.edit-project-info') }}
                   </v-btn>
                 </template>
                 <EditProjectDialog />
@@ -46,10 +46,10 @@
           </v-card>
           <v-tabs v-model="tab">
             <v-tab value="simulator">
-              Simulator
+              {{ $t('editor.simulator') }}}
             </v-tab>
             <v-tab value="device">
-              Device
+              {{ $t('editor.device') }}
             </v-tab>
           </v-tabs>
           <v-window v-model="tab">

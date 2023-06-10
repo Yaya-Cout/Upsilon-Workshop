@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useCalculatorStore } from '@/stores/calculator';
+import { useCalculatorStore } from '../stores/calculator';
 
 export default defineComponent({
     data() {

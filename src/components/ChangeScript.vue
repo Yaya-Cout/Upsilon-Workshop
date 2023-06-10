@@ -10,7 +10,7 @@
     </template>
     <v-card>
       <v-card-title class="headline">
-        Rename
+        {{ $t('editor.change-script.title') }}
       </v-card-title>
 
       <v-card-text>Enter the new name for the script:</v-card-text>
@@ -18,7 +18,7 @@
       <v-card-text>
         <v-text-field
           v-model="newName"
-          label="New name"
+          :label="$t('editor.change-script.new-name')"
           outlined
         />
       </v-card-text>
@@ -31,7 +31,7 @@
           <v-btn
             color="error"
           >
-            Delete
+            {{ $t('editor.change-script.delete') }}
           </v-btn>
         </DeleteConfirm>
 
@@ -40,13 +40,13 @@
         <v-btn
           @click="dialog = false"
         >
-          Cancel
+          {{ $t('editor.change-script.cancel') }}
         </v-btn>
 
         <v-btn
           @click="rename"
         >
-          OK
+          {{ $t('editor.change-script.rename') }}
         </v-btn>
       </v-card-actions>
     </v-card>

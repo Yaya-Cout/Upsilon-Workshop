@@ -11,7 +11,7 @@
             <v-card-text>
               <v-list>
                 <v-list-item v-if="groups !== ''">
-                  <v-list-item-title>Groups</v-list-item-title>
+                  <v-list-item-title>{{ $t('user.groups') }}</v-list-item-title>
                   <v-skeleton-loader
                     :loading="groups === 'none'"
                     type="text"
@@ -27,7 +27,7 @@
         <v-col class="col-1">
           <v-card>
             <v-card-title>
-              <h3>Projects</h3>
+              <h3>{{ $t('user.projects') }}</h3>
             </v-card-title>
             <v-card-text>
               <v-list>
