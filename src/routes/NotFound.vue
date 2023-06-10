@@ -23,7 +23,7 @@
           variant="elevated"
           color="primary"
           size="x-large"
-          href="/"
+          to="/"
         >
           {{ $t('404.go-home') }}
         </v-btn>
