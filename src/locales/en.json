@@ -84,6 +84,9 @@
       },
       "script-deleted": {
         "message": "Script deleted successfully"
+      },
+      "logout": {
+        "message": "Logged out successfully"
       }
     },
     "username-taken": {
