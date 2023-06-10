@@ -69,6 +69,7 @@
 <script lang="ts">
 import * as monaco from 'monaco-editor';
 import { defineComponent, PropType } from 'vue';
+import { useGlobalStore } from '../stores/global';
 import { Script, Project } from '../types';
 import SaveProject from './SaveProject.vue';
 import ChangeScript from './ChangeScript.vue';
@@ -98,14 +99,14 @@ export default defineComponent({
     return {
       tab: 0,
       oldTab: 0,
-      skipScriptUpdate: false,
       scriptToRename: null as Script | null,
+      globalStore: useGlobalStore(),
     };
   },
   computed: {
     scripts: {
       get(): Script[] {
-        return this.project.files ?? [];
+        return this.project.files;
       },
       set(value: Script[]) {
         // TODO: Avoid using mutation
@@ -114,28 +115,10 @@ export default defineComponent({
     }
   },
   watch: {
-    scripts: {
+    "project.files": {
       deep: true,
       handler() {
-        if (this.skipScriptUpdate) {
-          this.skipScriptUpdate = false;
-          return;
-        }
-        // FIXME this will break with script renaming
-        if (this.scripts.length != models.length) {
-          // Update models
-          this.createModels();
-        }
-        else {
-          // Update existing models
-          for (const script of this.scripts) {
-            for (var i = 0; i < models.length; i++) {
-              if (models[i].uri.path.substring(1) === script.title) {
-                models[i].setValue(script.content);
-              }
-            }
-          }
-        }
+        this.createModels();
       },
     },
   },
@@ -154,8 +137,7 @@ export default defineComponent({
     contentChanged() {
       for (const model of models) {
         for (var i = 0; i < this.scripts.length; i++) {
-          if (this.scripts[i].title === model.uri.path.substring(1)) {
-            this.skipScriptUpdate = true;
+          if (this.project.uuid + this.scripts[i].title === model.uri.path.substring(1)) {
             this.project.files[i].content = model.getValue();
           }
         }
@@ -166,8 +148,12 @@ export default defineComponent({
         // Get if model already exists
         let exists = false;
         for (const model of models) {
-          if (model.uri.path.substring(1) === script.title) {
-            // If it exists, update it
+          if (model.uri.path.substring(1) === this.project.uuid + script.title) {
+            // If it exists, check if it needs to be updated
+            if (model.getValue() === script.content) {
+              exists = true;
+              break;
+            }
             console.log("Updating model " + script.title);
             model.setValue(script.content);
             exists = true;
@@ -179,18 +165,43 @@ export default defineComponent({
         }
         console.log("Creating model " + script.title);
         // If it doesn't exist, create it
-        models.push(monaco.editor.createModel(script.content, "python", monaco.Uri.from({ scheme: "file", path: script.title })));
+        models.push(monaco.editor.createModel(script.content, "python", monaco.Uri.from({ scheme: "file", path: this.project.uuid + script.title })));
       }
-      editor?.setModel(models[0]);
+      this.setTab(this.tab);
     },
     setTab(tab: any) {
+      // If there is no script, don't do anything
+      if (this.scripts.length === 0) {
+        return;
+      }
       if (editor == null)
         throw Error();
-      models[this.oldTab] = editor.getModel()!;
-      states[this.oldTab] = editor.saveViewState()!;
+      // Iterate over all models and get the one that corresponds to the tab
+      let id = -1;
+      for (const model of models) {
+        if (model.uri.path.substring(1) === this.project.uuid + this.scripts[tab].title) {
+          id = models.indexOf(model);
+          break;
+        }
+      }
+      if (id === -1) {
+        throw Error("Couldn't find model for tab " + tab);
+      }
+      // Do the same for the old tab
+      let oldId = -1;
+      for (const model of models) {
+        if (model.uri.path.substring(1) === this.project.uuid + this.scripts[this.oldTab].title) {
+          oldId = models.indexOf(model);
+          break;
+        }
+      }
+      if (oldId === -1) {
+        throw Error("Couldn't find model for old tab " + this.oldTab);
+      }
+      states[oldId] = editor.saveViewState();
       this.oldTab = tab;
-      editor.setModel(models[tab]);
-      editor.restoreViewState(states[tab]);
+      editor.setModel(models[id]);
+      editor.restoreViewState(states[id]);
     },
     run() {
       this.$emit("run");
