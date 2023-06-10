@@ -23,6 +23,8 @@ export default class API extends EventTarget {
         tags: [],
         created: new Date(),
         modified: new Date(),
+        views: 0,
+        version: "",
         _loaded: false,
         _loading: false,
     };
@@ -225,6 +227,8 @@ export default class API extends EventTarget {
                 tags: [],
                 created: new Date(project["created"]),
                 modified: new Date(project["updated"]),
+                views: project["views"],
+                version: project["version"],
                 _loaded: true,
                 _loading: false,
             })
@@ -309,11 +313,13 @@ export default class API extends EventTarget {
             rating: 3.5,
             author: this.USERNAME,
             tags: [],
-            _loaded: true,
-            _loading: false,
             created: new Date(),
             modified: new Date(),
             uuid: "",
+            views: 0,
+            version: "1.0.0",
+            _loaded: true,
+            _loading: false,
         })
     }
 
@@ -545,6 +551,8 @@ export default class API extends EventTarget {
             tags: [],
             created: new Date(response["created"]),
             modified: new Date(response["modified"]),
+            views: response["views"],
+            version: response["version"],
             _loaded: true,
             _loading: false,
         }

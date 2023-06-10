@@ -131,6 +131,8 @@ export default defineComponent({
         created: new Date(),
         modified: new Date(),
         tags: [],
+        views: 0,
+        version: "1.0.0",
 
         _loaded: false,
         _loading: false,

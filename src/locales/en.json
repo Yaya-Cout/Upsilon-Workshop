@@ -49,6 +49,15 @@
     "script-saved": "{name} saved",
     "open": "Open"
   },
+  "viewer": {
+    "created-on": "Created on {date}",
+    "modified-on": "Last modified on {date}",
+    "views": "{count} views",
+    "version": "Version {version}",
+    "edit": "Edit",
+    "upload": "Upload to calculator",
+    "delete": "Delete"
+  },
   "snackbar": {
     "connect-calculator": {
       "calculator-not-connected": "Calculator not connected",
