@@ -46,7 +46,7 @@
           </v-card>
           <v-tabs v-model="tab">
             <v-tab value="simulator">
-              {{ $t('editor.simulator') }}}
+              {{ $t('editor.simulator') }}
             </v-tab>
             <v-tab value="device">
               {{ $t('editor.device') }}

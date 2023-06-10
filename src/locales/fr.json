@@ -1,82 +1,167 @@
 {
-  "navbar": {
-    "explore": "Explorer",
-    "search": "Rechercher",
-    "login": "Connexion",
-    "signup": "Inscription",
-    "logout": "Déconnexion",
-    "start": "Créez",
-    "calculator": "Calculatrice"
+  "editor": {
+    "device": "Calculatrice",
+    "add-script": {
+      "add": "OK",
+      "enter-name": "Entrez le nouveau nom pour ce script :",
+      "cancel": "Annuler",
+      "name": "Nom",
+      "title": "Ajouter un script"
+    },
+    "change-script": {
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "description": "Entrez le nouveau pour ce script :",
+      "new-name": "Nouveau nom",
+      "rename": "Renommer",
+      "title": "Renommer"
+    },
+    "edit-project-info": "Éditer les infomations du projet",
+    "monaco-editor": {
+      "add-script-tooltip": "Ajouter un script",
+      "run-tooltip": "Exécuter le projet",
+      "save-tooltip": "Enregistrer le projet",
+      "change-tooltip": "Cliquez ici pour renommer ou supprimer"
+    },
+    "simulator": "Simulateur"
   },
-  "login": {
-    "password": "Mot de passe",
-    "register": "Vous n'avez pas encore de compte ? S'inscrire",
-    "submit": "Se connecter",
-    "title": "Connexion",
-    "username": "Nom d'utilisateur",
-    "error": "Nom d'utilisateur ou mot de passe incorrect",
-    "close": "Fermer"
+  "about": {
+    "title": "À propos"
   },
-  "register": {
-    "title": "Inscription",
-    "email": "Email",
-    "username": "Nom d'utilisateur",
-    "password": "Mot de passe",
-    "password-confirm": "Confirmer le mot de passe",
-    "submit": "S'inscrire",
-    "least-8-chars": "Au moins 8 caractères",
-    "least-8-chars-error": "Le mot de passe doit contenir au moins 8 caractères",
-    "password-identical": "Les mots de passe doivent être identiques",
-    "password-identical-error": "Les mots de passe ne sont pas identiques",
-    "password-required-error": "Mot de passe requis",
-    "username-required-error": "Nom d'utilisateur requis",
-    "username-pattern": "Le nom d'utilisateur ne peut contenir que des lettres, des chiffres, des {'@'}, des + et des -",
-    "username-invalid-error": "Nom d'utilisateur invalide",
-    "username-too-long-error": "Nom d'utilisateur trop long",
-    "email-required-error": "Email requis",
-    "email-invalid-error": "Email invalide"
+  "app": {
+    "not-logged-in-snackbar": "Vous n'êtes pas connecté"
   },
   "calculator": {
-    "title": "Calculatrice",
-    "no-webusb": "Pas de support WebUSB",
-    "no-webusb-text": "Votre navigateur ne supporte pas WebUSB. Veuillez utiliser un navigateur basé sur Chromium.",
     "connect": "Connexion",
     "disconnect": "Déconnexion",
+    "no-webusb": "Pas de support WebUSB",
+    "no-webusb-text": "Votre navigateur ne supporte pas le WebUSB. Veuillez utiliser un navigateur basé sur Chromium.",
     "numworks-of": "Numworks de",
-    "unknown": "Quelqu'un",
+    "open": "Ouvrir",
     "script-deleted": "Script supprimé",
     "script-saved": "{name} enregistré",
-    "open": "Ouvrir"
+    "show-all-files": "Afficher tous les fichiers",
+    "title": "Calculatrice",
+    "unknown": "Quelqu'un"
+  },
+  "create": {
+    "create": "Créer",
+    "is-public": "Public",
+    "language": "Langage",
+    "name": "Nom du projet",
+    "title": "Créer un nouveau projet"
+  },
+  "login": {
+    "close": "Fermer",
+    "password": "Mot de passe",
+    "register": "Vous n'avez pas de compte ? Créez-en un",
+    "error": "Nom d'utilisateur ou mot de passe invalide",
+    "submit": "Se connecter",
+    "title": "Connexion",
+    "username": "Nom d'utilisateur"
+  },
+  "navbar": {
+    "calculator": "Calculatrice",
+    "explore": "Explorer",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "search": "Rechercher",
+    "signup": "S'inscrire",
+    "start": "Créer"
+  },
+  "register": {
+    "email": "Email",
+    "email-invalid-error": "L'adresse email est invalide",
+    "email-required-error": "Une adresse email est requise",
+    "least-8-chars": "Au moins 8 caracters",
+    "least-8-chars-error": "Le mot de passe doit faire au moins 8 caractères de long",
+    "login": "Vous avez déjà un compte ? Connectez-vous",
+    "password": "Mot de passe",
+    "password-confirm": "Confirmer le mot de passe",
+    "password-identical": "Les mots de passe doivent être identiques",
+    "password-identical-error": "Les mots de passe sont différents",
+    "password-required-error": "Un mot de passe est requis",
+    "submit": "S'inscrire",
+    "title": "S'inscrire",
+    "username": "Nom d'utilisateur",
+    "username-invalid-error": "Le nom d'utilisateur est invalide",
+    "username-pattern": "Le nom d'utilisateur ne peut contenir que les lettres, des nombres, {'@'}, + et -",
+    "username-required-error": "Un nom d'utilisateur est requis",
+    "username-too-long-error": "Le nom d'utilisateur est trop long"
   },
   "snackbar": {
+    "close": "Fermer",
     "connect-calculator": {
       "calculator-not-connected": "La calculatrice n'est pas connectée",
-      "detect-calculator": "Détecter la calculatrice",
-      "dialog-details": "Vous devez connecter votre calculatrice à votre ordinateur pour pouvoir utiliser cette fonctionnalité. Appuyez sur le bouton de connexion ci-dessous pour connecter votre calculatrice."
-    },
-    "too-much-data": {
-      "message": "Trop de données sur la calculatrice",
-      "manage": "Gérer les scripts"
+      "detect-calculator": "Détécter la calculatrice",
+      "dialog-details": "Vous devez connecter votre calculatrice pour utiliser cette fonctionnalité. Appuyez sur le bouton ci-contre pour détécter votre calculatrice."
     },
     "error": {
       "generic-message": "Une erreur innatendue est survenue",
       "home": {
-        "fetch-projects-failed": "Impossible de récupérer les projets"
+        "fetch-projects-failed": "Erreur lors de la récupération des projets"
       }
     },
-    "account-created": {
-      "message": "Compte créé avec succès"
+    "installation-success": "Installation effectuée",
+    "project-created": {
+      "message": "Projet créé avec succès"
     },
-    "username-taken": {
-      "message": "Nom d'utilisateur déjà pris"
+    "project-deleted": {
+      "message": "Projet supprimé avec succès"
     },
     "script-saved": {
       "message": "Script enregistré"
     },
-    "installation-success": "Installation réussie",
-    "close": "Fermer"
+    "success": {
+      "generic-message": "L'opération s'est déroulée avec succès",
+      "installation-success": {
+        "message": "Installation effectuée avec succès"
+      },
+      "logout": {
+        "message": "Deconnexion effectuée avec succès"
+      },
+      "project-created": {
+        "message": "Projet créé"
+      },
+      "project-deleted": {
+        "message": "Projet supprimé"
+      },
+      "project-saved": {
+        "message": "Projet enregistré"
+      },
+      "register": {
+        "account-created": "Compte créé"
+      },
+      "script-deleted": {
+        "message": "Script supprimé"
+      }
+    },
+    "too-much-data": {
+      "manage": "Gérer les scripts",
+      "message": "Trop de fichiers sur la calculatrice"
+    },
+    "username-taken": {
+      "message": "Le nom d'utilisateur est déjà pris"
+    }
   },
-  "app": {
-    "not-logged-in-snackbar": "Vous n'êtes pas connecté"
+  "upsilon-workshop": "Upsilon Workshop",
+  "user": {
+    "groups": "Groupes",
+    "projects": "Projets"
+  },
+  "viewer": {
+    "created-on": "Créé le {date}",
+    "delete": "Supprimer",
+    "delete-project": {
+      "cancel": "Annuler",
+      "delete": "OK",
+      "message": "Êtes-vous sûr de vouloir supprimer ce projet ? ({name})",
+      "title": "Supprimer le projet"
+    },
+    "edit": "Éditer",
+    "modified-on": "Modifié pour la dernière fois le {date}",
+    "upload": "Envoyer vers la calculatrice",
+    "version": "Version {version}",
+    "views": "{count} vues"
   }
 }
