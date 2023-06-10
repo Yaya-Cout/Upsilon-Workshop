@@ -112,13 +112,17 @@ export default defineComponent({
         return
       }
 
+      // Generate a pythonic name
+      // Uppercase and lowercase letters, numbers not at the start, and underscores are allowed
+      let filename = this.name.replace(/[^a-zA-Z0-9_]/g, '_').replace(/^[^a-zA-Z]/g, '_') + '.py'
+
       // Create empty project
       const project: Project = {
         title: this.name,
         language: this.language,
         files: [
           {
-            title: this.name.toLowerCase() + '.py',
+            title: filename,
             content: '',
           }
         ] as Script[],
