@@ -81,6 +81,9 @@
       },
       "installation-success": {
         "message": "Installation successful"
+      },
+      "script-deleted": {
+        "message": "Script deleted successfully"
       }
     },
     "username-taken": {
