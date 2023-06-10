@@ -19,6 +19,7 @@
         <v-text-field
           v-model="newName"
           :label="$t('editor.change-script.new-name')"
+          :rules="filenameRules"
           outlined
         />
       </v-card-text>
@@ -77,6 +78,28 @@ export default defineComponent({
     return {
       dialog: false,
       newName: '',
+      filenameRules: [
+        // Script must have a name
+        (v: string) => (v && v.length > 0) || this.$t('editor.change-script.name-required'),
+        // Script must have an extension
+        (v: string) => (v && v.includes('.')) || this.$t('editor.change-script.extension-required'),
+        // Script must be unique
+        (v: string) => {
+          const existing = this.project.files.find(f => f.title === v);
+          return !existing || this.$t('editor.change-script.name-taken');
+        },
+        // Script must not start with a number
+        (v: string) => (v && isNaN(parseInt(v[0], 10))) || this.$t('editor.change-script.name-starts-with-number'),
+        // Script can only contain letters, numbers and underscores (excluding extension)
+        (v: string) => {
+          const name = v.split('.')[0];
+          return (name && /^[a-zA-Z0-9_]+$/.test(name)) || this.$t('editor.change-script.name-invalid');
+        },
+        (v: string) => {
+          const name = v.split('.')[1];
+          return (name && /^[a-zA-Z0-9]+$/.test(name)) || this.$t('editor.change-script.extension-invalid');
+        }
+      ],
     };
   },
   watch: {

@@ -37,6 +37,12 @@
       "cancel": "Cancel",
       "delete": "Delete",
       "description": "Enter the new name for the script:",
+      "extension-invalid": "The script extension can only contain letters, numbers and {'_'}",
+      "extension-required": "The script name must have an extension",
+      "name-invalid": "The script name can only contain letters, numbers and {'_'}",
+      "name-required": "The script name is required",
+      "name-starts-with-number": "The script name cannot start with a number",
+      "name-taken": "The script name is already taken",
       "new-name": "New name",
       "rename": "Rename",
       "title": "Rename"
