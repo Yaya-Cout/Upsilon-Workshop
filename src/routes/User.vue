@@ -10,10 +10,10 @@
             </v-card-title>
             <v-card-text>
               <v-list>
-                <v-list-item>
+                <v-list-item v-if="groups !== ''">
                   <v-list-item-title>Groups</v-list-item-title>
                   <v-skeleton-loader
-                    :loading="!groups"
+                    :loading="groups === 'none'"
                     type="text"
                     width="100"
                   >
@@ -67,7 +67,7 @@ export default defineComponent({
       api: useAPIStore().api,
       username: this.$route.params.username as string,
       userData: null as User,
-      groups: '',
+      groups: 'none' as string,
       // TODO: Factorize this
       projects: [useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT] as Project[]
     }
@@ -85,9 +85,8 @@ export default defineComponent({
         }
         groupsString = groupsString.slice(0, -2);
         this.groups = groupsString;
-
       },
-      immediate: true,
+      immediate: false,
     },
   },
   async mounted() {
