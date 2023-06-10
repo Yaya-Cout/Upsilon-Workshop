@@ -26,7 +26,7 @@ export default defineComponent({
   methods: {
     save() {
       this.api.updateProject(this.project).then(() => {
-        this.globalStore.scriptSaved = true;
+        this.globalStore.success = "snackbar.success.project-saved.message"
       }).catch((error) => {
         this.globalStore.error = true;
         console.error(error);

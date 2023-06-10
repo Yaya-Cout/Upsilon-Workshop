@@ -6,7 +6,6 @@ export const useCalculatorStore = defineStore('calculator', {
     calculator: new NumWorks(),
     connected: false,
     notConnectedError: false,
-    installationSuccess: false,
     tooMuchDataError: false,
   }),
 })

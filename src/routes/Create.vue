@@ -133,7 +133,7 @@ export default defineComponent({
       }
       try {
         let id = await this.api.createProject(project)
-        this.globalStore.projectCreated = true
+        this.globalStore.success = "snackbar.success.project-created.message"
         this.$router.push({ name: 'view', params: { uuid: id } })
       } catch (e) {
         console.error(e)

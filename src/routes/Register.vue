@@ -130,7 +130,7 @@ export default defineComponent({
       this.loading = false
     },
     registrationSuccess() {
-      this.globalStore.accountCreated = true;
+      this.globalStore.success = "snackbar.success.register.account-created"
       this.$router.push({ name: 'login' })
     },
     registrationFailed(response: any) {

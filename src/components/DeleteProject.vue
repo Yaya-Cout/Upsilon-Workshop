@@ -60,7 +60,7 @@ export default defineComponent({
       try {
         await this.api.deleteProject(this.project);
         this.$router.push('/');
-        this.globalStore.projectDeleted = true;
+        this.globalStore.success = "snackbar.success.project-deleted.message";
       } catch (e) {
         // TODO: Handle not logged in error
         this.globalStore.error = true;

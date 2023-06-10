@@ -23,7 +23,7 @@ export default defineComponent({
   data() {
       return {
           globalStore: useGlobalStore(),
-          lastMessage: "",
+          lastMessage: "snackbar.error.generic-message",
       };
   },
   watch: {

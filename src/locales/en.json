@@ -65,8 +65,23 @@
         "fetch-projects-failed": "Failed to fetch projects"
       }
     },
-    "account-created": {
-      "message": "Account created successfully"
+    "success": {
+      "generic-message": "Operation successful",
+      "register": {
+        "account-created": "Account created successfully"
+      },
+      "project-saved": {
+        "message": "Project saved successfully"
+      },
+      "project-created": {
+        "message": "Project created successfully"
+      },
+      "project-deleted": {
+        "message": "Project deleted successfully"
+      },
+      "installation-success": {
+        "message": "Installation successful"
+      }
     },
     "username-taken": {
       "message": "Username already taken"
