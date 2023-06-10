@@ -101,7 +101,7 @@ export default class API extends EventTarget {
      * @returns {string} - The token of the user
      */
     getToken(): string {
-        return sessionStorage.getItem("token") || "";
+        return localStorage.getItem("token") || "";
     }
 
     /*
@@ -110,13 +110,13 @@ export default class API extends EventTarget {
      */
     setToken(token: string): void {
         if (token === "") {
-            sessionStorage.removeItem("token")
+            localStorage.removeItem("token")
             this.LOGGED_IN = false;
             return;
         } else {
             this.LOGGED_IN = true;
         }
-        sessionStorage.setItem("token", token);
+        localStorage.setItem("token", token);
     }
 
     /*
