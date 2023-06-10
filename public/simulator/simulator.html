@@ -755,6 +755,9 @@
                         Module.downloadScreenshot();
                     });
                 loaded = true;
+                // Remove the loading screen
+                document.querySelector('.calculator').classList.remove('loading');
+
                 window.top.postMessage('Loaded');
             });
         });
