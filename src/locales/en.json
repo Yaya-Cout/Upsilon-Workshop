@@ -1,4 +1,9 @@
 {
+  "404": {
+    "go-home": "Go back to Earth",
+    "message": "You are lost in space",
+    "title": "Page not found"
+  },
   "about": {
     "title": "About"
   },
