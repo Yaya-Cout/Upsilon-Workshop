@@ -21,6 +21,8 @@ export default class API extends EventTarget {
         isPublic: false,
         language: "",
         tags: [],
+        created: new Date(),
+        modified: new Date(),
         _loaded: false,
         _loading: false,
     };
@@ -221,6 +223,8 @@ export default class API extends EventTarget {
                 isPublic: project["is_public"],
                 language: project["language"],
                 tags: [],
+                created: new Date(project["created"]),
+                modified: new Date(project["updated"]),
                 _loaded: true,
                 _loading: false,
             })
@@ -307,6 +311,8 @@ export default class API extends EventTarget {
             tags: [],
             _loaded: true,
             _loading: false,
+            created: new Date(),
+            modified: new Date(),
             uuid: "",
         })
     }
@@ -537,6 +543,8 @@ export default class API extends EventTarget {
             isPublic: response["is_public"],
             language: response["language"],
             tags: [],
+            created: new Date(response["created"]),
+            modified: new Date(response["modified"]),
             _loaded: true,
             _loading: false,
         }

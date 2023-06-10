@@ -128,6 +128,10 @@ export default defineComponent({
         rating: 0,
         author: '',
         uuid: '',
+        created: new Date(),
+        modified: new Date(),
+        tags: [],
+
         _loaded: false,
         _loading: false,
       }
