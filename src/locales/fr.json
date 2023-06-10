@@ -29,7 +29,7 @@
     "add-script": {
       "add": "OK",
       "cancel": "Annuler",
-      "enter-name": "Entrez le nouveau nom pour ce script :",
+      "enter-name": "Entrez le nom pour le nouveau script :",
       "name": "Nom",
       "title": "Ajouter un script"
     },
