@@ -8,11 +8,11 @@
           </h1>
         </v-card-title>
         <v-card-subtitle>
-          <h2 class="text-center">
+          <h2 class="text-center mb-2">
             {{ project.short_description }}
           </h2>
         </v-card-subtitle>
-        <v-row>
+        <v-row class="mt-2">
           <v-col>
             <v-list-item
               :title="project.author"
