@@ -1,10 +1,13 @@
 <template>
   <v-dialog
+    v-if="hasWriteAccess()"
     v-model="dialog"
     max-width="290"
   >
     <template #activator="{ props }">
-      <span v-bind="props">
+      <span
+        v-bind="props"
+      >
         <slot />
       </span>
     </template>
@@ -69,6 +72,16 @@ export default defineComponent({
         console.error(e);
       }
       this.globalStore.progress = false;
+    },
+    hasWriteAccess(): boolean {
+      // Get if the user is the owner of the project
+      console.log(this.project.author, this.api.USERNAME);
+      if (this.project.author === this.api.USERNAME) {
+        return true;
+      }
+      // Get if the user is a collaborator of the project
+      // TODO: Check if the user is a collaborator
+      return false;
     },
   },
 });
