@@ -670,7 +670,7 @@ export default class API extends EventTarget {
         const objLoaded = {}
 
         // Force the object to load
-        await obj
+        // await obj._loading
         await obj._loaded
 
         // Iterate over each property

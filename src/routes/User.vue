@@ -90,7 +90,12 @@ export default defineComponent({
     },
   },
   async mounted() {
-    this.userData = await this.api.loadLazyLoadingObject(this.api.getUser(this.username));
+    try {
+      this.userData = await this.api.loadLazyLoadingObject(this.api.getUser(this.username));
+    } catch (e) {
+      // Redirect to 404 page
+      this.$router.push({ name: 'notfound' });
+    }
     let projects = [] as Project[];
 
     // Iterate over the project and start loading them
