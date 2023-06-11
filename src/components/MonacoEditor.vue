@@ -41,7 +41,10 @@
       </v-btn>
       <!-- TODO: Save button should be disabled when there are no changes -->
       <!-- TODO: Save button should call run before saving -->
-      <SaveProject :project="project">
+      <SaveProject
+        v-if="hasWriteAccess"
+        :project="project"
+      >
         <v-btn icon>
           <v-icon>mdi-content-save</v-icon>
         </v-btn>
@@ -74,6 +77,7 @@
 import * as monaco from 'monaco-editor';
 import { defineComponent, PropType } from 'vue';
 import { useGlobalStore } from '../stores/global';
+import { useAPIStore } from '../stores/api';
 import { Script, Project } from '../types';
 import SaveProject from './SaveProject.vue';
 import ChangeScript from './ChangeScript.vue';
@@ -105,6 +109,7 @@ export default defineComponent({
       oldTab: 0,
       scriptToRename: null as Script | null,
       globalStore: useGlobalStore(),
+      api: useAPIStore().api,
     };
   },
   computed: {
@@ -116,7 +121,17 @@ export default defineComponent({
         // TODO: Avoid using mutation
         this.project.files = value;
       },
-    }
+    },
+    hasWriteAccess(): boolean {
+      // Get if the user is the owner of the project
+      console.log(this.project.author, this.api.USERNAME);
+      if (this.project.author === this.api.USERNAME) {
+        return true;
+      }
+      // Get if the user is a collaborator of the project
+      // TODO: Check if the user is a collaborator
+      return false;
+    },
   },
   watch: {
     "project.files": {
