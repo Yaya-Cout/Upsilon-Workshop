@@ -1,9 +1,9 @@
 <template>
   <div id="summary-component">
-    <v-card class="mx-auto px-6 py-8">
+    <v-card class="mx-auto px-6 py-8 mt-2 mb-2">
       <v-card-item>
         <v-card-title>
-          <h1 class="text-center">
+          <h1 class="text-center mb-2">
             {{ project.title }}
           </h1>
         </v-card-title>

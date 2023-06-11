@@ -4,7 +4,7 @@
       <v-row dense>
         <v-col>
           <SummaryViewer :project="project" />
-          <!-- TODO: Long description -->
+          <LongDescription :project="project" />
         </v-col>
         <v-col>
           <SimulatorView :scripts="project.files" />
@@ -21,12 +21,14 @@ import { useAPIStore } from '../stores/api';
 import { useGlobalStore } from '../stores/global';
 import { Project } from '../types';
 import SummaryViewer from '../components/viewer/SummaryViewer.vue';
+import LongDescription from '../components/viewer/LongDescription.vue';
 
 export default defineComponent({
   name: 'ViewerPage',
   components: {
     SimulatorView,
     SummaryViewer,
+    LongDescription,
   },
   data() {
     return {
