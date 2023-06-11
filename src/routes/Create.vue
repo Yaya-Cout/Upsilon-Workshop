@@ -127,6 +127,7 @@ export default defineComponent({
           }
         ] as Script[],
         short_description: '',
+        long_description: '',
         isPublic: this.isPublic,
         // Everything else is set to avoid type errors and is not used
         rating: 0,

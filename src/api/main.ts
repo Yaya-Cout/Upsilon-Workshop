@@ -15,6 +15,7 @@ export default class API extends EventTarget {
         title: "",
         rating: 0,
         short_description: "",
+        long_description: "",
         author: "",
         files: [],
         uuid: "",
@@ -219,6 +220,7 @@ export default class API extends EventTarget {
                 title: project["name"],
                 rating: 3.5,
                 short_description: project["short_description"],
+                long_description: project["long_description"],
                 author: project["author"].split("/").slice(-2)[0],
                 files: files,
                 uuid: project["id"],
@@ -271,9 +273,12 @@ export default class API extends EventTarget {
         const response = await this._request("scripts/", "POST", {
             name: project.title,
             short_description: project.short_description,
+            long_description: project.long_description,
             files: files,
             is_public: project.isPublic,
             language: project.language,
+            version: project.version,
+            // TODO: Add tags
         }, 201, true)
 
         return response["id"]
@@ -304,6 +309,7 @@ export default class API extends EventTarget {
         return await this.createProject({
             title: name,
             short_description: "",
+            long_description: "",
             language: language,
             files: [{
                 title: name,
@@ -343,6 +349,7 @@ export default class API extends EventTarget {
         const response = await this._request("scripts/" + project.uuid + "/", "PUT", {
             name: project.title,
             short_description: project.short_description,
+            long_description: project.long_description,
             files: files,
             is_public: project.isPublic,
             language: project.language,
@@ -545,6 +552,7 @@ export default class API extends EventTarget {
             // computation on the client)
             rating: 3.5,
             short_description: response["short_description"],
+            long_description: response["long_description"],
             author: response["author"].split("/").slice(-2)[0],
             files: files,
             uuid: response["id"],
