@@ -50,6 +50,7 @@
       "name-taken": "Le nom du script est déjà pris",
       "new-name": "Nouveau nom",
       "rename": "Renommer",
+      "short-description": "Description courte",
       "title": "Renommer"
     },
     "device": "Calculatrice",

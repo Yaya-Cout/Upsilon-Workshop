@@ -50,6 +50,7 @@
       "name-taken": "The script name is already taken",
       "new-name": "New name",
       "rename": "Rename",
+      "short-description": "Short description",
       "title": "Rename"
     },
     "device": "Calculator",

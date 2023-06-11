@@ -50,6 +50,12 @@
             />
           </template>
         </v-autocomplete>
+        <v-text-field
+          v-model="shortDescription"
+          :rules="shortDescriptionRules"
+          :label="$t('editor.edit-project-info-dialog.short-description')"
+          outlined
+        />
       </v-card-text>
 
       <v-card-actions>
@@ -97,9 +103,14 @@ export default defineComponent({
         { name: "python", icon: import.meta.env.BASE_URL + "assets/python.svg" },
         { name: "xcas", icon: import.meta.env.BASE_URL + "assets/xcas.svg" },
       ],
+      shortDescriptionRules: [
+        (v: string) => !!v || 'Short description is required',
+        (v: string) => (v && v.length <= 100) || 'Short description must be less than 100 characters'
+      ],
       title: '',
       version: '',
       language: '',
+      shortDescription: '',
     };
   },
   watch: {
@@ -110,6 +121,7 @@ export default defineComponent({
         this.title = this.project.title;
         this.version = this.project.version;
         this.language = this.project.language;
+        this.shortDescription = this.project.description;
       },
     },
   },
@@ -118,6 +130,7 @@ export default defineComponent({
       this.project.title = this.title;
       this.project.version = this.version;
       this.project.language = this.language;
+      this.project.description = this.shortDescription;
       this.dialog = false;
     },
   },
