@@ -23,6 +23,14 @@ export type Project = {
     language: string,
     // The list of tags of the project
     tags: Tag[],
+    // The date of creation of the project
+    created: Date,
+    // The date of last modification of the project
+    modified: Date,
+    // The number of views of the project
+    views: number,
+    // The version of the project
+    version: string,
 
     // Internal field to know if the project is loaded or not
     _loaded: boolean,

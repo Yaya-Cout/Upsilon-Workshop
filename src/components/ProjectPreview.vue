@@ -12,14 +12,6 @@
         type="article"
       >
         <div class="flex justify-between project-preview">
-          <!-- <v-img
-                class="rounded-lg"
-                elevation="4"
-                :aspect-ratio="320 / 240"
-                width="260"
-                src="/assets/screenshot.png"
-                style="z-index: -1"
-            /> -->
           <div class="elevation-10">
             <v-card-title
               class="pb-0"

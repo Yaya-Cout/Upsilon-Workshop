@@ -21,6 +21,10 @@ export default class API extends EventTarget {
         isPublic: false,
         language: "",
         tags: [],
+        created: new Date(),
+        modified: new Date(),
+        views: 0,
+        version: "",
         _loaded: false,
         _loading: false,
     };
@@ -101,7 +105,7 @@ export default class API extends EventTarget {
      * @returns {string} - The token of the user
      */
     getToken(): string {
-        return sessionStorage.getItem("token") || "";
+        return localStorage.getItem("token") || "";
     }
 
     /*
@@ -110,13 +114,13 @@ export default class API extends EventTarget {
      */
     setToken(token: string): void {
         if (token === "") {
-            sessionStorage.removeItem("token")
+            localStorage.removeItem("token")
             this.LOGGED_IN = false;
             return;
         } else {
             this.LOGGED_IN = true;
         }
-        sessionStorage.setItem("token", token);
+        localStorage.setItem("token", token);
     }
 
     /*
@@ -221,6 +225,10 @@ export default class API extends EventTarget {
                 isPublic: project["is_public"],
                 language: project["language"],
                 tags: [],
+                created: new Date(project["created"]),
+                modified: new Date(project["updated"]),
+                views: project["views"],
+                version: project["version"],
                 _loaded: true,
                 _loading: false,
             })
@@ -305,9 +313,13 @@ export default class API extends EventTarget {
             rating: 3.5,
             author: this.USERNAME,
             tags: [],
+            created: new Date(),
+            modified: new Date(),
+            uuid: "",
+            views: 0,
+            version: "1.0.0",
             _loaded: true,
             _loading: false,
-            uuid: "",
         })
     }
 
@@ -334,6 +346,8 @@ export default class API extends EventTarget {
             files: files,
             is_public: project.isPublic,
             language: project.language,
+            // TODO: Add tags
+            version: project.version,
         }, 200, true)
 
         return response
@@ -537,6 +551,10 @@ export default class API extends EventTarget {
             isPublic: response["is_public"],
             language: response["language"],
             tags: [],
+            created: new Date(response["created"]),
+            modified: new Date(response["modified"]),
+            views: response["views"],
+            version: response["version"],
             _loaded: true,
             _loading: false,
         }
@@ -654,7 +672,7 @@ export default class API extends EventTarget {
         const objLoaded = {}
 
         // Force the object to load
-        await obj
+        // await obj._loading
         await obj._loaded
 
         // Iterate over each property

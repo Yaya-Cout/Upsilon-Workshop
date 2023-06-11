@@ -45,7 +45,7 @@
           <v-list v-if="storage.records">
             <v-checkbox
               v-model="showAll"
-              label="Show all files"
+              :label="$t('calculator.show-all-files')"
               hide-details
             />
             <v-list-item

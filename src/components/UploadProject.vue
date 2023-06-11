@@ -73,7 +73,7 @@ export default defineComponent({
             }
         },
         storageInstalled() {
-            this.calculatorStore.installationSuccess = true;
+            this.globalStore.success = "snackbar.success.installation-success.message";
         },
         storageInstallError(error: any) {
             if (error.message === "Too much data!") {

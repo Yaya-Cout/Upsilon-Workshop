@@ -10,10 +10,10 @@
             </v-card-title>
             <v-card-text>
               <v-list>
-                <v-list-item>
-                  <v-list-item-title>Groups</v-list-item-title>
+                <v-list-item v-if="groups !== ''">
+                  <v-list-item-title>{{ $t('user.groups') }}</v-list-item-title>
                   <v-skeleton-loader
-                    :loading="!groups"
+                    :loading="groups === 'none'"
                     type="text"
                     width="100"
                   >
@@ -27,7 +27,7 @@
         <v-col class="col-1">
           <v-card>
             <v-card-title>
-              <h3>Projects</h3>
+              <h3>{{ $t('user.projects') }}</h3>
             </v-card-title>
             <v-card-text>
               <v-list>
@@ -67,7 +67,7 @@ export default defineComponent({
       api: useAPIStore().api,
       username: this.$route.params.username as string,
       userData: null as User,
-      groups: '',
+      groups: 'none' as string,
       // TODO: Factorize this
       projects: [useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT] as Project[]
     }
@@ -85,13 +85,17 @@ export default defineComponent({
         }
         groupsString = groupsString.slice(0, -2);
         this.groups = groupsString;
-
       },
-      immediate: true,
+      immediate: false,
     },
   },
   async mounted() {
-    this.userData = await this.api.loadLazyLoadingObject(this.api.getUser(this.username));
+    try {
+      this.userData = await this.api.loadLazyLoadingObject(this.api.getUser(this.username));
+    } catch (e) {
+      // Redirect to 404 page
+      this.$router.push({ name: 'notfound' });
+    }
     let projects = [] as Project[];
 
     // Iterate over the project and start loading them

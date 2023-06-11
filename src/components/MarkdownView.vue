@@ -1,9 +1,11 @@
 <template>
   <div ref="markdown" />
 </template>
+
 <script lang="ts">
 import showdown from 'showdown';
 import { defineComponent } from 'vue';
+
 export default defineComponent({
     props: {
         content: {

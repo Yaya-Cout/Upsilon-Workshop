@@ -10,16 +10,18 @@
     </template>
     <v-card>
       <v-card-title class="headline">
-        Delete Project
+        {{ $t('viewer.delete-project.title') }}
       </v-card-title>
 
-      <v-card-text>Are you sure you want to delete this project? ({{ project.title }})</v-card-text>
+      <v-card-text>
+        {{ $t('viewer.delete-project.message', { name: project.title }) }}
+      </v-card-text>
 
       <v-card-actions>
         <v-spacer />
 
         <v-btn @click="dialog = false">
-          Cancel
+          {{ $t('viewer.delete-project.cancel') }}
         </v-btn>
         <br>
 
@@ -27,7 +29,7 @@
           color="error"
           @click="deleteFromAPI"
         >
-          OK
+          {{ $t('viewer.delete-project.delete') }}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -60,7 +62,7 @@ export default defineComponent({
       try {
         await this.api.deleteProject(this.project);
         this.$router.push('/');
-        this.globalStore.projectDeleted = true;
+        this.globalStore.success = "snackbar.success.project-deleted.message";
       } catch (e) {
         // TODO: Handle not logged in error
         this.globalStore.error = true;

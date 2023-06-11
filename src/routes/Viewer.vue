@@ -1,43 +1,32 @@
 <template>
   <div id="viewer-page">
-    <v-row>
-      <v-col>
-        <h1>{{ project.title }}</h1>
-        <v-btn :to="'/edit/' + uuid">
-          Edit
-        </v-btn>
-        <UploadProject :project="project">
-          <v-btn>Upload to calculator</v-btn>
-        </UploadProject>
-        <DeleteProject :project="project">
-          <v-btn>Delete</v-btn>
-        </DeleteProject>
-        <MarkdownView :content="project.description" />
-      </v-col>
-      <v-col>
-        <SimulatorView :scripts="project.files" />
-      </v-col>
-    </v-row>
+    <v-container fluid>
+      <v-row dense>
+        <v-col>
+          <SummaryViewer :project="project" />
+          <!-- TODO: Long description -->
+        </v-col>
+        <v-col>
+          <SimulatorView :scripts="project.files" />
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import MarkdownView from '../components/MarkdownView.vue';
 import SimulatorView from '../components/SimulatorView.vue';
 import { useAPIStore } from '../stores/api';
 import { useGlobalStore } from '../stores/global';
 import { Project } from '../types';
-import UploadProject from '../components/UploadProject.vue';
-import DeleteProject from '../components/DeleteProject.vue';
+import SummaryViewer from '../components/viewer/SummaryViewer.vue';
 
 export default defineComponent({
   name: 'ViewerPage',
   components: {
     SimulatorView,
-    MarkdownView,
-    UploadProject,
-    DeleteProject,
+    SummaryViewer,
   },
   data() {
     return {
@@ -49,7 +38,12 @@ export default defineComponent({
   },
   async mounted() {
     this.globalStore.progress = true;
-    this.project = await this.api.loadLazyLoadingObject(this.api.getProject(this.uuid));
+    try {
+      this.project = await this.api.loadLazyLoadingObject(this.api.getProject(this.uuid));
+    } catch (e) {
+      // Redirect to 404 page
+      this.$router.push({ name: 'notfound' });
+    }
     this.globalStore.progress = false;
   },
 });

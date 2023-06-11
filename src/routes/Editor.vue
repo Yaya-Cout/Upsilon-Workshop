@@ -34,22 +34,21 @@
               </v-chip>
             </v-card-item>
             <v-card-actions>
-              <v-dialog v-model="dialog">
-                <template #activator="{ props }">
-                  <v-btn v-bind="props">
-                    Edit project info
-                  </v-btn>
-                </template>
-                <EditProjectDialog />
-              </v-dialog>
+              <EditProjectDialog
+                :project="project"
+              >
+                <v-btn>
+                  {{ $t('editor.edit-project-info') }}
+                </v-btn>
+              </EditProjectDialog>
             </v-card-actions>
           </v-card>
           <v-tabs v-model="tab">
             <v-tab value="simulator">
-              Simulator
+              {{ $t('editor.simulator') }}
             </v-tab>
             <v-tab value="device">
-              Device
+              {{ $t('editor.device') }}
             </v-tab>
           </v-tabs>
           <v-window v-model="tab">
@@ -102,12 +101,16 @@ export default defineComponent({
       project: useAPIStore().api.EMPTY_PROJECT as Project,
       api: useAPIStore().api,
       globalStore: useGlobalStore(),
-      dialog: false,
     };
   },
   async mounted() {
     this.globalStore.progress = true;
-    this.project = await this.api.loadLazyLoadingObject(this.api.getProject(this.$route.params.uuid));
+    try {
+      this.project = await this.api.loadLazyLoadingObject(this.api.getProject(this.$route.params.uuid));
+    } catch (e) {
+      // Redirect to 404
+      this.$router.push({ name: 'notfound' });
+    }
     this.globalStore.progress = false;
   },
   methods: {

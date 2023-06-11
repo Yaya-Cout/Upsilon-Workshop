@@ -112,13 +112,17 @@ export default defineComponent({
         return
       }
 
+      // Generate a pythonic name
+      // Uppercase and lowercase letters, numbers not at the start, and underscores are allowed
+      let filename = this.name.replace(/[^a-zA-Z0-9_]/g, '_').replace(/^[^a-zA-Z]/g, '_') + '.py'
+
       // Create empty project
       const project: Project = {
         title: this.name,
         language: this.language,
         files: [
           {
-            title: this.name.toLowerCase() + '.py',
+            title: filename,
             content: '',
           }
         ] as Script[],
@@ -128,12 +132,18 @@ export default defineComponent({
         rating: 0,
         author: '',
         uuid: '',
+        created: new Date(),
+        modified: new Date(),
+        tags: [],
+        views: 0,
+        version: "1.0.0",
+
         _loaded: false,
         _loading: false,
       }
       try {
         let id = await this.api.createProject(project)
-        this.globalStore.projectCreated = true
+        this.globalStore.success = "snackbar.success.project-created.message"
         this.$router.push({ name: 'view', params: { uuid: id } })
       } catch (e) {
         console.error(e)

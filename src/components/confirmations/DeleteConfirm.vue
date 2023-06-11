@@ -39,6 +39,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useGlobalStore } from '../../stores/global';
 import { Project } from '../../types';
 
 export default defineComponent({
@@ -56,12 +57,14 @@ export default defineComponent({
   data() {
     return {
       dialog: false,
+      globalStore: useGlobalStore(),
     };
   },
   methods: {
     deleteScript() {
       this.project.files.splice(this.scriptIndex, 1);
       this.dialog = false;
+      this.globalStore.success = "snackbar.success.script-deleted.message";
     },
   },
 });

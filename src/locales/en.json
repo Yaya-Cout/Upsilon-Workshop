@@ -1,63 +1,121 @@
 {
-  "navbar": {
-    "explore": "Search",
-    "start": "Start scripting",
-    "search": "Search",
-    "login": "Log in",
-    "signup": "Sign up",
-    "logout": "Log out",
-    "calculator": "Calculator"
+  "404": {
+    "go-home": "Go back to Earth",
+    "message": "You are lost in space",
+    "title": "Page not found"
+  },
+  "about": {
+    "title": "About"
+  },
+  "app": {
+    "not-logged-in-snackbar": "You are not logged in"
+  },
+  "calculator": {
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "no-webusb": "No WebUSB support",
+    "no-webusb-text": "Your browser does not support WebUSB. Please use a different browser based on Chromium.",
+    "numworks-of": "Numworks of",
+    "open": "Open",
+    "script-deleted": "Script deleted",
+    "script-saved": "{name} saved",
+    "show-all-files": "Show all files",
+    "title": "Calculator",
+    "unknown": "Someone"
+  },
+  "create": {
+    "create": "Create",
+    "is-public": "Public",
+    "language": "Language",
+    "name": "Project name",
+    "title": "Create a new project"
+  },
+  "editor": {
+    "add-script": {
+      "add": "OK",
+      "cancel": "Cancel",
+      "enter-name": "Enter the name for the new script:",
+      "name": "Name",
+      "title": "Add script"
+    },
+    "change-script": {
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "description": "Enter the new name for the script:",
+      "extension-invalid": "The script extension can only contain letters, numbers and {'_'}",
+      "extension-required": "The script name must have an extension",
+      "name-invalid": "The script name can only contain letters, numbers and {'_'}",
+      "name-required": "The script name is required",
+      "name-starts-with-number": "The script name cannot start with a number",
+      "name-taken": "The script name is already taken",
+      "new-name": "New name",
+      "rename": "Rename",
+      "short-description": "Short description",
+      "title": "Rename"
+    },
+    "device": "Calculator",
+    "edit-project-info": "Edit project info",
+    "edit-project-info-dialog": {
+      "cancel": "Cancel",
+      "description": "Enter the new metadata for the project:",
+      "language": "Language",
+      "project-title": "Project title",
+      "project-version": "Project version",
+      "save": "Save",
+      "title": "Edit project metadata"
+    },
+    "monaco-editor": {
+      "add-script-tooltip": "Add script",
+      "change-tooltip": "Click to rename or delete",
+      "run-tooltip": "Run project",
+      "save-tooltip": "Save project"
+    },
+    "simulator": "Simulator"
   },
   "login": {
-    "title": "Log in",
-    "username": "Username",
-    "password": "Password",
-    "submit": "Log in",
-    "register": "Don't have an account? Sign up",
+    "close": "Close",
     "error": "Invalid username or password",
-    "close": "Close"
+    "password": "Password",
+    "register": "Don't have an account? Sign up",
+    "submit": "Log in",
+    "title": "Log in",
+    "username": "Username"
+  },
+  "navbar": {
+    "calculator": "Calculator",
+    "explore": "Explore",
+    "login": "Log in",
+    "logout": "Log out",
+    "search": "Search",
+    "signup": "Sign up",
+    "start": "Start scripting"
   },
   "register": {
-    "title": "Sign up",
     "email": "Email",
-    "username": "Username",
-    "password": "Password",
-    "password-confirm": "Confirm password",
-    "submit": "Sign up",
-    "login": "Already have an account? Log in",
+    "email-invalid-error": "Email is invalid",
+    "email-required-error": "Email is required",
     "least-8-chars": "At least 8 characters",
     "least-8-chars-error": "Password must be at least 8 characters long",
+    "login": "Already have an account? Log in",
+    "password": "Password",
+    "password-confirm": "Confirm password",
     "password-identical": "Passwords must be identical",
     "password-identical-error": "Passwords do not match",
     "password-required-error": "Password is required",
-    "username-required-error": "Username is required",
-    "username-pattern": "Username can only contain letters, numbers, {'@'}, + and -",
+    "submit": "Sign up",
+    "title": "Sign up",
+    "username": "Username",
     "username-invalid-error": "Username is invalid",
-    "username-too-long-error": "Username is too long",
-    "email-required-error": "Email is required",
-    "email-invalid-error": "Email is invalid"
-  },
-  "calculator": {
-    "title": "Calculator",
-    "no-webusb": "No WebUSB support",
-    "no-webusb-text": "Your browser does not support WebUSB. Please use a different browser based on Chromium.",
-    "connect": "Connect",
-    "disconnect": "Disconnect",
-    "numworks-of": "Numworks of",
-    "unknown": "Someone",
-    "script-deleted": "Script deleted",
-    "script-saved": "{name} saved",
-    "open": "Open"
+    "username-pattern": "Username can only contain letters, numbers, {'@'}, + and -",
+    "username-required-error": "Username is required",
+    "username-too-long-error": "Username is too long"
   },
   "snackbar": {
+    "close": "Close",
     "connect-calculator": {
       "calculator-not-connected": "Calculator not connected",
       "detect-calculator": "Detect calculator",
       "dialog-details": "You need to connect your calculator to use this feature. Click on the button below to detect your calculator."
-    },
-    "too-much-data": {
-      "message": "Too much data on the calculator",
-      "manage": "Manage scripts"
     },
     "error": {
       "generic-message": "An unexpected error occurred",
@@ -65,32 +123,66 @@
         "fetch-projects-failed": "Failed to fetch projects"
       }
     },
-    "account-created": {
-      "message": "Account created successfully"
-    },
-    "username-taken": {
-      "message": "Username already taken"
-    },
-    "script-saved": {
-      "message": "Script saved successfully"
-    },
+    "installation-success": "Installation successful",
     "project-created": {
       "message": "Project created successfully"
     },
     "project-deleted": {
       "message": "Project deleted successfully"
     },
-    "installation-success": "Installation successful",
-    "close": "Close"
+    "script-saved": {
+      "message": "Script saved successfully"
+    },
+    "success": {
+      "generic-message": "Operation successful",
+      "installation-success": {
+        "message": "Installation successful"
+      },
+      "logout": {
+        "message": "Logged out successfully"
+      },
+      "project-created": {
+        "message": "Project created successfully"
+      },
+      "project-deleted": {
+        "message": "Project deleted successfully"
+      },
+      "project-saved": {
+        "message": "Project saved successfully"
+      },
+      "register": {
+        "account-created": "Account created successfully"
+      },
+      "script-deleted": {
+        "message": "Script deleted successfully"
+      }
+    },
+    "too-much-data": {
+      "manage": "Manage scripts",
+      "message": "Too much data on the calculator"
+    },
+    "username-taken": {
+      "message": "Username already taken"
+    }
   },
-  "app": {
-    "not-logged-in-snackbar": "You are not logged in"
+  "upsilon-workshop": "Upsilon Workshop",
+  "user": {
+    "groups": "Groups",
+    "projects": "Projects"
   },
-  "create": {
-    "title": "Create a new project",
-    "name": "Project name",
-    "language": "Language",
-    "create": "Create",
-    "is-public": "Public"
+  "viewer": {
+    "created-on": "Created on {date}",
+    "delete": "Delete",
+    "delete-project": {
+      "cancel": "Cancel",
+      "delete": "OK",
+      "message": "Are you sure you want to delete this project? ({name})",
+      "title": "Delete project"
+    },
+    "edit": "Edit",
+    "modified-on": "Last modified on {date}",
+    "upload": "Upload to calculator",
+    "version": "Version {version}",
+    "views": "{count} views"
   }
 }

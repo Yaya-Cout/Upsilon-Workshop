@@ -48,12 +48,19 @@ export default defineComponent({
         const _this = this;
         window.onmessage = function (e) {
             if (e.data === 'Loaded') {
-                _this.send();
+                _this._send();
             }
         };
     },
     methods: {
         send() {
+            const iframe = document.getElementById(
+                'simulator-iframe'
+            ) as HTMLIFrameElement;
+            // Reload the iframe to make sure it's in a clean state.
+            iframe.src = iframe.src;
+        },
+        _send() {
             const iframe = document.getElementById(
                 'simulator-iframe'
             ) as HTMLIFrameElement;

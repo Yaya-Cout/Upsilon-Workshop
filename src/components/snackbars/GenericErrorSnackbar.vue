@@ -21,13 +21,13 @@ import { useGlobalStore } from '../../stores/global';
 
 export default defineComponent({
   data() {
-      return {
-          globalStore: useGlobalStore(),
-          lastMessage: "",
-      };
+    return {
+      globalStore: useGlobalStore(),
+      lastMessage: "snackbar.error.generic-message",
+    };
   },
   watch: {
-    "globalStore.error": function() {
+    "globalStore.error": function () {
       // If the error is a string, set the last message to that string
       if (typeof this.globalStore.error === 'string') {
         this.lastMessage = this.globalStore.error;

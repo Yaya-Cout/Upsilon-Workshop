@@ -10,15 +10,15 @@
     </template>
     <v-card>
       <v-card-title class="headline">
-        Add script
+        {{ $t('editor.add-script.title') }}
       </v-card-title>
 
-      <v-card-text>Enter the new name for the script:</v-card-text>
+      <v-card-text>{{ $t('editor.add-script.enter-name') }}</v-card-text>
 
       <v-card-text>
         <v-text-field
           v-model="name"
-          label="New name"
+          :label="$t('editor.add-script.name')"
           outlined
         />
       </v-card-text>
@@ -27,14 +27,14 @@
         <v-spacer />
 
         <v-btn @click="dialog = false">
-          Cancel
+          {{ $t('editor.add-script.cancel') }}
         </v-btn>
 
         <v-btn
-          color="error"
+          color="primary"
           @click="add"
         >
-          OK
+          {{ $t('editor.add-script.add') }}
         </v-btn>
       </v-card-actions>
     </v-card>

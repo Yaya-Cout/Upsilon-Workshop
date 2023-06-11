@@ -4,7 +4,7 @@
       class="text-center text-h1 my-10 py-10"
       style="background-color:#fffa"
     >
-      Upsilon Workshop
+      {{ $t('upsilon-workshop') }}
     </h1>
     <v-row class="mx-2 my-0">
       <ProjectPreview

@@ -38,6 +38,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAPIStore } from '../../stores/api';
+import { useGlobalStore } from '../../stores/global';
 
 export default defineComponent({
   name: 'DisconnectConfirm',
@@ -45,12 +46,14 @@ export default defineComponent({
     return {
       dialog: false,
       api: useAPIStore().api,
+      globalStore: useGlobalStore(),
     };
   },
   methods: {
     disconnect() {
       this.api.logout();
       this.dialog = false;
+      this.globalStore.success = "snackbar.success.logout.message"
     },
   },
 });
