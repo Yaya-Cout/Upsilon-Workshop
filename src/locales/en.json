@@ -58,6 +58,7 @@
       "cancel": "Cancel",
       "description": "Enter the new metadata for the project:",
       "language": "Language",
+      "long-description": "Long description",
       "project-title": "Project title",
       "project-version": "Project version",
       "save": "Save",

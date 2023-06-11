@@ -1,7 +1,6 @@
 <template>
   <v-dialog
     v-model="dialog"
-    max-width="350"
   >
     <template #activator="{ props }">
       <div v-bind="props">
@@ -21,11 +20,14 @@
           :label="$t('editor.edit-project-info-dialog.project-title')"
           :rules="titleRules"
           outlined
+          counter="100"
         />
         <v-text-field
           v-model="version"
           :label="$t('editor.edit-project-info-dialog.project-version')"
+          :rules="versionRules"
           outlined
+          counter="100"
         />
         <v-autocomplete
           v-model="language"
@@ -55,6 +57,14 @@
           :rules="shortDescriptionRules"
           :label="$t('editor.edit-project-info-dialog.short-description')"
           outlined
+          counter="100"
+        />
+        <v-textarea
+          v-model="longDescription"
+          :label="$t('editor.edit-project-info-dialog.long-description')"
+          :rules="longDescriptionRules"
+          outlined
+          counter="2000"
         />
       </v-card-text>
 
@@ -107,10 +117,17 @@ export default defineComponent({
         (v: string) => !!v || 'Short description is required',
         (v: string) => (v && v.length <= 100) || 'Short description must be less than 100 characters'
       ],
+      versionRules: [
+        (v: string) => (v && v.length <= 100) || 'Version must be less than 100 characters'
+      ],
+      longDescriptionRules: [
+        (v: string) => (v && v.length <= 2000) || 'Long description must be less than 2000 characters'
+      ],
       title: '',
       version: '',
       language: '',
       shortDescription: '',
+      longDescription: '',
     };
   },
   watch: {
@@ -122,6 +139,7 @@ export default defineComponent({
         this.version = this.project.version;
         this.language = this.project.language;
         this.shortDescription = this.project.short_description;
+        this.longDescription = this.project.long_description;
       },
     },
   },
@@ -131,6 +149,7 @@ export default defineComponent({
       this.project.version = this.version;
       this.project.language = this.language;
       this.project.short_description = this.shortDescription;
+      this.project.long_description = this.longDescription;
       this.dialog = false;
     },
   },

@@ -58,6 +58,7 @@
       "cancel": "Annuler",
       "description": "Entrez les nouvelles métadonnées pour ce projet :",
       "language": "Langage",
+      "long-description": "Description longue",
       "project-title": "Titre du projet",
       "project-version": "Version du projet",
       "save": "Enregistrer",
