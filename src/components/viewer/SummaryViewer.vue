@@ -9,7 +9,7 @@
         </v-card-title>
         <v-card-subtitle>
           <h2 class="text-center">
-            {{ project.description }}
+            {{ project.short_description }}
           </h2>
         </v-card-subtitle>
         <v-row>

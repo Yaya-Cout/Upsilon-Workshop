@@ -14,7 +14,7 @@ export default class API extends EventTarget {
     EMPTY_PROJECT: Project = {
         title: "",
         rating: 0,
-        description: "",
+        short_description: "",
         author: "",
         files: [],
         uuid: "",
@@ -218,7 +218,7 @@ export default class API extends EventTarget {
             projects.push({
                 title: project["name"],
                 rating: 3.5,
-                description: project["description"],
+                short_description: project["short_description"],
                 author: project["author"].split("/").slice(-2)[0],
                 files: files,
                 uuid: project["id"],
@@ -270,7 +270,7 @@ export default class API extends EventTarget {
         // Create the project
         const response = await this._request("scripts/", "POST", {
             name: project.title,
-            description: project.description,
+            short_description: project.short_description,
             files: files,
             is_public: project.isPublic,
             language: project.language,
@@ -303,7 +303,7 @@ export default class API extends EventTarget {
         // Create the project
         return await this.createProject({
             title: name,
-            description: "",
+            short_description: "",
             language: language,
             files: [{
                 title: name,
@@ -342,7 +342,7 @@ export default class API extends EventTarget {
         // Update the project
         const response = await this._request("scripts/" + project.uuid + "/", "PUT", {
             name: project.title,
-            description: project.description,
+            short_description: project.short_description,
             files: files,
             is_public: project.isPublic,
             language: project.language,
@@ -544,7 +544,7 @@ export default class API extends EventTarget {
             // TODO: Get the rating (requires a new field in the API or a
             // computation on the client)
             rating: 3.5,
-            description: response["description"],
+            short_description: response["short_description"],
             author: response["author"].split("/").slice(-2)[0],
             files: files,
             uuid: response["id"],
@@ -589,7 +589,7 @@ export default class API extends EventTarget {
         // Convert the response to a tag
         const tag: Tag = {
             name: response["name"],
-            description: response["description"],
+            description: response["short_description"],
             projects: [],
             _loaded: true,
             _loading: false,

@@ -121,7 +121,7 @@ export default defineComponent({
         this.title = this.project.title;
         this.version = this.project.version;
         this.language = this.project.language;
-        this.shortDescription = this.project.description;
+        this.shortDescription = this.project.short_description;
       },
     },
   },
@@ -130,7 +130,7 @@ export default defineComponent({
       this.project.title = this.title;
       this.project.version = this.version;
       this.project.language = this.language;
-      this.project.description = this.shortDescription;
+      this.project.short_description = this.shortDescription;
       this.dialog = false;
     },
   },

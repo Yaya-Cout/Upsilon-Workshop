@@ -9,7 +9,7 @@ export type Project = {
     rating: number,
     // The description of the project
     // TODO: Add a short description field too
-    description: string,
+    short_description: string,
     // The author of the project
     // TODO: Precise the type of this field
     author: string,
