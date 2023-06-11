@@ -71,6 +71,8 @@ export default class API extends EventTarget {
 
         this.setToken(json["token"])
 
+        this.updateUserInfo()
+
         return json["user"]["username"]
     }
 
