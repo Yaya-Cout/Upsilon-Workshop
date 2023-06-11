@@ -1,5 +1,8 @@
 <template>
-  <div id="summary-component" v-if="project.long_description">
+  <div
+    v-if="project.long_description"
+    id="summary-component"
+  >
     <v-card class="mx-auto px-6 py-8 mt-2 mb-2">
       <v-card-item>
         <v-card-title>

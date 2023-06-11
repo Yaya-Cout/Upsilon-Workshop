@@ -9,6 +9,7 @@
         :key="script.title"
       >
         <ChangeScript
+          v-if="scriptIndex === tab"
           :project="project"
           :script-index="scriptIndex"
         >
@@ -22,6 +23,9 @@
             </v-tooltip>
           </template>
         </ChangeScript>
+        <div v-else>
+          {{ script.title }}
+        </div>
       </v-tab>
       <v-btn
         icon
