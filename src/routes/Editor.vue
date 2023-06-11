@@ -34,14 +34,13 @@
               </v-chip>
             </v-card-item>
             <v-card-actions>
-              <v-dialog v-model="dialog">
-                <template #activator="{ props }">
-                  <v-btn v-bind="props">
-                    {{ $t('editor.edit-project-info') }}
-                  </v-btn>
-                </template>
-                <EditProjectDialog />
-              </v-dialog>
+              <EditProjectDialog
+                :project="project"
+              >
+                <v-btn>
+                  {{ $t('editor.edit-project-info') }}
+                </v-btn>
+              </EditProjectDialog>
             </v-card-actions>
           </v-card>
           <v-tabs v-model="tab">
@@ -102,7 +101,6 @@ export default defineComponent({
       project: useAPIStore().api.EMPTY_PROJECT as Project,
       api: useAPIStore().api,
       globalStore: useGlobalStore(),
-      dialog: false,
     };
   },
   async mounted() {

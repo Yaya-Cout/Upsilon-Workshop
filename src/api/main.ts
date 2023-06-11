@@ -346,6 +346,8 @@ export default class API extends EventTarget {
             files: files,
             is_public: project.isPublic,
             language: project.language,
+            // TODO: Add tags
+            version: project.version,
         }, 200, true)
 
         return response

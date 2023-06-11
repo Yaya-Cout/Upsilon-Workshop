@@ -54,6 +54,15 @@
     },
     "device": "Calculator",
     "edit-project-info": "Edit project info",
+    "edit-project-info-dialog": {
+      "cancel": "Cancel",
+      "description": "Enter the new metadata for the project:",
+      "language": "Language",
+      "project-title": "Project title",
+      "project-version": "Project version",
+      "save": "Save",
+      "title": "Edit project metadata"
+    },
     "monaco-editor": {
       "add-script-tooltip": "Add script",
       "change-tooltip": "Click to rename or delete",
