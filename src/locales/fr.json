@@ -108,7 +108,7 @@
       "dialog-details": "Vous devez connecter votre calculatrice pour utiliser cette fonctionnalité. Appuyez sur le bouton ci-contre pour détécter votre calculatrice."
     },
     "error": {
-      "generic-message": "Une erreur innatendue est survenue",
+      "generic-message": "Une erreur inattendue est survenue",
       "home": {
         "fetch-projects-failed": "Erreur lors de la récupération des projets"
       }
