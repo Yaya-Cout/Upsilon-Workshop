@@ -19,6 +19,7 @@
         <v-text-field
           v-model="title"
           :label="$t('editor.edit-project-info-dialog.project-title')"
+          :rules="titleRules"
           outlined
         />
         <v-text-field
@@ -84,7 +85,7 @@ export default defineComponent({
   data() {
     return {
       dialog: false,
-      nameRules: [
+      titleRules: [
         (v: string) => !!v || 'Name is required',
         (v: string) => (v && v.length <= 100) || 'Project name must be less than 100 characters'
       ],
