@@ -38,7 +38,12 @@ export default defineComponent({
   },
   async mounted() {
     this.globalStore.progress = true;
-    this.project = await this.api.loadLazyLoadingObject(this.api.getProject(this.uuid));
+    try {
+      this.project = await this.api.loadLazyLoadingObject(this.api.getProject(this.uuid));
+    } catch (e) {
+      // Redirect to 404 page
+      this.$router.push({ name: 'notfound' });
+    }
     this.globalStore.progress = false;
   },
 });
