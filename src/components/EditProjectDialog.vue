@@ -64,7 +64,7 @@
           :label="$t('editor.edit-project-info-dialog.long-description')"
           :rules="longDescriptionRules"
           outlined
-          counter="2000"
+          counter="10000"
         />
       </v-card-text>
 
@@ -121,7 +121,7 @@ export default defineComponent({
         (v: string) => (v && v.length <= 100) || 'Version must be less than 100 characters'
       ],
       longDescriptionRules: [
-        (v: string) => (v && v.length <= 2000) || 'Long description must be less than 2000 characters'
+        (v: string) => (v && v.length <= 10000) || 'Long description must be less than 10000 characters'
       ],
       title: '',
       version: '',
