@@ -61,6 +61,7 @@
       "long-description": "Long description",
       "project-title": "Project title",
       "project-version": "Project version",
+      "public": "Public",
       "save": "Save",
       "short-description": "Short description",
       "title": "Edit project metadata"

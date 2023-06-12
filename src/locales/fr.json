@@ -61,6 +61,7 @@
       "long-description": "Description longue",
       "project-title": "Titre du projet",
       "project-version": "Version du projet",
+      "public": "Public",
       "save": "Enregistrer",
       "short-description": "Description courte",
       "title": "Éditer les métadonnées du projet"

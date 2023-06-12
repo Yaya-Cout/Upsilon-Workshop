@@ -66,6 +66,10 @@
           outlined
           counter="10000"
         />
+        <v-switch
+          v-model="isPublic"
+          :label="$t('editor.edit-project-info-dialog.public')"
+        />
       </v-card-text>
 
       <v-card-actions>
@@ -128,6 +132,7 @@ export default defineComponent({
       language: '',
       shortDescription: '',
       longDescription: '',
+      isPublic: false,
     };
   },
   watch: {
@@ -140,6 +145,7 @@ export default defineComponent({
         this.language = this.project.language;
         this.shortDescription = this.project.short_description;
         this.longDescription = this.project.long_description;
+        this.isPublic = this.project.isPublic;
       },
     },
   },
@@ -150,6 +156,7 @@ export default defineComponent({
       this.project.language = this.language;
       this.project.short_description = this.shortDescription;
       this.project.long_description = this.longDescription;
+      this.project.isPublic = this.isPublic;
       this.dialog = false;
     },
   },
