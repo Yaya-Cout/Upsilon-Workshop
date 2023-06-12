@@ -71,7 +71,8 @@
       "run-tooltip": "Run project",
       "save-tooltip": "Save project"
     },
-    "simulator": "Simulator"
+    "simulator": "Simulator",
+    "view-project-info": "View project info"
   },
   "login": {
     "close": "Close",

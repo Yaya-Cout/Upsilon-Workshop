@@ -71,7 +71,8 @@
       "run-tooltip": "Exécuter le projet",
       "save-tooltip": "Enregistrer le projet"
     },
-    "simulator": "Simulateur"
+    "simulator": "Simulateur",
+    "view-project-info": "Voir les infos du projet"
   },
   "login": {
     "close": "Fermer",
