@@ -30,6 +30,12 @@
     "name": "Project name",
     "title": "Create a new project"
   },
+  "disconnect-confirm": {
+    "cancel": "Cancel",
+    "description": "Are you sure you want to disconnect?",
+    "disconnect": "Disconnect",
+    "title": "Disconnect"
+  },
   "editor": {
     "add-script": {
       "add": "OK",
@@ -51,6 +57,12 @@
       "new-name": "New name",
       "rename": "Rename",
       "title": "Rename"
+    },
+    "delete-confirm": {
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "description": "Are you sure you want to delete {name}?",
+      "title": "Delete {name}"
     },
     "device": "Calculator",
     "edit-project-info": "Edit project info",
@@ -183,6 +195,7 @@
       "title": "Delete project"
     },
     "edit": "Edit",
+    "long-description": "Long description",
     "modified-on": "Last modified on {date}",
     "upload": "Upload to calculator",
     "version": "Version {version}",

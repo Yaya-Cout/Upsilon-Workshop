@@ -7,7 +7,7 @@
       <v-card-item>
         <v-card-title>
           <h1 class="text-center mb-2">
-            Long Description
+            {{ $t('viewer.long-description') }}
           </h1>
         </v-card-title>
 

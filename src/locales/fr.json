@@ -30,6 +30,12 @@
     "name": "Nom du projet",
     "title": "Créer un nouveau projet"
   },
+  "disconnect-confirm": {
+    "cancel": "Annuler",
+    "description": "Êtes-vous sûr de vouloir vous deconnecter ?",
+    "disconnect": "Se déconnecter",
+    "title": "Déconnexion"
+  },
   "editor": {
     "add-script": {
       "add": "OK",
@@ -51,6 +57,12 @@
       "new-name": "Nouveau nom",
       "rename": "Renommer",
       "title": "Renommer"
+    },
+    "delete-confirm": {
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "description": "Êtes-vous sûr de vouloir supprimer {name} ?",
+      "title": "Supprimer {name}"
     },
     "device": "Calculatrice",
     "edit-project-info": "Éditer les infos du projet",
@@ -183,6 +195,7 @@
       "title": "Supprimer le projet"
     },
     "edit": "Éditer",
+    "long-description": "Description longue",
     "modified-on": "Modifié pour la dernière fois le {date}",
     "upload": "Envoyer vers la calculatrice",
     "version": "Version {version}",

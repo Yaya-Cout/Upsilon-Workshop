@@ -10,11 +10,11 @@
     </template>
     <v-card>
       <v-card-title class="headline">
-        Delete {{ project.files[scriptIndex].title }}
+        {{ $t('editor.delete-confirm.title', { name: project.files[scriptIndex].title }) }}
       </v-card-title>
 
       <v-card-text>
-        Are you sure you want to delete {{ project.files[scriptIndex].title }}?
+        {{ $t('editor.delete-confirm.description', { name: project.files[scriptIndex].title }) }}
 
         <v-card-actions>
           <v-spacer />
@@ -22,14 +22,14 @@
           <v-btn
             @click="dialog = false"
           >
-            Cancel
+            {{ $t('editor.delete-confirm.cancel') }}
           </v-btn>
 
           <v-btn
             color="error"
             @click="deleteScript"
           >
-            OK
+            {{ $t('editor.delete-confirm.delete') }}
           </v-btn>
         </v-card-actions>
       </v-card-text>
