@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <v-tabs
+      id="monaco-editor-tabs"
       v-model="tab"
       @update:model-value="setTab"
     >
@@ -193,6 +194,14 @@ export default defineComponent({
       if (this.scripts.length === 0) {
         return;
       }
+      // If the tab is out of bounds, set it to the first tab
+      if (tab >= this.scripts.length) {
+        tab = 0;
+      }
+      // If oldTab is out of bounds, set it to the first tab
+      if (this.oldTab >= this.scripts.length) {
+        this.oldTab = 0;
+      }
       if (editor == null)
         throw Error();
       // Iterate over all models and get the one that corresponds to the tab
@@ -249,5 +258,10 @@ export default defineComponent({
 .container {
   height: 100%;
   width: 100%;
+}
+
+#monaco-editor-tabs {
+  /* TODO : Avoid hardcoding */
+  max-width: calc(100vw - 364px);
 }
 </style>
