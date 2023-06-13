@@ -13,6 +13,8 @@
           v-if="scriptIndex === tab"
           :project="project"
           :script-index="scriptIndex"
+          @rename="filename => rename(scriptIndex, filename)"
+          @delete="deleteScript(scriptIndex)"
         >
           <template #default>
             {{ script.title }}
@@ -56,7 +58,10 @@
           {{ $t('editor.monaco-editor.save-tooltip') }}
         </v-tooltip>
       </SaveProject>
-      <AddScript :project="project">
+      <AddScript
+        :project="project"
+        @add="addScript"
+      >
         <v-btn icon>
           <v-icon>mdi-plus</v-icon>
         </v-btn>
@@ -103,12 +108,11 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["run"],
+  emits: ["run", "update-project"],
   data() {
     return {
       tab: 0,
       oldTab: 0,
-      scriptToRename: null as Script | null,
       globalStore: useGlobalStore(),
       api: useAPIStore().api,
     };
@@ -120,7 +124,8 @@ export default defineComponent({
       },
       set(value: Script[]) {
         // TODO: Avoid using mutation
-        this.project.files = value;
+        // this.project.files = value;
+        this.$emit('update-project', value);
       },
     },
     hasWriteAccess(): boolean {
@@ -158,7 +163,7 @@ export default defineComponent({
       for (const model of models) {
         for (var i = 0; i < this.scripts.length; i++) {
           if (this.project.uuid + this.scripts[i].title === model.uri.path.substring(1)) {
-            this.project.files[i].content = model.getValue();
+            this.scripts[i].content = model.getValue();
           }
         }
       }
@@ -234,8 +239,19 @@ export default defineComponent({
     run() {
       this.$emit("run");
     },
-    renameScript(script: Script) {
-      this.scriptToRename = script;
+    rename(scriptId: number, newTitle: string) {
+      this.scripts[scriptId].title = newTitle;
+    },
+    deleteScript(scriptId: number) {
+      this.scripts.splice(scriptId, 1);
+      this.globalStore.success = "snackbar.success.script-deleted.message";
+    },
+    addScript(name: string) {
+      this.scripts.push({
+        title: name,
+        content: "",
+      });
+      this.setTab(this.scripts.length - 1);
     },
   }
 });

@@ -348,7 +348,7 @@ export default class API extends EventTarget {
         }
 
         // Update the project
-        const response = await this._request("scripts/" + project.uuid + "/", "PUT", {
+        return await this._request("scripts/" + project.uuid + "/", "PUT", {
             name: project.title,
             short_description: project.short_description,
             long_description: project.long_description,
@@ -358,8 +358,24 @@ export default class API extends EventTarget {
             // TODO: Add tags
             version: project.version,
         }, 200, true)
+    }
 
-        return response
+    /*
+     * Update a project's metadata on the API
+     * @param {Project} project - The project to update
+     * @returns {Promise} - A promise that resolves to the response
+     * @throws {Error} - If an error occurred
+     */
+    async updateProjectMetadata(project: Project): Promise<object> {
+        // Update the project
+        return await this._request("scripts/" + project.uuid + "/", "PATCH", {
+            name: project.title,
+            short_description: project.short_description,
+            long_description: project.long_description,
+            is_public: project.isPublic,
+            version: project.version,
+            language: project.language,
+        }, 200, true)
     }
 
     /*

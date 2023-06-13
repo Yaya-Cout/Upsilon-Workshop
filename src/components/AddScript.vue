@@ -54,6 +54,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ['add'],
   data() {
     return {
       dialog: false,
@@ -84,11 +85,8 @@ export default defineComponent({
   },
   methods: {
     add() {
-      this.project.files.push({
-        title: this.name,
-        content: '',
-      });
       this.dialog = false;
+      this.$emit('add', this.name);
     },
   },
 });

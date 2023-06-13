@@ -54,6 +54,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ['delete'],
   data() {
     return {
       dialog: false,
@@ -62,9 +63,8 @@ export default defineComponent({
   },
   methods: {
     deleteScript() {
-      this.project.files.splice(this.scriptIndex, 1);
+      this.$emit('delete');
       this.dialog = false;
-      this.globalStore.success = "snackbar.success.script-deleted.message";
     },
   },
 });

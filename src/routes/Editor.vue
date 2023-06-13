@@ -37,6 +37,7 @@
               <EditProjectDialog
                 v-if="hasWriteAccess()"
                 :project="project"
+                @update-metadata="updateMetadata"
               >
                 <v-btn>
                   {{ $t('editor.edit-project-info') }}
@@ -81,6 +82,7 @@
           <MonacoEditor
             :project="project"
             @run="run"
+            @update-project="updateProject"
           />
         </div>
       </v-row>
@@ -146,6 +148,20 @@ export default defineComponent({
       // Get if the user is a collaborator of the project
       // TODO: Check if the user is a collaborator
       return false;
+    },
+    async updateMetadata(metadata: any) {
+      this.globalStore.progress = true;
+      this.project = metadata;
+      try {
+        await this.api.updateProjectMetadata(metadata);
+        this.globalStore.success = "snackbar.success.project-saved.message";
+      } catch (e) {
+        this.globalStore.error = true;
+      }
+      this.globalStore.progress = false;
+    },
+    updateProject(project: Project) {
+      this.project = project;
     },
   },
 });

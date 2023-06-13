@@ -92,6 +92,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import cloneDeep from 'lodash/cloneDeep';
 import { Project } from '../types';
 
 export default defineComponent({
@@ -102,6 +103,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ['update-metadata'],
   data() {
     return {
       dialog: false,
@@ -151,12 +153,18 @@ export default defineComponent({
   },
   methods: {
     save() {
-      this.project.title = this.title;
-      this.project.version = this.version;
-      this.project.language = this.language;
-      this.project.short_description = this.shortDescription;
-      this.project.long_description = this.longDescription;
-      this.project.isPublic = this.isPublic;
+      // Make a copy of the project
+      const project = cloneDeep(this.project);
+      // Update the project
+      project.title = this.title;
+      project.version = this.version;
+      project.language = this.language;
+      project.short_description = this.shortDescription;
+      project.long_description = this.longDescription;
+      project.isPublic = this.isPublic;
+      // Emit the updated project
+      this.$emit('update-metadata', project);
+      // Close the dialog
       this.dialog = false;
     },
   },
