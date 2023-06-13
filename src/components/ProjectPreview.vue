@@ -82,9 +82,11 @@ export default defineComponent({
         for (const tag of project.tags) {
           this.api.loadLazyLoadingObject(tag);
         }
+        let tags = [];
         for (const tag of project.tags) {
-          this.tags.push(await this.api.loadLazyLoadingObject(tag));
+          tags.push(await this.api.loadLazyLoadingObject(tag));
         }
+        this.tags = tags;
       }
     }
   }
