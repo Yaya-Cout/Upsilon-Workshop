@@ -202,6 +202,7 @@ export default defineComponent({
       // If the tab is out of bounds, set it to the first tab
       if (tab >= this.scripts.length) {
         tab = 0;
+        this.tab = 0;
       }
       // If oldTab is out of bounds, set it to the first tab
       if (this.oldTab >= this.scripts.length) {
