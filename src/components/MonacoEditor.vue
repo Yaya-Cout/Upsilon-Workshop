@@ -134,7 +134,11 @@ export default defineComponent({
         return true;
       }
       // Get if the user is a collaborator of the project
-      // TODO: Check if the user is a collaborator
+      for (const collaborator of this.project.collaborators) {
+        if (collaborator === this.api.USERNAME) {
+          return true;
+        }
+      }
       return false;
     },
   },

@@ -78,8 +78,6 @@ export default defineComponent({
       if (this.project.author === this.api.USERNAME) {
         return true;
       }
-      // Get if the user is a collaborator of the project
-      // TODO: Check if the user is a collaborator
       return false;
     },
   },
