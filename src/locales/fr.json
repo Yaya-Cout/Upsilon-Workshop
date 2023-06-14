@@ -200,7 +200,7 @@
     "upload": "Envoyer vers la calculatrice",
     "version": "Version {version}",
     "views": "{count} vues",
-    "simulator-launch":"Lancer le simulateur",
-    "simulator-stop":"Stopper le simulateur"
+    "simulator-launch": "Lancer le simulateur",
+    "simulator-stop": "Stopper le simulateur"
   }
 }
