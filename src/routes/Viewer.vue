@@ -7,7 +7,21 @@
           <!-- TODO: Long description -->
         </v-col>
         <v-col>
-          <SimulatorView :scripts="project.files" />
+          <v-card class="mx-auto px-6 py-8">
+            <v-card-item>
+              <v-btn variant="outlined" @click="launchSimul" v-if="!startSimul">
+                {{ $t('viewer.simulator-launch') }}
+              </v-btn>
+              <v-btn variant="outlined" @click="launchSimul" v-else>
+                {{ $t('viewer.simulator-stop') }}
+              </v-btn>
+              <div v-if="startSimul">
+                <SimulatorView :scripts="project.files" />
+              </div>
+            </v-card-item>
+          </v-card>
+          
+          
         </v-col>
       </v-row>
     </v-container>
@@ -34,6 +48,7 @@ export default defineComponent({
       api: useAPIStore().api,
       globalStore: useGlobalStore(),
       uuid: this.$route.params.uuid as string,
+      startSimul: false
     };
   },
   async mounted() {
@@ -45,6 +60,11 @@ export default defineComponent({
       this.$router.push({ name: 'notfound' });
     }
     this.globalStore.progress = false;
+  },
+  methods: {
+    launchSimul() {
+      this.startSimul = !this.startSimul
+    }
   },
 });
 </script>
