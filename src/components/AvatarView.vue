@@ -1,6 +1,6 @@
 <template>
   <VAvatar>
-    <div v-html="svg" />
+    <span v-html="svg" />
   </VAvatar>
 </template>
 
@@ -29,7 +29,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-div {
+span {
   display: flex;
   justify-content: center;
   align-items: center;

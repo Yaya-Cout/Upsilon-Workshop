@@ -1,7 +1,5 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-  >
+  <v-dialog v-model="dialog">
     <template #activator="{ props }">
       <div v-bind="props">
         <slot />
@@ -52,6 +50,7 @@
             />
           </template>
         </v-autocomplete>
+        <SelectCollaborators v-model="collaborators" />
         <v-text-field
           v-model="shortDescription"
           :rules="shortDescriptionRules"
@@ -94,9 +93,13 @@
 import { defineComponent } from 'vue';
 import cloneDeep from 'lodash/cloneDeep';
 import { Project } from '../types';
+import SelectCollaborators from './SelectCollaborators.vue';
 
 export default defineComponent({
   name: 'EditProjectDialog',
+  components: {
+    SelectCollaborators,
+  },
   props: {
     project: {
       type: Object as () => Project,
@@ -134,6 +137,7 @@ export default defineComponent({
       language: '',
       shortDescription: '',
       longDescription: '',
+      collaborators: [] as string[],
       isPublic: false,
     };
   },
@@ -148,6 +152,7 @@ export default defineComponent({
         this.shortDescription = this.project.short_description;
         this.longDescription = this.project.long_description;
         this.isPublic = this.project.isPublic;
+        this.collaborators = this.project.collaborators;
       },
     },
   },
@@ -162,6 +167,7 @@ export default defineComponent({
       project.short_description = this.shortDescription;
       project.long_description = this.longDescription;
       project.isPublic = this.isPublic;
+      project.collaborators = this.collaborators;
       // Emit the updated project
       this.$emit('update-metadata', project);
       // Close the dialog

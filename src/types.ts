@@ -32,6 +32,8 @@ export type Project = {
     views: number,
     // The version of the project
     version: string,
+    // The collaborators of the project
+    collaborators: string[],
 
     // Internal field to know if the project is loaded or not
     _loaded: boolean,

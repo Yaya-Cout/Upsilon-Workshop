@@ -138,6 +138,7 @@ export default defineComponent({
         tags: [],
         views: 0,
         version: "1.0.0",
+        collaborators: [],
 
         _loaded: false,
         _loading: false,

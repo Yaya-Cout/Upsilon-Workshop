@@ -26,6 +26,7 @@ export default class API extends EventTarget {
         modified: new Date(),
         views: 0,
         version: "",
+        collaborators: [],
         _loaded: false,
         _loading: false,
     };
@@ -233,6 +234,7 @@ export default class API extends EventTarget {
                 modified: new Date(project["updated"]),
                 views: project["views"],
                 version: project["version"],
+                collaborators: [],
                 _loaded: true,
                 _loading: false,
             })
@@ -241,9 +243,60 @@ export default class API extends EventTarget {
             for (const tag of project["tags"]) {
                 projects[projects.length - 1].tags.push(this.getTag(tag.split("/").at(-2)))
             }
+
+            // Convert the collaborators
+            for (const collaborator of project["collaborators"]) {
+                // Keep only the part after the slash (API_ROOT/users/username -> username)
+                projects[projects.length - 1].collaborators.push(collaborator.split("/").slice(-2)[0])
+            }
         }
 
         return projects
+    }
+
+    /*
+     * Get users from the API
+     * @param {string} query - The query to search for (optional)
+     * @returns {Promise} - A promise that resolves to the users
+     */
+    async getUsers(
+        query: string = "",
+    ): Promise<User[]> {
+        const response = await this._request(
+            "users/" + (query !== "" ? "?search=" + query : ""),
+            "GET", {}, 200, false
+        )
+
+        // Convert the response to a list of users
+        const users: User[] = []
+        for (const user of response.results) {
+            users.push({
+                username: user["username"],
+                groups: [],
+                projects: [],
+                collaborations: [],
+                ratings: [],
+                _loaded: true,
+                _loading: false,
+            })
+
+            // Convert the groups
+            for (const group of user["groups"]) {
+                users[users.length - 1].groups.push(this.getGroup(group.split("/").at(-2)))
+            }
+
+            // Convert the projects
+            for (const project of user["scripts"]) {
+                users[users.length - 1].projects.push(this.getProject(project.split("/").at(-2)))
+            }
+
+            // Convert the collaborations
+            for (const collaboration of user["collaborations"]) {
+                users[users.length - 1].collaborations.push(this.getProject(collaboration.split("/").at(-2)))
+            }
+        }
+
+        return users
     }
 
     /* Delete a project from the API
@@ -326,6 +379,7 @@ export default class API extends EventTarget {
             uuid: "",
             views: 0,
             version: "1.0.0",
+            collaborators: [],
             _loaded: true,
             _loading: false,
         })
@@ -347,6 +401,13 @@ export default class API extends EventTarget {
             })
         }
 
+        // Convert the collaborators
+        const collaborators: string[] = []
+        for (const collaborator of project.collaborators) {
+            // Add the root URL/users/username to the list of collaborators
+            collaborators.push(this.BASE_URL + "users/" + collaborator + "/")
+        }
+
         // Update the project
         return await this._request("scripts/" + project.uuid + "/", "PUT", {
             name: project.title,
@@ -357,6 +418,7 @@ export default class API extends EventTarget {
             language: project.language,
             // TODO: Add tags
             version: project.version,
+            collaborators: collaborators,
         }, 200, true)
     }
 
@@ -367,6 +429,13 @@ export default class API extends EventTarget {
      * @throws {Error} - If an error occurred
      */
     async updateProjectMetadata(project: Project): Promise<object> {
+        // Convert the collaborators
+        const collaborators: string[] = []
+        for (const collaborator of project.collaborators) {
+            // Add the root URL/users/username to the list of collaborators
+            collaborators.push(this.BASE_URL + "users/" + collaborator + "/")
+        }
+
         // Update the project
         return await this._request("scripts/" + project.uuid + "/", "PATCH", {
             name: project.title,
@@ -375,6 +444,7 @@ export default class API extends EventTarget {
             is_public: project.isPublic,
             version: project.version,
             language: project.language,
+            collaborators: collaborators,
         }, 200, true)
     }
 
@@ -581,6 +651,7 @@ export default class API extends EventTarget {
             modified: new Date(response["modified"]),
             views: response["views"],
             version: response["version"],
+            collaborators: [],
             _loaded: true,
             _loading: false,
         }
@@ -588,6 +659,11 @@ export default class API extends EventTarget {
         // Convert the tags
         for (const tag of response["tags"]) {
             project.tags.push(this.getTag(tag.split("/").at(-2)))
+        }
+
+        // Convert the collaborators
+        for (const collaborator of response["collaborators"]) {
+            project.collaborators.push(collaborator.split("/").at(-2))
         }
 
         return project
@@ -710,10 +786,7 @@ export default class API extends EventTarget {
             objLoaded[prop] = await value
         }
 
-
         return objLoaded
     }
-
-
 }
 
