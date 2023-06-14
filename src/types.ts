@@ -7,9 +7,10 @@ export type Project = {
     // TODO: This is not implemented and is going to be reimplemented using
     // likes
     rating: number,
-    // The description of the project
-    // TODO: Add a short description field too
-    description: string,
+    // The short description of the project
+    short_description: string,
+    // The long description of the project
+    long_description: string,
     // The author of the project
     // TODO: Precise the type of this field
     author: string,

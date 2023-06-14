@@ -1,7 +1,6 @@
 <template>
   <v-dialog
     v-model="dialog"
-    max-width="350"
   >
     <template #activator="{ props }">
       <div v-bind="props">
@@ -21,11 +20,14 @@
           :label="$t('editor.edit-project-info-dialog.project-title')"
           :rules="titleRules"
           outlined
+          counter="100"
         />
         <v-text-field
           v-model="version"
           :label="$t('editor.edit-project-info-dialog.project-version')"
+          :rules="versionRules"
           outlined
+          counter="100"
         />
         <v-autocomplete
           v-model="language"
@@ -55,6 +57,18 @@
           :rules="shortDescriptionRules"
           :label="$t('editor.edit-project-info-dialog.short-description')"
           outlined
+          counter="100"
+        />
+        <v-textarea
+          v-model="longDescription"
+          :label="$t('editor.edit-project-info-dialog.long-description')"
+          :rules="longDescriptionRules"
+          outlined
+          counter="10000"
+        />
+        <v-switch
+          v-model="isPublic"
+          :label="$t('editor.edit-project-info-dialog.public')"
         />
       </v-card-text>
 
@@ -78,6 +92,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import cloneDeep from 'lodash/cloneDeep';
 import { Project } from '../types';
 
 export default defineComponent({
@@ -88,6 +103,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ['update-metadata'],
   data() {
     return {
       dialog: false,
@@ -107,10 +123,18 @@ export default defineComponent({
         (v: string) => !!v || 'Short description is required',
         (v: string) => (v && v.length <= 100) || 'Short description must be less than 100 characters'
       ],
+      versionRules: [
+        (v: string) => (v && v.length <= 100) || 'Version must be less than 100 characters'
+      ],
+      longDescriptionRules: [
+        (v: string) => (v && v.length <= 10000) || 'Long description must be less than 10000 characters'
+      ],
       title: '',
       version: '',
       language: '',
       shortDescription: '',
+      longDescription: '',
+      isPublic: false,
     };
   },
   watch: {
@@ -121,16 +145,26 @@ export default defineComponent({
         this.title = this.project.title;
         this.version = this.project.version;
         this.language = this.project.language;
-        this.shortDescription = this.project.description;
+        this.shortDescription = this.project.short_description;
+        this.longDescription = this.project.long_description;
+        this.isPublic = this.project.isPublic;
       },
     },
   },
   methods: {
     save() {
-      this.project.title = this.title;
-      this.project.version = this.version;
-      this.project.language = this.language;
-      this.project.description = this.shortDescription;
+      // Make a copy of the project
+      const project = cloneDeep(this.project);
+      // Update the project
+      project.title = this.title;
+      project.version = this.version;
+      project.language = this.language;
+      project.short_description = this.shortDescription;
+      project.long_description = this.longDescription;
+      project.isPublic = this.isPublic;
+      // Emit the updated project
+      this.$emit('update-metadata', project);
+      // Close the dialog
       this.dialog = false;
     },
   },

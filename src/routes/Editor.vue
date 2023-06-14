@@ -35,12 +35,20 @@
             </v-card-item>
             <v-card-actions>
               <EditProjectDialog
+                v-if="hasWriteAccess()"
                 :project="project"
+                @update-metadata="updateMetadata"
               >
                 <v-btn>
                   {{ $t('editor.edit-project-info') }}
                 </v-btn>
               </EditProjectDialog>
+              <v-btn
+                v-else
+                :to="'/view/' + project.uuid"
+              >
+                {{ $t('editor.view-project-info') }}
+              </v-btn>
             </v-card-actions>
           </v-card>
           <v-tabs v-model="tab">
@@ -74,6 +82,7 @@
           <MonacoEditor
             :project="project"
             @run="run"
+            @update-project="updateProject"
           />
         </div>
       </v-row>
@@ -101,12 +110,13 @@ export default defineComponent({
       project: useAPIStore().api.EMPTY_PROJECT as Project,
       api: useAPIStore().api,
       globalStore: useGlobalStore(),
+      uuid: this.$route.params.uuid,
     };
   },
   async mounted() {
     this.globalStore.progress = true;
     try {
-      this.project = await this.api.loadLazyLoadingObject(this.api.getProject(this.$route.params.uuid));
+      this.project = await this.api.loadLazyLoadingObject(this.api.getProject(this.uuid));
     } catch (e) {
       // Redirect to 404
       this.$router.push({ name: 'notfound' });
@@ -128,7 +138,31 @@ export default defineComponent({
       } else {
         console.error('Simulator component not found');
       }
-    }
+    },
+    hasWriteAccess(): boolean {
+      // Get if the user is the owner of the project
+      if (this.project.author === this.api.USERNAME) {
+        return true;
+      }
+      // Get if the user is a collaborator of the project
+      // TODO: Check if the user is a collaborator
+      return false;
+    },
+    async updateMetadata(metadata: any) {
+      this.globalStore.progress = true;
+      this.project = metadata;
+      try {
+        await this.api.updateProjectMetadata(metadata);
+        this.globalStore.success = "snackbar.success.project-saved.message";
+      } catch (e) {
+        this.globalStore.error = true;
+        console.error(e);
+      }
+      this.globalStore.progress = false;
+    },
+    updateProject(project: Project) {
+      this.project = project;
+    },
   },
 });
 </script>

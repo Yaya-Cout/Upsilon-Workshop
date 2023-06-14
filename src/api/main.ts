@@ -14,7 +14,8 @@ export default class API extends EventTarget {
     EMPTY_PROJECT: Project = {
         title: "",
         rating: 0,
-        description: "",
+        short_description: "",
+        long_description: "",
         author: "",
         files: [],
         uuid: "",
@@ -69,6 +70,8 @@ export default class API extends EventTarget {
         }
 
         this.setToken(json["token"])
+
+        this.updateUserInfo()
 
         return json["user"]["username"]
     }
@@ -218,7 +221,8 @@ export default class API extends EventTarget {
             projects.push({
                 title: project["name"],
                 rating: 3.5,
-                description: project["description"],
+                short_description: project["short_description"],
+                long_description: project["long_description"],
                 author: project["author"].split("/").slice(-2)[0],
                 files: files,
                 uuid: project["id"],
@@ -270,10 +274,13 @@ export default class API extends EventTarget {
         // Create the project
         const response = await this._request("scripts/", "POST", {
             name: project.title,
-            description: project.description,
+            short_description: project.short_description,
+            long_description: project.long_description,
             files: files,
             is_public: project.isPublic,
             language: project.language,
+            version: project.version,
+            // TODO: Add tags
         }, 201, true)
 
         return response["id"]
@@ -303,7 +310,8 @@ export default class API extends EventTarget {
         // Create the project
         return await this.createProject({
             title: name,
-            description: "",
+            short_description: "",
+            long_description: "",
             language: language,
             files: [{
                 title: name,
@@ -340,17 +348,34 @@ export default class API extends EventTarget {
         }
 
         // Update the project
-        const response = await this._request("scripts/" + project.uuid + "/", "PUT", {
+        return await this._request("scripts/" + project.uuid + "/", "PUT", {
             name: project.title,
-            description: project.description,
+            short_description: project.short_description,
+            long_description: project.long_description,
             files: files,
             is_public: project.isPublic,
             language: project.language,
             // TODO: Add tags
             version: project.version,
         }, 200, true)
+    }
 
-        return response
+    /*
+     * Update a project's metadata on the API
+     * @param {Project} project - The project to update
+     * @returns {Promise} - A promise that resolves to the response
+     * @throws {Error} - If an error occurred
+     */
+    async updateProjectMetadata(project: Project): Promise<object> {
+        // Update the project
+        return await this._request("scripts/" + project.uuid + "/", "PATCH", {
+            name: project.title,
+            short_description: project.short_description,
+            long_description: project.long_description,
+            is_public: project.isPublic,
+            version: project.version,
+            language: project.language,
+        }, 200, true)
     }
 
     /*
@@ -544,7 +569,8 @@ export default class API extends EventTarget {
             // TODO: Get the rating (requires a new field in the API or a
             // computation on the client)
             rating: 3.5,
-            description: response["description"],
+            short_description: response["short_description"],
+            long_description: response["long_description"],
             author: response["author"].split("/").slice(-2)[0],
             files: files,
             uuid: response["id"],
@@ -589,7 +615,7 @@ export default class API extends EventTarget {
         // Convert the response to a tag
         const tag: Tag = {
             name: response["name"],
-            description: response["description"],
+            description: response["short_description"],
             projects: [],
             _loaded: true,
             _loading: false,

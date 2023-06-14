@@ -30,5 +30,7 @@ export default defineComponent({
 .v-main {
   background-image: url('./assets/background_light.webp') !important;
   background-size: cover;
+  max-width: 100%;
+  max-height: 100%;
 }
 </style>

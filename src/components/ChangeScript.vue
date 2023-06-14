@@ -26,6 +26,7 @@
 
       <v-card-actions>
         <DeleteConfirm
+          v-bind="$attrs"
           :project="project"
           :script-index="scriptIndex"
         >
@@ -64,6 +65,7 @@ export default defineComponent({
   components: {
     DeleteConfirm,
   },
+  inheritAttrs: false,
   props: {
     project: {
       type: Object as () => Project,
@@ -74,6 +76,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ['rename'],
   data() {
     return {
       dialog: false,
@@ -113,10 +116,11 @@ export default defineComponent({
   methods: {
     rename() {
       // TODO: Use an event instead of mutating the prop
-      this.project.files[this.scriptIndex].title = this.newName;
+      // this.project.files[this.scriptIndex].title = this.newName;
+      this.$emit('rename', this.newName);
       this.dialog = false;
     },
-  },
+  }
 });
 </script>
 4q

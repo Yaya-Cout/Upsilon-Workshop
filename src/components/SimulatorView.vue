@@ -58,7 +58,7 @@ export default defineComponent({
                 'simulator-iframe'
             ) as HTMLIFrameElement;
             // Reload the iframe to make sure it's in a clean state.
-            iframe.src = iframe.src;
+            iframe.contentDocument?.location.reload();
         },
         _send() {
             const iframe = document.getElementById(

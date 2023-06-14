@@ -35,6 +35,8 @@ jobs:
         uses: actions/configure-pages@v3
       - name: Install dependencies
         run: yarn install
+      - name: Download epsilon.js
+        run: ./download-epsilon-js.sh
       - name: Build
         run: yarn build
       - name: Copy index to 404

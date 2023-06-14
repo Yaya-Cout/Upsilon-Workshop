@@ -6,7 +6,7 @@
         to="/"
         class="home-link"
       >
-        Upsilon Workshop
+        {{ $t('upsilon-workshop') }}
       </router-link>
     </v-app-bar-title>
     <v-btn

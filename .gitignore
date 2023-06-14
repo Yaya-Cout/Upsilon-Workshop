@@ -25,3 +25,4 @@ dist-ssr
 *.sw?
 
 data.json
+public/simulator/epsilon.js

@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <v-tabs
+      id="monaco-editor-tabs"
       v-model="tab"
       @update:model-value="setTab"
     >
@@ -9,8 +10,11 @@
         :key="script.title"
       >
         <ChangeScript
+          v-if="scriptIndex === tab"
           :project="project"
           :script-index="scriptIndex"
+          @rename="filename => rename(scriptIndex, filename)"
+          @delete="deleteScript(scriptIndex)"
         >
           <template #default>
             {{ script.title }}
@@ -22,6 +26,9 @@
             </v-tooltip>
           </template>
         </ChangeScript>
+        <div v-else>
+          {{ script.title }}
+        </div>
       </v-tab>
       <v-btn
         icon
@@ -37,7 +44,10 @@
       </v-btn>
       <!-- TODO: Save button should be disabled when there are no changes -->
       <!-- TODO: Save button should call run before saving -->
-      <SaveProject :project="project">
+      <SaveProject
+        v-if="hasWriteAccess"
+        :project="project"
+      >
         <v-btn icon>
           <v-icon>mdi-content-save</v-icon>
         </v-btn>
@@ -48,7 +58,10 @@
           {{ $t('editor.monaco-editor.save-tooltip') }}
         </v-tooltip>
       </SaveProject>
-      <AddScript :project="project">
+      <AddScript
+        :project="project"
+        @add="addScript"
+      >
         <v-btn icon>
           <v-icon>mdi-plus</v-icon>
         </v-btn>
@@ -70,6 +83,7 @@
 import * as monaco from 'monaco-editor';
 import { defineComponent, PropType } from 'vue';
 import { useGlobalStore } from '../stores/global';
+import { useAPIStore } from '../stores/api';
 import { Script, Project } from '../types';
 import SaveProject from './SaveProject.vue';
 import ChangeScript from './ChangeScript.vue';
@@ -94,13 +108,13 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["run"],
+  emits: ["run", "update-project"],
   data() {
     return {
       tab: 0,
       oldTab: 0,
-      scriptToRename: null as Script | null,
       globalStore: useGlobalStore(),
+      api: useAPIStore().api,
     };
   },
   computed: {
@@ -110,9 +124,19 @@ export default defineComponent({
       },
       set(value: Script[]) {
         // TODO: Avoid using mutation
-        this.project.files = value;
+        // this.project.files = value;
+        this.$emit('update-project', value);
       },
-    }
+    },
+    hasWriteAccess(): boolean {
+      // Get if the user is the owner of the project
+      if (this.project.author === this.api.USERNAME) {
+        return true;
+      }
+      // Get if the user is a collaborator of the project
+      // TODO: Check if the user is a collaborator
+      return false;
+    },
   },
   watch: {
     "project.files": {
@@ -138,7 +162,7 @@ export default defineComponent({
       for (const model of models) {
         for (var i = 0; i < this.scripts.length; i++) {
           if (this.project.uuid + this.scripts[i].title === model.uri.path.substring(1)) {
-            this.project.files[i].content = model.getValue();
+            this.scripts[i].content = model.getValue();
           }
         }
       }
@@ -154,7 +178,6 @@ export default defineComponent({
               exists = true;
               break;
             }
-            console.log("Updating model " + script.title);
             model.setValue(script.content);
             exists = true;
             break;
@@ -163,7 +186,6 @@ export default defineComponent({
         if (exists) {
           continue;
         }
-        console.log("Creating model " + script.title);
         // If it doesn't exist, create it
         models.push(monaco.editor.createModel(script.content, "python", monaco.Uri.from({ scheme: "file", path: this.project.uuid + script.title })));
       }
@@ -173,6 +195,15 @@ export default defineComponent({
       // If there is no script, don't do anything
       if (this.scripts.length === 0) {
         return;
+      }
+      // If the tab is out of bounds, set it to the first tab
+      if (tab >= this.scripts.length) {
+        tab = 0;
+        this.tab = 0;
+      }
+      // If oldTab is out of bounds, set it to the first tab
+      if (this.oldTab >= this.scripts.length) {
+        this.oldTab = 0;
       }
       if (editor == null)
         throw Error();
@@ -206,8 +237,19 @@ export default defineComponent({
     run() {
       this.$emit("run");
     },
-    renameScript(script: Script) {
-      this.scriptToRename = script;
+    rename(scriptId: number, newTitle: string) {
+      this.scripts[scriptId].title = newTitle;
+    },
+    deleteScript(scriptId: number) {
+      this.scripts.splice(scriptId, 1);
+      this.globalStore.success = "snackbar.success.script-deleted.message";
+    },
+    addScript(name: string) {
+      this.scripts.push({
+        title: name,
+        content: "",
+      });
+      this.setTab(this.scripts.length - 1);
     },
   }
 });
@@ -230,5 +272,10 @@ export default defineComponent({
 .container {
   height: 100%;
   width: 100%;
+}
+
+#monaco-editor-tabs {
+  /* TODO : Avoid hardcoding */
+  max-width: calc(100vw - 364px);
 }
 </style>

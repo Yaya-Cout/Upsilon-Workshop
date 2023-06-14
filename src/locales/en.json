@@ -30,6 +30,12 @@
     "name": "Project name",
     "title": "Create a new project"
   },
+  "disconnect-confirm": {
+    "cancel": "Cancel",
+    "description": "Are you sure you want to disconnect?",
+    "disconnect": "Disconnect",
+    "title": "Disconnect"
+  },
   "editor": {
     "add-script": {
       "add": "OK",
@@ -50,8 +56,13 @@
       "name-taken": "The script name is already taken",
       "new-name": "New name",
       "rename": "Rename",
-      "short-description": "Short description",
       "title": "Rename"
+    },
+    "delete-confirm": {
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "description": "Are you sure you want to delete {name}?",
+      "title": "Delete {name}"
     },
     "device": "Calculator",
     "edit-project-info": "Edit project info",
@@ -59,9 +70,12 @@
       "cancel": "Cancel",
       "description": "Enter the new metadata for the project:",
       "language": "Language",
+      "long-description": "Long description",
       "project-title": "Project title",
       "project-version": "Project version",
+      "public": "Public",
       "save": "Save",
+      "short-description": "Short description",
       "title": "Edit project metadata"
     },
     "monaco-editor": {
@@ -70,7 +84,8 @@
       "run-tooltip": "Run project",
       "save-tooltip": "Save project"
     },
-    "simulator": "Simulator"
+    "simulator": "Simulator",
+    "view-project-info": "View project info"
   },
   "login": {
     "close": "Close",
@@ -180,6 +195,7 @@
       "title": "Delete project"
     },
     "edit": "Edit",
+    "long-description": "Long description",
     "modified-on": "Last modified on {date}",
     "upload": "Upload to calculator",
     "version": "Version {version}",

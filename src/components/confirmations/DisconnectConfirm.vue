@@ -10,10 +10,10 @@
     </template>
     <v-card>
       <v-card-title class="headline">
-        Disconnect
+        {{ $t('disconnect-confirm.disconnect') }}
       </v-card-title>
 
-      <v-card-text>Are you sure you want to disconnect?</v-card-text>
+      <v-card-text>{{ $t('disconnect-confirm.description') }}</v-card-text>
 
       <v-card-actions>
         <v-spacer />
@@ -21,14 +21,14 @@
         <v-btn
           @click="dialog = false"
         >
-          Cancel
+          {{ $t('disconnect-confirm.cancel') }}
         </v-btn>
 
         <v-btn
           color="error"
           @click="disconnect"
         >
-          OK
+          {{ $t('disconnect-confirm.disconnect') }}
         </v-btn>
       </v-card-actions>
     </v-card>

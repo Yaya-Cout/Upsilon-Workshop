@@ -31,11 +31,11 @@
               </v-icon>
               {{ project.author }}
             </v-card-text>
-            <v-card-subtitle v-if="project.description">
+            <v-card-subtitle v-if="project.short_description">
               <v-icon small>
                 mdi-image-text
               </v-icon>
-              {{ project.description }}
+              {{ project.short_description }}
             </v-card-subtitle>
             <v-card-item>
               <v-chip
@@ -82,9 +82,11 @@ export default defineComponent({
         for (const tag of project.tags) {
           this.api.loadLazyLoadingObject(tag);
         }
+        let tags = [];
         for (const tag of project.tags) {
-          this.tags.push(await this.api.loadLazyLoadingObject(tag));
+          tags.push(await this.api.loadLazyLoadingObject(tag));
         }
+        this.tags = tags;
       }
     }
   }

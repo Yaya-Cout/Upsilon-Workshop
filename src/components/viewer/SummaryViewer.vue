@@ -1,18 +1,18 @@
 <template>
   <div id="summary-component">
-    <v-card class="mx-auto px-6 py-8">
+    <v-card class="mx-auto px-6 py-8 mt-2 mb-2">
       <v-card-item>
         <v-card-title>
-          <h1 class="text-center">
+          <h1 class="text-center mb-2">
             {{ project.title }}
           </h1>
         </v-card-title>
         <v-card-subtitle>
-          <h2 class="text-center">
-            {{ project.description }}
+          <h2 class="text-center mb-2">
+            {{ project.short_description }}
           </h2>
         </v-card-subtitle>
-        <v-row>
+        <v-row class="mt-2">
           <v-col>
             <v-list-item
               :title="project.author"
