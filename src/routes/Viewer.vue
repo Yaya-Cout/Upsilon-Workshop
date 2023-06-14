@@ -50,7 +50,7 @@ export default defineComponent({
       api: useAPIStore().api,
       globalStore: useGlobalStore(),
       uuid: this.$route.params.uuid as string,
-      startSimul: false
+      startSimulator: false
     };
   },
   async mounted() {
