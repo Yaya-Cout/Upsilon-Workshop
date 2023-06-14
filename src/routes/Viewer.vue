@@ -64,7 +64,7 @@ export default defineComponent({
     this.globalStore.progress = false;
   },
   methods: {
-    launchSimul() {
+    launchSimulator() {
       this.startSimul = !this.startSimul
     }
   },
