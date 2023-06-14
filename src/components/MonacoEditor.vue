@@ -130,7 +130,6 @@ export default defineComponent({
     },
     hasWriteAccess(): boolean {
       // Get if the user is the owner of the project
-      console.log(this.project.author, this.api.USERNAME);
       if (this.project.author === this.api.USERNAME) {
         return true;
       }
@@ -179,7 +178,6 @@ export default defineComponent({
               exists = true;
               break;
             }
-            console.log("Updating model " + script.title);
             model.setValue(script.content);
             exists = true;
             break;
@@ -188,7 +186,6 @@ export default defineComponent({
         if (exists) {
           continue;
         }
-        console.log("Creating model " + script.title);
         // If it doesn't exist, create it
         models.push(monaco.editor.createModel(script.content, "python", monaco.Uri.from({ scheme: "file", path: this.project.uuid + script.title })));
       }

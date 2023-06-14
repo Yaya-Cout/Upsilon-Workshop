@@ -141,7 +141,6 @@ export default defineComponent({
     },
     hasWriteAccess(): boolean {
       // Get if the user is the owner of the project
-      console.log(this.project.author, this.api.USERNAME);
       if (this.project.author === this.api.USERNAME) {
         return true;
       }
@@ -157,6 +156,7 @@ export default defineComponent({
         this.globalStore.success = "snackbar.success.project-saved.message";
       } catch (e) {
         this.globalStore.error = true;
+        console.error(e);
       }
       this.globalStore.progress = false;
     },
