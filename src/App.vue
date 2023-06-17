@@ -1,11 +1,13 @@
 <template>
   <v-app>
-    <v-main>
-      <AppBar />
-      <router-view />
-      <MainManager />
-      <MainSnackbar />
-    </v-main>
+    <div class="main-container">
+      <v-main>
+        <AppBar />
+        <router-view />
+        <MainManager />
+        <MainSnackbar />
+      </v-main>
+    </div>
   </v-app>
 </template>
 
@@ -28,9 +30,17 @@ export default defineComponent({
 
 <style>
 .v-main {
-  background-image: url('./assets/background_light.webp') !important;
-  background-size: cover;
+  backdrop-filter: blur(6px);
   max-width: 100%;
   max-height: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.main-container {
+  background-image: url('./assets/background_light.webp');
+  background-size: cover;
+  width: 100%;
+  height: 100%;
 }
 </style>
