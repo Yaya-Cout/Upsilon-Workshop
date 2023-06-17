@@ -46,6 +46,14 @@
           />
         </v-row>
       </v-col>
+      <v-btn
+        v-if="empty === false"
+        class="mx-auto center"
+        variant="outlined"
+        @click="loadMore"
+      >
+        Load more
+      </v-btn>
     </v-sheet>
   </div>
 </template>
@@ -59,7 +67,9 @@ import ProjectPreview from '../components/ProjectPreview.vue';
 
 export default defineComponent({
   name: "SearchPage",
-  components: { ProjectPreview },
+  components: {
+    ProjectPreview,
+  },
   data() {
     return {
       projects: [] as Project[],
@@ -67,6 +77,7 @@ export default defineComponent({
       globalStore: useGlobalStore(),
       timeout: null as any,
       debouncedQuery: '' as string,
+      empty: true,
     }
   },
   computed: {
@@ -82,13 +93,17 @@ export default defineComponent({
       }
     }
   },
-
   watch: {
     debouncedQuery: async function (newQuery: string) {
       this.globalStore.progress = true;
       // TODO: Pagination
       // TODO: No results
       this.projects = await this.api.getProjects(newQuery)
+      if (this.projects.length === 0) {
+        this.empty = true;
+      } else {
+        this.empty = false;
+      }
       // If the query is the same as the one we just searched for, we can stop the loading animation
       if (this.debouncedQuery === this.query) {
         this.globalStore.progress = false;
@@ -96,9 +111,53 @@ export default defineComponent({
     }
   },
   async mounted() {
-    this.globalStore.progress = true;
-    this.projects = await this.api.getProjects()
-    this.globalStore.progress = false;
+    this.loadMore();
+  },
+  methods: {
+    async loadMore() {
+      this.globalStore.progress = true;
+      let page = this.projects.length / this.api.ITEM_PER_PAGE + 1;
+      // If page is not an integer, we have reached the end of the list
+      if (!Number.isInteger(page)) {
+        this.globalStore.progress = false;
+        this.empty = true;
+        return;
+      }
+      // Else round it down
+      page = Math.floor(page);
+      let newProjects: Project[];
+      try {
+        newProjects = await this.api.getProjects(this.query, page);
+      } catch (e) {
+        this.globalStore.progress = false;
+        this.globalStore.error = true;
+        console.error(e);
+        return;
+      }
+      // If newProjects is empty, we have reached the end of the list
+      if (newProjects.length === 0) {
+        this.globalStore.progress = false;
+        this.empty = true;
+        return;
+      }
+      this.projects = this.projects.concat(newProjects);
+      // If there is less projects than the number of items per page, we have reached the end of the list
+      if (newProjects.length < this.api.ITEM_PER_PAGE) {
+        this.empty = true;
+      } else {
+        this.empty = false;
+      }
+      // TODO: Read if empty from API
+      this.globalStore.progress = false;
+    }
   }
 });
 </script>
+
+<style scoped>
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>

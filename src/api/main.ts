@@ -30,6 +30,7 @@ export default class API extends EventTarget {
         _loaded: false,
         _loading: false,
     };
+    ITEM_PER_PAGE: number = 10;
 
     /*
      * Initialize the API client
@@ -201,11 +202,22 @@ export default class API extends EventTarget {
      */
     async getProjects(
         query: string = "",
+        page: number = 1,
     ): Promise<Project[]> {
         const response = await this._request(
-            "scripts/" + (query !== "" ? "?search=" + query : ""),
-            "GET", {}, 200, false
+            "scripts/" + "?search=" + query + "&page=" + page,
+            "GET", {}, 0, false
         )
+
+        // Handle invalid page
+        if (response["detail"] === "Invalid page.") {
+            return []
+        }
+
+        // If the field "results" is not present, the request failed
+        if (response["results"] === undefined) {
+            throw new Error("API request failed");
+        }
 
         // Convert the response to a list of projects
         const projects: Project[] = []
