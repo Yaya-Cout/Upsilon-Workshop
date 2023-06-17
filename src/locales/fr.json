@@ -125,6 +125,12 @@
     "username-required-error": "Un nom d'utilisateur est requis",
     "username-too-long-error": "Le nom d'utilisateur est trop long"
   },
+  "search": {
+    "load-more": "Charger plus",
+    "no-results": "Aucun resultat trouvé",
+    "search": "Rechercher",
+    "title": "Rechercher"
+  },
   "snackbar": {
     "close": "Fermer",
     "connect-calculator": {

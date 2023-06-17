@@ -125,6 +125,12 @@
     "username-required-error": "Username is required",
     "username-too-long-error": "Username is too long"
   },
+  "search": {
+    "load-more": "Load more",
+    "no-results": "No results found",
+    "search": "Search",
+    "title": "Search"
+  },
   "snackbar": {
     "close": "Close",
     "connect-calculator": {

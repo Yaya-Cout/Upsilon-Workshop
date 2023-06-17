@@ -1,7 +1,7 @@
 <template>
   <div id="search-page">
     <h1 class="text-center">
-      Search
+      {{ $t('search.search') }}
     </h1>
     <v-sheet class="pa-4">
       <v-col class="v-col-xs-12 v-col-lg-8 v-col-xl-6 v-col-sm-10 offset-xs-0 offset-sm-1 offset-lg-2 offset-xl-3">
@@ -12,7 +12,7 @@
           hide-details
           single-line
           density="compact"
-          :label="$t('navbar.search')"
+          :label="$t('search.search')"
         />
         <v-row class="my-4 d-flex justify-center">
           <v-chip
@@ -52,8 +52,14 @@
         variant="outlined"
         @click="loadMore"
       >
-        Load more
+        {{ $t('search.load-more') }}
       </v-btn>
+      <p
+        v-else
+        class="center"
+      >
+        {{ $t('search.no-results') }}
+      </p>
     </v-sheet>
   </div>
 </template>
@@ -159,5 +165,6 @@ export default defineComponent({
   display: block;
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
 }
 </style>
