@@ -188,9 +188,11 @@
   },
   "upsilon-workshop": "Upsilon Workshop",
   "user": {
+    "collaborations": "Collaborations",
     "groups": "Groupes",
-    "projects": "Projets",
-    "no-projects": "Aucun projet trouvé"
+    "no-collaborations": "Aucune collaboration trouvée",
+    "no-projects": "Aucun projet trouvé",
+    "projects": "Projets"
   },
   "viewer": {
     "created-on": "Créé le {date}",
