@@ -36,6 +36,11 @@
                 mdi-image-text
               </v-icon>
               {{ project.short_description }}
+              <v-tooltip
+                activator="parent"
+              >
+                {{ project.short_description }}
+              </v-tooltip>
             </v-card-subtitle>
             <v-card-item>
               <v-chip
