@@ -37,6 +37,9 @@
                     :key="project.uuid"
                     :project="project"
                   />
+                  <p v-if="projects.length === 0">
+                    {{ $t('user.no-projects') }}
+                  </p>
                 </v-row>
               </v-list>
             </v-card-text>

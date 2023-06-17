@@ -189,7 +189,8 @@
   "upsilon-workshop": "Upsilon Workshop",
   "user": {
     "groups": "Groups",
-    "projects": "Projects"
+    "projects": "Projects",
+    "no-projects": "No projects found"
   },
   "viewer": {
     "created-on": "Created on {date}",
