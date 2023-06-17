@@ -95,6 +95,6 @@ export default defineComponent({
 
 <style scoped>
 .project-preview {
-  min-width: 272px;
+  width: 300px;
 }
 </style>
