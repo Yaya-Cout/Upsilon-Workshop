@@ -28,6 +28,16 @@
     "is-public": "Public",
     "language": "Langage",
     "name": "Nom du projet",
+    "rules": {
+      "language": {
+        "invalid": "Le langage doit être dans : python, micropython-khicas, xcas-python-pow, xcas-python-xor, xcas, xcas-session",
+        "required": "Le langage est requis"
+      },
+      "name": {
+        "length": "Le nom du projet doit faire moins de 100 caractères",
+        "required": "Le nom du projet est requis"
+      }
+    },
     "title": "Créer un nouveau projet"
   },
   "disconnect-confirm": {

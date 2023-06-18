@@ -19,6 +19,7 @@
             prepend-inner-icon="mdi-pencil"
             :label="$t('create.name')"
             :rules="nameRules"
+            counter="100"
             clearable
           />
 
@@ -27,9 +28,7 @@
             :items="languages"
             :label="$t('create.language')"
             :rules="languageRules"
-            clearable
             item-title="name"
-            item-
           >
             <template #prepend-inner>
               <img
@@ -49,7 +48,6 @@
           <v-switch
             v-model="isPublic"
             :label="$t('create.is-public')"
-            clearable
           />
 
           <v-btn
@@ -85,12 +83,12 @@ export default defineComponent({
       language: 'python',
       isPublic: false,
       nameRules: [
-        (v: string) => !!v || 'Name is required',
-        (v: string) => (v && v.length <= 100) || 'Project name must be less than 100 characters'
+        (v: string) => !!v || this.$t('create.rules.name.required'),
+        (v: string) => (v && v.length <= 100) || this.$t('create.rules.name.length'),
       ],
       languageRules: [
-        (v: string) => !!v || 'Language is required',
-        (v: string) => ['python', 'micropython-khicas', 'xcas-python-pow', 'xcas-python-xor', 'xcas', 'xcas-session'].includes(v) || 'Language must be one of the following: python, micropython-khicas, xcas-python-pow, xcas-python-xor, xcas, xcas-session'
+        (v: string) => !!v || this.$t('create.rules.language.required'),
+        (v: string) => ['python', 'micropython-khicas', 'xcas-python-pow', 'xcas-python-xor', 'xcas', 'xcas-session'].includes(v) || this.$t('create.rules.language.invalid'),
       ],
       languages: [
         { name: "python", icon: import.meta.env.BASE_URL + "assets/python.svg" },
