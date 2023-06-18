@@ -102,6 +102,14 @@
     "error": "Nom d'utilisateur ou mot de passe invalide",
     "password": "Mot de passe",
     "register": "Vous n'avez pas de compte ? Créez-en un",
+    "rules": {
+      "password": {
+        "required": "Le mot de passe est requis"
+      },
+      "username": {
+        "required": "Le nom d'utilisateur est requis"
+      }
+    },
     "submit": "Se connecter",
     "title": "Connexion",
     "username": "Nom d'utilisateur"

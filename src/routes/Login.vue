@@ -73,59 +73,59 @@ import { defineComponent } from 'vue';
 import { useAPIStore } from '../stores/api';
 
 export default defineComponent({
-    name: 'LoginPage',
-    data() {
-        return {
-            username: '',
-            password: '',
-            usernameRules: [
-                (v: string) => !!v || 'Username is required',
-            ],
-            passwordRules: [
-                (v: string) => !!v || 'Password is required',
-            ],
-            show: false,
-            loading: false,
-            form: false,
-            api: useAPIStore().api,
-            snackbar: false,
-            timeout: 10000
-        }
-    },
-    methods: {
-        async login() {
-            this.loading = true
-            const { valid } = await this.$refs.loginForm.validate()
-
-            if (!valid) {
-                this.loading = false
-                return
-            }
-
-            await this.api.login(this.username, this.password)
-                .then(this.connected)
-                .catch(this.connectionFailed);
-
-            this.loading = false
-        },
-        connected() {
-            this.$router.push({ name: 'home' })
-        },
-        connectionFailed() {
-            this.snackbar = true
-        }
+  name: 'LoginPage',
+  data() {
+    return {
+      username: '',
+      password: '',
+      usernameRules: [
+        (v: string) => !!v || this.$t('login.rules.username.required'),
+      ],
+      passwordRules: [
+        (v: string) => !!v || this.$t('login.rules.password.required'),
+      ],
+      show: false,
+      loading: false,
+      form: false,
+      api: useAPIStore().api,
+      snackbar: false,
+      timeout: 10000
     }
+  },
+  methods: {
+    async login() {
+      this.loading = true
+      const { valid } = await this.$refs.loginForm.validate()
+
+      if (!valid) {
+        this.loading = false
+        return
+      }
+
+      await this.api.login(this.username, this.password)
+        .then(this.connected)
+        .catch(this.connectionFailed);
+
+      this.loading = false
+    },
+    connected() {
+      this.$router.push({ name: 'home' })
+    },
+    connectionFailed() {
+      this.snackbar = true
+    }
+  }
 });
 </script>
 
 <style>
 #login-page {
-    display: flex;
-    vertical-align: middle;
-    height: 100%;
+  display: flex;
+  vertical-align: middle;
+  height: 100%;
 }
 
 #login-page>div {
-    margin: auto;
+  margin: auto;
 }
 </style>

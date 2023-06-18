@@ -102,6 +102,14 @@
     "error": "Invalid username or password",
     "password": "Password",
     "register": "Don't have an account? Sign up",
+    "rules": {
+      "password": {
+        "required": "Password is required"
+      },
+      "username": {
+        "required": "Username is required"
+      }
+    },
     "submit": "Log in",
     "title": "Log in",
     "username": "Username"
