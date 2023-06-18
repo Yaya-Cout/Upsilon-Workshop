@@ -84,6 +84,30 @@
       "project-title": "Project title",
       "project-version": "Project version",
       "public": "Public",
+      "rules": {
+        "language": {
+          "invalid": "Language must be one of the following: python, micropython-khicas, xcas-python-pow, xcas-python-xor, xcas, xcas-session",
+          "required": "Language is required"
+        },
+        "long-description": {
+          "length": "Long description must be less than 10000 characters"
+        },
+        "project-title": {
+          "length": "Project title must be less than 100 characters",
+          "required": "Project title is required"
+        },
+        "project-version": {
+          "length": "Project version must be less than 100 characters",
+          "required": "Project version is required"
+        },
+        "short-description": {
+          "length": "Short description must be less than 100 characters",
+          "required": "Short description is required"
+        },
+        "version": {
+          "length": "Project version must be less than 100 characters"
+        }
+      },
       "save": "Save",
       "short-description": "Short description",
       "title": "Edit project metadata"

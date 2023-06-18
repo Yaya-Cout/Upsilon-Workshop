@@ -84,6 +84,30 @@
       "project-title": "Titre du projet",
       "project-version": "Version du projet",
       "public": "Public",
+      "rules": {
+        "language": {
+          "invalid": "Le langage doit être dans : python, micropython-khicas, xcas-python-pow, xcas-python-xor, xcas, xcas-session",
+          "required": "Le langage est requis"
+        },
+        "long-description": {
+          "length": "La description longue doit faire moins de 10000 caractères"
+        },
+        "project-title": {
+          "length": "Le titre du projet doit faire moins de 100 caractères",
+          "required": "Le titre du projet est requis"
+        },
+        "project-version": {
+          "length": "La version du projet doit faire moins de 100 caractères",
+          "required": "La version du projet est requise"
+        },
+        "short-description": {
+          "length": "La description courte doit faire moins de 100 caractères",
+          "required": "La description courte est requise"
+        },
+        "version": {
+          "length": "La version du projet doit faire moins de 100 caractères"
+        }
+      },
       "save": "Enregistrer",
       "short-description": "Description courte",
       "title": "Éditer les métadonnées du projet"

@@ -32,9 +32,7 @@
           :items="languages"
           :label="$t('editor.edit-project-info-dialog.language')"
           :rules="languageRules"
-          clearable
           item-title="name"
-          item-
         >
           <template #prepend-inner>
             <img
@@ -111,26 +109,29 @@ export default defineComponent({
     return {
       dialog: false,
       titleRules: [
-        (v: string) => !!v || 'Name is required',
-        (v: string) => (v && v.length <= 100) || 'Project name must be less than 100 characters'
+        (v: string) => !!v || this.$t('editor.edit-project-info-dialog.rules.project-title.required'),
+        (v: string) => (v && v.length <= 100) || this.$t('editor.edit-project-info-dialog.rules.project-title.length')
       ],
       languageRules: [
-        (v: string) => !!v || 'Language is required',
-        (v: string) => ['python', 'micropython-khicas', 'xcas-python-pow', 'xcas-python-xor', 'xcas', 'xcas-session'].includes(v) || 'Language must be one of the following: python, micropython-khicas, xcas-python-pow, xcas-python-xor, xcas, xcas-session'
+        (v: string) => !!v || this.$t('editor.edit-project-info-dialog.rules.language.required'),
+        (v: string) => ['python', 'micropython-khicas', 'xcas-python-pow', 'xcas-python-xor', 'xcas', 'xcas-session'].includes(v) || this.$t('editor.edit-project-info-dialog.rules.language.invalid')
       ],
       languages: [
         { name: "python", icon: import.meta.env.BASE_URL + "assets/python.svg" },
         { name: "xcas", icon: import.meta.env.BASE_URL + "assets/xcas.svg" },
       ],
       shortDescriptionRules: [
-        (v: string) => !!v || 'Short description is required',
-        (v: string) => (v && v.length <= 100) || 'Short description must be less than 100 characters'
+        // TODO: Allow empty short description
+        (v: string) => !!v || this.$t('editor.edit-project-info-dialog.rules.short-description.required'),
+        (v: string) => (v && v.length <= 100) || this.$t('editor.edit-project-info-dialog.rules.short-description.length')
       ],
       versionRules: [
-        (v: string) => (v && v.length <= 100) || 'Version must be less than 100 characters'
+        // TODO: Require version
+        (v: string) => (v && v.length <= 100) || this.$t('editor.edit-project-info-dialog.rules.version.length')
       ],
       longDescriptionRules: [
-        (v: string) => (v && v.length <= 10000) || 'Long description must be less than 10000 characters'
+        // TODO: Allow empty long description
+        (v: string) => (v && v.length <= 10000) || this.$t('editor.edit-project-info-dialog.rules.long-description.length')
       ],
       title: '',
       version: '',
