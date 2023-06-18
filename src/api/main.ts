@@ -22,6 +22,7 @@ export default class API extends EventTarget {
         isPublic: false,
         language: "",
         tags: [],
+        tags_raw: [],
         created: new Date(),
         modified: new Date(),
         views: 0,
@@ -242,6 +243,7 @@ export default class API extends EventTarget {
                 isPublic: project["is_public"],
                 language: project["language"],
                 tags: [],
+                tags_raw: [],
                 created: new Date(project["created"]),
                 modified: new Date(project["updated"]),
                 views: project["views"],
@@ -254,6 +256,7 @@ export default class API extends EventTarget {
             // Convert the tags
             for (const tag of project["tags"]) {
                 projects[projects.length - 1].tags.push(this.getTag(tag.split("/").at(-2)))
+                projects[projects.length - 1].tags_raw.push(tag.split("/").slice(-2)[0])
             }
 
             // Convert the collaborators
@@ -309,6 +312,39 @@ export default class API extends EventTarget {
         }
 
         return users
+    }
+
+    /*
+     * Get tags from the API
+     * @param {string} query - The query to search for (optional)
+     * @returns {Promise} - A promise that resolves to the tags
+     */
+    async getTags(
+        query: string = "",
+    ): Promise<Tag[]> {
+        const response = await this._request(
+            "tags/" + (query !== "" ? "?search=" + query : ""),
+            "GET", {}, 200, false
+        )
+
+        // Convert the response to a list of tags
+        const tags: Tag[] = []
+        for (const tag of response.results) {
+            tags.push({
+                name: tag["name"],
+                description: tag["description"],
+                projects: [],
+                _loaded: true,
+                _loading: false,
+            })
+
+            // Convert the projects
+            for (const project of tag["script_set"]) {
+                tags[tags.length - 1].projects.push(this.getProject(project.split("/").at(-2)))
+            }
+        }
+
+        return tags
     }
 
     /* Delete a project from the API
@@ -386,6 +422,7 @@ export default class API extends EventTarget {
             rating: 3.5,
             author: this.USERNAME,
             tags: [],
+            tags_raw: [],
             created: new Date(),
             modified: new Date(),
             uuid: "",
@@ -420,6 +457,13 @@ export default class API extends EventTarget {
             collaborators.push(this.BASE_URL + "users/" + collaborator + "/")
         }
 
+        // Convert the tags
+        const tags: string[] = []
+        for (const tag of project.tags_raw) {
+            // Add the root URL/tags/name to the list of tags
+            tags.push(this.BASE_URL + "tags/" + tag + "/")
+        }
+
         // Update the project
         return await this._request("scripts/" + project.uuid + "/", "PUT", {
             name: project.title,
@@ -428,7 +472,7 @@ export default class API extends EventTarget {
             files: files,
             is_public: project.isPublic,
             language: project.language,
-            // TODO: Add tags
+            tags: tags,
             version: project.version,
             collaborators: collaborators,
         }, 200, true)
@@ -448,6 +492,13 @@ export default class API extends EventTarget {
             collaborators.push(this.BASE_URL + "users/" + collaborator + "/")
         }
 
+        // Convert the tags
+        const tags: string[] = []
+        for (const tag of project.tags_raw) {
+            // Add the root URL/tags/name to the list of tags
+            tags.push(this.BASE_URL + "tags/" + tag + "/")
+        }
+
         // Update the project
         return await this._request("scripts/" + project.uuid + "/", "PATCH", {
             name: project.title,
@@ -457,6 +508,7 @@ export default class API extends EventTarget {
             version: project.version,
             language: project.language,
             collaborators: collaborators,
+            tags: tags,
         }, 200, true)
     }
 
@@ -659,6 +711,7 @@ export default class API extends EventTarget {
             isPublic: response["is_public"],
             language: response["language"],
             tags: [],
+            tags_raw: [],
             created: new Date(response["created"]),
             modified: new Date(response["modified"]),
             views: response["views"],
@@ -671,6 +724,7 @@ export default class API extends EventTarget {
         // Convert the tags
         for (const tag of response["tags"]) {
             project.tags.push(this.getTag(tag.split("/").at(-2)))
+            project.tags_raw.push(tag.split("/").at(-2))
         }
 
         // Convert the collaborators
@@ -726,6 +780,8 @@ export default class API extends EventTarget {
      * @returns {Proxy} - A proxy that calls the function when needed
      */
     getLazy(func: string, ...args: any[]): any {
+        // TODO: Add a way to get the prop without loading the object (e.g. for
+        // the name of a user or a project ID)
         // Create the proxy
         return new Proxy({
             _loaded: false,

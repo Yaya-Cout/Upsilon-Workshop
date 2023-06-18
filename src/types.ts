@@ -24,6 +24,8 @@ export type Project = {
     language: string,
     // The list of tags of the project
     tags: Tag[],
+    // The list of tags of the project as a raw string list
+    tags_raw: string[],
     // The date of creation of the project
     created: Date,
     // The date of last modification of the project

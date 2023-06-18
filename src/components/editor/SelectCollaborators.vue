@@ -28,8 +28,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useAPIStore } from '../stores/api';
-import AvatarView from './AvatarView.vue';
+import { useAPIStore } from '../../stores/api';
+import AvatarView from '../AvatarView.vue';
 
 export default defineComponent({
   name: "SelectCollaborators",
