@@ -101,51 +101,48 @@ export default defineComponent({
   },
   watch: {
     debouncedQuery: async function (newQuery: string) {
-      this.globalStore.progress = true;
-      // TODO: Pagination
-      // TODO: No results
-      this.projects = await this.api.getProjects(newQuery)
-      if (this.projects.length === 0) {
-        this.empty = true;
-      } else {
-        this.empty = false;
-      }
-      // If the query is the same as the one we just searched for, we can stop the loading animation
-      if (this.debouncedQuery === this.query) {
-        this.globalStore.progress = false;
-      }
+      this.loadMore(true);
     }
   },
   async mounted() {
     this.loadMore();
   },
   methods: {
-    async loadMore() {
+    async loadMore(clear: boolean = false) {
       this.globalStore.progress = true;
       let page = this.projects.length / this.api.ITEM_PER_PAGE + 1;
+      // If clear is true, we want to reset the page to 1
+      if (clear === true) {
+        page = 1;
+      }
       // If page is not an integer, we have reached the end of the list
-      if (!Number.isInteger(page)) {
+      else if (!Number.isInteger(page)) {
         this.globalStore.progress = false;
         this.empty = true;
         return;
       }
       // Else round it down
-      page = Math.floor(page);
       let newProjects: Project[];
       try {
-        newProjects = await this.api.getProjects(this.query, page);
+        newProjects = await this.api.getProjects(this.debouncedQuery, page);
       } catch (e) {
         this.globalStore.progress = false;
         this.globalStore.error = true;
         console.error(e);
         return;
       }
+
+      if (clear === true) {
+        this.projects = [];
+      }
+
       // If newProjects is empty, we have reached the end of the list
       if (newProjects.length === 0) {
         this.globalStore.progress = false;
         this.empty = true;
         return;
       }
+
       this.projects = this.projects.concat(newProjects);
       // If there is less projects than the number of items per page, we have reached the end of the list
       if (newProjects.length < this.api.ITEM_PER_PAGE) {
