@@ -4,29 +4,38 @@
 
 <script lang="ts">
 import showdown from 'showdown';
+import xssFilter from 'showdown-xss-filter';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-    props: {
-        content: {
-            type: String,
-            default: '',
-        },
+  props: {
+    content: {
+      type: String,
+      default: '',
     },
-    watch: {
-        content() {
-            //@ts-ignore
-            this.$refs.markdown.innerHTML = new showdown.Converter().makeHtml(
-                this.content!
-            );
-        },
+  },
+  watch: {
+    content: {
+      handler() {
+        this.renderMarkdown();
+      },
     },
-    mounted() {
-        //@ts-ignore
-        this.$refs.markdown.innerHTML = new showdown.Converter().makeHtml(
-            this.content!
-        );
+  },
+  mounted() {
+    this.renderMarkdown();
+  },
+  methods: {
+    renderMarkdown() {
+      //@ts-ignore
+      this.$refs.markdown.innerHTML = new showdown.Converter(
+        {
+          extensions: [xssFilter],
+        }
+      ).makeHtml(
+        this.content!
+      );
     },
+  },
 });
 </script>
 
