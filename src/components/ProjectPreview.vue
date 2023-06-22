@@ -46,6 +46,7 @@
               <v-chip
                 v-for="tag in tags"
                 :key="tag.name"
+                class="mx-1"
               >
                 {{ tag.name }}
               </v-chip>

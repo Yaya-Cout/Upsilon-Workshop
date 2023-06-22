@@ -4,7 +4,7 @@
       {{ $t('search.search') }}
     </h1>
     <v-sheet class="pa-4">
-      <v-col class="v-col-xs-12 v-col-lg-8 v-col-xl-6 v-col-sm-10 offset-xs-0 offset-sm-1 offset-lg-2 offset-xl-3">
+      <v-col>
         <v-text-field
           v-model="query"
           variant="solo"
@@ -15,27 +15,17 @@
           :label="$t('search.search')"
         />
         <v-row class="my-4 d-flex justify-center">
+          <!-- TODO: Add skeleton loader -->
           <v-chip
+            v-for="tag in tags"
+            :key="tag.name"
             class="mx-1"
-            variant="elevated"
+            :variant="activeTags.includes(tag) ? 'elevated' : 'tonal'"
+            @click="toogleTag(tag)"
           >
-            All
+            {{ tag.name }}
           </v-chip>
-          <v-chip class="mx-1">
-            Solo games
-          </v-chip>
-          <v-chip class="mx-1">
-            Multiplayer games
-          </v-chip>
-          <v-chip class="mx-1">
-            Art
-          </v-chip>
-          <v-chip class="mx-1">
-            Mathematics
-          </v-chip>
-          <v-chip class="mx-1">
-            Other
-          </v-chip>
+          <!-- TODO: Add menu to select and search tags -->
         </v-row>
 
         <v-row>
@@ -68,7 +58,7 @@
 import { defineComponent } from 'vue';
 import { useAPIStore } from '../stores/api';
 import { useGlobalStore } from '../stores/global';
-import { Project } from '../types';
+import { Project, Tag } from '../types';
 import ProjectPreview from '../components/ProjectPreview.vue';
 
 export default defineComponent({
@@ -84,6 +74,8 @@ export default defineComponent({
       timeout: null as any,
       debouncedQuery: '' as string,
       empty: true,
+      tags: [] as Tag[],
+      activeTags: [] as Tag[],
     }
   },
   computed: {
@@ -106,6 +98,7 @@ export default defineComponent({
   },
   async mounted() {
     this.loadMore();
+    this.loadTags();
   },
   methods: {
     async loadMore(clear: boolean = false) {
@@ -124,7 +117,7 @@ export default defineComponent({
       // Else round it down
       let newProjects: Project[];
       try {
-        newProjects = await this.api.getProjects(this.debouncedQuery, page);
+        newProjects = await this.api.getProjects(this.debouncedQuery, page, this.activeTags);
       } catch (e) {
         this.globalStore.progress = false;
         this.globalStore.error = true;
@@ -152,6 +145,24 @@ export default defineComponent({
       }
       // TODO: Read if empty from API
       this.globalStore.progress = false;
+    },
+    async loadTags() {
+      try {
+        this.tags = await this.api.getTags();
+      } catch (e) {
+        this.globalStore.progress = false;
+        this.globalStore.error = true;
+        console.error(e);
+        return;
+      }
+    },
+    toogleTag(tag: Tag) {
+      if (this.activeTags.includes(tag)) {
+        this.activeTags = this.activeTags.filter(t => t !== tag);
+      } else {
+        this.activeTags.push(tag);
+      }
+      this.loadMore(true);
     }
   }
 });

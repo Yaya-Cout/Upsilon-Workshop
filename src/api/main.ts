@@ -204,9 +204,26 @@ export default class API extends EventTarget {
     async getProjects(
         query: string = "",
         page: number = 1,
+        tags: Tag[] = [],
     ): Promise<Project[]> {
+        // Convert the tags to a list of names
+        const tagNames: string[] = []
+        for (const tag of tags) {
+            this.loadLazyLoadingObject(tag)
+        }
+        for (const tag of tags) {
+            const tagValue = await this.loadLazyLoadingObject(tag)
+            tagNames.push(tagValue.name)
+        }
+
+        // Convert the tags to a string (&tags__name=tag1&tags__name=tag2)
+        const tagString = tagNames.map((tag) => {
+            return "&tags__name=" + tag
+        }).join("")
+
+        // Make the request
         const response = await this._request(
-            "scripts/" + "?search=" + query + "&page=" + page,
+            "scripts/" + "?search=" + query + "&page=" + page + tagString,
             "GET", {}, 0, false
         )
 
