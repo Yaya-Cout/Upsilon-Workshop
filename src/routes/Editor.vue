@@ -110,11 +110,13 @@ export default defineComponent({
       project: useAPIStore().api.EMPTY_PROJECT as Project,
       api: useAPIStore().api,
       globalStore: useGlobalStore(),
-      uuid: this.$route.params.uuid,
+      uuid: this.$route.params.uuid as string,
     };
   },
   async mounted() {
     this.globalStore.progress = true;
+    // Before loading the project, add the uuid to the dummy project
+    this.api.EMPTY_PROJECT.uuid = this.uuid;
     try {
       this.project = await this.api.loadLazyLoadingObject(this.api.getProject(this.uuid));
     } catch (e) {

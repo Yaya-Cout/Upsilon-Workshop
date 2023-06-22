@@ -40,6 +40,8 @@ export default defineComponent({
   },
   async mounted() {
     this.globalStore.progress = true;
+    // Before loading the project, add the uuid to the dummy project
+    this.project.uuid = this.uuid;
     try {
       this.project = await this.api.loadLazyLoadingObject(this.api.getProject(this.uuid));
     } catch (e) {
