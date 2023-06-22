@@ -130,7 +130,7 @@ export default defineComponent({
     },
     hasWriteAccess(): boolean {
       // Get if the user is the owner of the project
-      if (this.project.author === this.api.USERNAME) {
+      if (this.project.author === this.api.USERNAME && this.api.USERNAME !== '') {
         return true;
       }
       // Get if the user is a collaborator of the project
