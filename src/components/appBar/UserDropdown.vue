@@ -14,14 +14,7 @@
       </template>
       <v-card min-width="300">
         <v-list>
-          <v-list-item
-            :title="api.USERNAME"
-            :to="`/user/${api.USERNAME}`"
-          >
-            <template #prepend>
-              <AvatarView :username="api.USERNAME" />
-            </template>
-          </v-list-item>
+          <UserPreview :username="api.USERNAME" />
         </v-list>
 
         <v-divider />
@@ -45,11 +38,13 @@ import { defineComponent } from 'vue';
 import { useAPIStore } from '../../stores/api';
 import AvatarView from '../AvatarView.vue';
 import DisconnectConfirm from '../confirmations/DisconnectConfirm.vue';
+import UserPreview from '../UserPreview.vue';
 
 export default defineComponent({
   components: {
     AvatarView,
-    DisconnectConfirm
+    DisconnectConfirm,
+    UserPreview,
   },
   data() {
     return {
@@ -57,7 +52,6 @@ export default defineComponent({
       menu: false
     };
   },
-  expose: ["displayMenu"]
 });
 </script>
 

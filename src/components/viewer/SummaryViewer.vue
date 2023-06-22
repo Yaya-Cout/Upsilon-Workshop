@@ -14,14 +14,10 @@
         </v-card-subtitle>
         <v-row class="mt-2">
           <v-col>
-            <v-list-item
-              :title="project.author"
-              :to="`/user/${project.author}`"
-            >
-              <template #prepend>
-                <AvatarView :username="project.author" />
-              </template>
-            </v-list-item>
+            <UserPreview
+              :username="project.author"
+              class="mr-2"
+            />
           </v-col>
           <v-col>
             <v-list-item
@@ -111,14 +107,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { Project } from '../../types';
-import AvatarView from '../AvatarView.vue';
+import UserPreview from '../UserPreview.vue';
 import UploadProject from '../UploadProject.vue';
 import DeleteProject from '../DeleteProject.vue';
 
 export default defineComponent({
   name: "SummaryViewer",
   components: {
-    AvatarView,
+    UserPreview,
     UploadProject,
     DeleteProject,
   },
