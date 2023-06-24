@@ -31,7 +31,7 @@ export default class API extends EventTarget {
         _loaded: false,
         _loading: false,
     };
-    ITEM_PER_PAGE: number = 10;
+    ITEM_PER_PAGE: number = 50;
 
     /*
      * Initialize the API client
