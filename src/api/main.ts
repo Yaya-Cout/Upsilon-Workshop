@@ -31,6 +31,16 @@ export default class API extends EventTarget {
         _loaded: false,
         _loading: false,
     };
+    EMPTY_USER: User = {
+        username: "",
+        groups: [],
+        projects: [],
+        collaborations: [],
+        ratings: [],
+        _loaded: false,
+        _loading: false,
+    };
+
     ITEM_PER_PAGE: number = 50;
 
     /*

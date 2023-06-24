@@ -15,6 +15,7 @@ import Login from './routes/Login.vue';
 import NotFound from './routes/NotFound.vue'
 import Register from './routes/Register.vue';
 import Search from './routes/Search.vue';
+import Settings from './routes/Settings.vue';
 import User from './routes/User.vue';
 import Viewer from './routes/Viewer.vue';
 
@@ -33,6 +34,7 @@ const router = createRouter({
     { path: '/login', component: Login, name: "login" },
     { path: '/register', component: Register, name: "register" },
     { path: '/user/:username', component: User, name: "user" },
+    { path: '/settings', component: Settings, name: "settings" },
     { path: '/:pathMatch(.*)*', component: NotFound, name: "notfound" },
   ]
 })

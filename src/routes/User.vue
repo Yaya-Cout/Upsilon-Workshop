@@ -3,26 +3,7 @@
     <v-container>
       <v-row no-gutters>
         <v-col class="user-col col-1">
-          <v-card>
-            <v-card-title>
-              <AvatarView :username="username" />
-              <span class="ml-2">{{ username }}</span>
-            </v-card-title>
-            <v-card-text>
-              <v-list>
-                <v-list-item v-if="groups !== ''">
-                  <v-list-item-title>{{ $t('user.groups') }}</v-list-item-title>
-                  <v-skeleton-loader
-                    :loading="groups === 'none'"
-                    type="text"
-                    width="100"
-                  >
-                    <v-list-item-subtitle>{{ groups }}</v-list-item-subtitle>
-                  </v-skeleton-loader>
-                </v-list-item>
-              </v-list>
-            </v-card-text>
-          </v-card>
+          <UserPreviewBig :user="userData" />
         </v-col>
         <v-col class="col-1">
           <v-card>
@@ -75,22 +56,20 @@
 import { defineComponent } from 'vue';
 import { User, Project } from '../types';
 import { useAPIStore } from '../stores/api';
-import AvatarView from '../components/AvatarView.vue';
 import ProjectPreviewVue from '../components/ProjectPreview.vue';
-import { VSkeletonLoader } from 'vuetify/lib/labs/components.mjs';
+import UserPreviewBig from '../components/user/UserPreviewBig.vue';
 
 export default defineComponent({
   name: 'UserPage',
   components: {
-    AvatarView,
     ProjectPreviewVue,
-    VSkeletonLoader
+    UserPreviewBig,
   },
   data() {
     return {
       api: useAPIStore().api,
       username: this.$route.params.username as string,
-      userData: null as User,
+      userData: useAPIStore().api.EMPTY_USER as User,
       groups: 'none' as string,
       // TODO: Factorize this
       projects: [useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT] as Project[],

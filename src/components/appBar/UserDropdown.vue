@@ -20,6 +20,13 @@
         <v-divider />
 
         <v-list>
+          <v-list-item
+            prepend-icon="mdi-cogs"
+            to="/settings"
+          >
+            {{ $t('navbar.settings') }}
+          </v-list-item>
+
           <DisconnectConfirm>
             <v-list-item
               prepend-icon="mdi-logout"
