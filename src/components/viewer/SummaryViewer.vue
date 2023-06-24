@@ -14,10 +14,27 @@
         </v-card-subtitle>
         <v-row class="mt-2">
           <v-col>
-            <UserPreview
-              :username="project.author"
-              class="mr-2"
-            />
+            <v-list>
+              <v-list-subheader inset>
+                {{ $t('viewer.author') }}
+              </v-list-subheader>
+              <UserPreview
+                :username="project.author"
+                class="mr-2"
+              />
+              <v-list-subheader
+                v-if="collaborators.length > 0"
+                inset
+              >
+                {{ $t('viewer.collaborators') }}
+              </v-list-subheader>
+              <UserPreview
+                v-for="collaborator in collaborators"
+                :key="collaborator.username"
+                :username="collaborator.username"
+                class="mr-2"
+              />
+            </v-list>
           </v-col>
           <v-col>
             <v-list-item
@@ -26,9 +43,7 @@
             >
               <v-list-item-subtitle class="fit-content">
                 {{ dateToDayString(project.created) }}
-                <v-tooltip
-                  activator="parent"
-                >
+                <v-tooltip activator="parent">
                   {{ $t('viewer.created-on', { date: dateToExtendedString(project.created) }) }}
                 </v-tooltip>
               </v-list-item-subtitle>
@@ -39,9 +54,7 @@
             >
               <v-list-item-subtitle class="fit-content">
                 {{ dateToDayString(project.modified) }}
-                <v-tooltip
-                  activator="parent"
-                >
+                <v-tooltip activator="parent">
                   {{ $t('viewer.modified-on', { date: dateToExtendedString(project.modified) }) }}
                 </v-tooltip>
               </v-list-item-subtitle>
@@ -52,9 +65,7 @@
             >
               <v-list-item-subtitle class="fit-content">
                 {{ project.views }}
-                <v-tooltip
-                  activator="parent"
-                >
+                <v-tooltip activator="parent">
                   {{ $t('viewer.views', { count: project.views }) }}
                 </v-tooltip>
               </v-list-item-subtitle>
@@ -65,9 +76,7 @@
             >
               <v-list-item-subtitle class="fit-content">
                 {{ project.version }}
-                <v-tooltip
-                  activator="parent"
-                >
+                <v-tooltip activator="parent">
                   {{ $t('viewer.version', { version: project.version }) }}
                 </v-tooltip>
               </v-list-item-subtitle>
@@ -106,7 +115,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { Project } from '../../types';
+import { Project, User } from '../../types';
+import { useAPIStore } from '../../stores/api';
 import UserPreview from '../UserPreview.vue';
 import UploadProject from '../UploadProject.vue';
 import DeleteProject from '../DeleteProject.vue';
@@ -122,6 +132,28 @@ export default defineComponent({
     project: {
       type: Object as () => Project,
       required: true,
+    },
+  },
+  data() {
+    return {
+      api: useAPIStore().api,
+      collaborators: [] as User[],
+    };
+  },
+  watch: {
+    project: {
+      immediate: true,
+      async handler() {
+        let collaborators = [] as Promise<User>[];
+
+        for (const collaborator of this.project.collaborators) {
+          collaborators.push(this.api.loadLazyLoadingObject(this.api.getUser(collaborator)));
+        }
+
+        let collaborators_loaded = await Promise.all(collaborators);
+
+        this.collaborators = collaborators_loaded;
+      },
     },
   },
   methods: {

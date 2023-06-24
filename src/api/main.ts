@@ -854,23 +854,36 @@ export default class API extends EventTarget {
      * @param {Proxy} obj - The object to load
      * @returns {Promise} - A promise that resolves when the object is loaded
      */
-    async loadLazyLoadingObject(obj: any): Promise<any> {
+    async loadLazyLoadingObject<T>(obj: T): Promise<T> {
         // Wait for the object to load
         const objLoaded = {}
 
+        if (typeof obj !== "object") {
+            throw new Error("The object is not an object")
+        }
+        if (obj === null) {
+            throw new Error("The object is null")
+        }
+
+        if (!("_loaded" in obj)) {
+            throw new Error("The object is not lazy-loaded")
+        }
+
+
         // Force the object to load
-        // await obj._loading
         await obj._loaded
 
         // Iterate over each property
         for (const prop of Object.keys(await obj)) {
             // Get the property
+            // @ts-ignore
             const value = await obj[prop]
             // @ts-ignore - This is a valid assignment, but TypeScript does not
             //              recognize it
             objLoaded[prop] = await value
         }
 
+        // @ts-ignore
         return objLoaded
     }
 }

@@ -237,6 +237,8 @@
     "projects": "Projets"
   },
   "viewer": {
+    "author": "Auteur",
+    "collaborators": "Collaborateurs",
     "created-on": "Créé le {date}",
     "delete": "Supprimer",
     "delete-project": {
