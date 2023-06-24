@@ -22,6 +22,7 @@
                 :username="project.author"
                 class="mr-2"
               />
+              <v-divider inset />
               <v-list-subheader
                 v-if="collaborators.length > 0"
                 inset
