@@ -253,6 +253,8 @@
     "modified-on": "Modifié pour la dernière fois le {date}",
     "upload": "Envoyer vers la calculatrice",
     "version": "Version {version}",
-    "views": "{count} vues"
+    "views": "{count} vues",
+    "simulator-launch": "Lancer le simulateur",
+    "simulator-stop": "Stopper le simulateur"
   }
 }

@@ -253,6 +253,8 @@
     "modified-on": "Last modified on {date}",
     "upload": "Upload to calculator",
     "version": "Version {version}",
-    "views": "{count} views"
+    "views": "{count} views",
+    "simulator-launch": "Launch the simulator",
+    "simulator-stop": "Stop the simulator"
   }
 }
