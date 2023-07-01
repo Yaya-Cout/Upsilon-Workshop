@@ -655,6 +655,36 @@ export default class API extends EventTarget {
     }
 
     /*
+     * Update an user on the API
+     * @param {User} user - The user to update
+     * @returns {Promise} - A promise that resolves to the response
+     * @throws {Error} - If an error occurred
+     */
+    async updateUser(user: User): Promise<object> {
+        const response = await this._request("users/" + this.USERNAME + "/", "PATCH", {
+            username: user.username,
+            // TODO: Email
+        }, 200, true)
+
+        // Update user info
+        this.updateUserInfo()
+
+        return response
+    }
+
+    /*
+     * Update the password the logged in user on the API
+     * @param {string} password - The new password
+     * @returns {Promise} - A promise that resolves to the response
+     * @throws {Error} - If an error occurred
+     */
+    async updatePassword(password: string): Promise<object> {
+        return await this._request("users/" + this.USERNAME + "/", "PATCH", {
+            password: password,
+        }, 200, true)
+    }
+
+    /*
      * Return a lasy-loaded group object
      * @param {number} id - The ID of the group
      * @returns {Proxy} - A proxy that fetches the group data from the API when

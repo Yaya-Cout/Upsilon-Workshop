@@ -22,15 +22,7 @@
             clearable
           />
 
-          <v-text-field
-            v-model="password"
-            prepend-inner-icon="mdi-lock"
-            :label="$t('login.password')"
-            :append-inner-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="passwordRules"
-            :type="show ? 'text' : 'password'"
-            @click:append-inner="show = !show"
-          />
+          <PasswordField v-model="password" />
 
           <v-btn
             :loading="loading"
@@ -71,9 +63,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAPIStore } from '../stores/api';
+import PasswordField from '../components/forms/PasswordField.vue';
 
 export default defineComponent({
   name: 'LoginPage',
+  components: {
+    PasswordField,
+  },
   data() {
     return {
       username: '',

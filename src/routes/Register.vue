@@ -32,26 +32,12 @@
             maxlength="150"
           />
 
-          <v-text-field
-            v-model="password"
-            prepend-inner-icon="mdi-lock"
-            :label="$t('register.password')"
-            :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="passwordRules"
-            :type="showPassword ? 'text' : 'password'"
-            :hint="$t('register.least-8-chars')"
-            @click:append-inner="showPassword = !showPassword"
-          />
+          <PasswordField v-model="password" />
 
-          <v-text-field
+          <PasswordField
             v-model="passwordConfirmation"
-            prepend-inner-icon="mdi-lock"
-            :label="$t('register.password-confirm')"
-            :append-inner-icon="showPasswordConfirmation ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="passwordConfirmRules"
-            :type="showPasswordConfirmation ? 'text' : 'password'"
-            :hint="$t('register.password-identical')"
-            @click:append-inner="showPasswordConfirmation = !showPasswordConfirmation"
+            :original-password="password"
+            confirm
           />
 
           <v-btn
@@ -77,9 +63,13 @@
 import { defineComponent } from 'vue';
 import { useAPIStore } from '../stores/api';
 import { useGlobalStore } from '../stores/global';
+import PasswordField from '../components/forms/PasswordField.vue';
 
 export default defineComponent({
   name: 'RegisterPage',
+  components: {
+    PasswordField,
+  },
   data() {
     let data = {
       email: '',

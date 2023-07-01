@@ -152,14 +152,7 @@
     "email": "Email",
     "email-invalid-error": "L'adresse email est invalide",
     "email-required-error": "Une adresse email est requise",
-    "least-8-chars": "Au moins 8 caracters",
-    "least-8-chars-error": "Le mot de passe doit faire au moins 8 caractères de long",
     "login": "Vous avez déjà un compte ? Connectez-vous",
-    "password": "Mot de passe",
-    "password-confirm": "Confirmer le mot de passe",
-    "password-identical": "Les mots de passe doivent être identiques",
-    "password-identical-error": "Les mots de passe sont différents",
-    "password-required-error": "Un mot de passe est requis",
     "submit": "S'inscrire",
     "title": "S'inscrire",
     "username": "Nom d'utilisateur",
@@ -254,5 +247,24 @@
     "upload": "Envoyer vers la calculatrice",
     "version": "Version {version}",
     "views": "{count} vues"
+  },
+  "forms": {
+    "password-field": {
+      "hint": "Au moins 8 caractères",
+      "label": "Mot de passe",
+      "label-confirm": "Confirmer le mot de passe",
+      "rules": {
+        "min-8-chars": "Le mot de passe doit faire au moins 8 caractères de long",
+        "required": "Un mot de passe est requis",
+        "identical": "Les mots de passe sont différents"
+      },
+      "hint-confirm": "Les mots de passe doivent être identiques"
+    }
+  },
+  "settings": {
+    "save": "Enregistrer",
+    "title": "Paramètres",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe"
   }
 }
