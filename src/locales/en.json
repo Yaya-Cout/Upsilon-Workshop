@@ -181,6 +181,23 @@
     "title": "Search"
   },
   "settings": {
+    "danger-zone": {
+      "delete-account": {
+        "confirm": {
+          "confirm": "I understand that this action is irreversible",
+          "confirm-required": "You must confirm that you understand that this action is irreversible",
+          "description": "Enter your password to confirm the deletion of your account:",
+          "no": "No, take me back",
+          "title": "Confirm account deletion",
+          "warning": "Warning: this action is irreversible",
+          "yes": "Yes, delete my account"
+        },
+        "delete": "Delete",
+        "description": "Deleting your account will permanently delete all your projects. This action is irreversible.",
+        "title": "Delete account"
+      },
+      "title": "Danger zone"
+    },
     "password": "Change password",
     "save": "Save",
     "title": "Settings",
@@ -210,6 +227,9 @@
       "message": "Script saved successfully"
     },
     "success": {
+      "account-deleted": {
+        "message": "Account deleted successfully"
+      },
       "generic-message": "Operation successful",
       "installation-success": {
         "message": "Installation successful"

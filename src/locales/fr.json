@@ -181,6 +181,23 @@
     "title": "Rechercher"
   },
   "settings": {
+    "danger-zone": {
+      "delete-account": {
+        "confirm": {
+          "confirm": "Je comprends que cette action est irréversible",
+          "confirm-required": "Vous devez confirmer que cette action est irréversible",
+          "description": "Entrez votre mot de passe pour confirmer la suppression de votre compte :",
+          "no": "Non, revenir",
+          "title": "Confirmer la suppression du compte",
+          "warning": "Attention : cette action est irréversible",
+          "yes": "Oui, supprimer mon compte"
+        },
+        "delete": "Supprimer",
+        "description": "Supprimer votre compte va supprimer définitivement tous vos projets. Cette action est irréversible.",
+        "title": "Supprimer le compte"
+      },
+      "title": "Zone à risque"
+    },
     "password": "Changer de mot de passe",
     "save": "Enregistrer",
     "title": "Paramètres",
@@ -210,6 +227,9 @@
       "message": "Script enregistré"
     },
     "success": {
+      "account-deleted": {
+        "message": "Compte supprimé avec succès"
+      },
       "generic-message": "L'opération s'est déroulée avec succès",
       "installation-success": {
         "message": "Installation effectuée avec succès"

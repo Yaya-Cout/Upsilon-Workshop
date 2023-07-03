@@ -32,7 +32,7 @@
             </v-card-actions>
           </v-card> -->
           <!-- Password changing -->
-          <v-card>
+          <v-card class="mb-4">
             <v-card-title>{{ $t('settings.password') }}</v-card-title>
             <v-card-text>
               <PasswordField v-model="password" />
@@ -52,7 +52,23 @@
               </v-btn>
             </v-card-actions>
           </v-card>
-          <!-- TODO: Add delete account -->
+          <v-card class="mb-4 danger">
+            <v-card-title>{{ $t('settings.danger-zone.title') }}</v-card-title>
+            <v-card-text>
+              {{ $t('settings.danger-zone.delete-account.description') }}
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer />
+
+              <DeleteAccountConfirm>
+                <v-btn
+                  color="error"
+                >
+                  {{ $t('settings.danger-zone.delete-account.delete') }}
+                </v-btn>
+              </DeleteAccountConfirm>
+            </v-card-actions>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -65,12 +81,14 @@ import { User } from '../types';
 import { useAPIStore } from '../stores/api';
 import UserPreviewBig from '../components/user/UserPreviewBig.vue';
 import PasswordField from '../components/forms/PasswordField.vue';
+import DeleteAccountConfirm from '../components/confirmations/DeleteAccountConfirm.vue';
 
 export default defineComponent({
   name: "SettingsPage",
   components: {
     UserPreviewBig,
     PasswordField,
+    DeleteAccountConfirm,
   },
   data() {
     return {
@@ -111,5 +129,11 @@ export default defineComponent({
 
 .col-1 {
   margin: 16px;
+}
+
+.danger {
+  /* Add a red border */
+  border: 1px solid red;
+  background-color: #ffdddd;
 }
 </style>

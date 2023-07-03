@@ -90,10 +90,44 @@ export default class API extends EventTarget {
     }
 
     /*
+     * Get if the password is valid for the user
+     * @param {string} username - The username of the user
+     * @param {string} password - The password of the user
+     * @returns {Promise} - A promise that resolves to true if the password is valid or false otherwise (error)
+     */
+    async checkPassword(username: string, password: string): Promise<boolean> {
+        // TODO: Merge this with the login function
+        // Login with the password
+        const response = await fetch(
+            this.BASE_URL + "api/auth/login/",
+            {
+                method: "POST",
+
+                headers: {
+                    'Authorization': 'Basic ' + window.btoa(username + ":" + password),
+                    "Content-Type": "application/json",
+                },
+            });
+        if (response.status !== 200) {
+            return false;
+        }
+
+        const json = await response.json()
+
+        if (json["token"] === undefined) {
+            return false;
+        }
+
+        // TODO: Logout
+
+        return true;
+    }
+
+    /*
      * Logout of the API
      * @returns {Promise} - A promise that resolves to true if the logout was successful
      */
-    async logout(): Promise<boolean> {
+    async logout(onlyRemoveToken: boolean = false): Promise<boolean> {
         console.log("Logging out")
         // Check if the token is present
         if (!this.isLoggedIn()) {
@@ -101,11 +135,13 @@ export default class API extends EventTarget {
             return true;
         }
 
-        // Invalidate the token on the server
-        try {
-            await this._request("api/auth/logout/", "POST", {}, 204)
-        } catch (e) {
-            console.error("Failed to invalidate token on server");
+        if (!onlyRemoveToken) {
+            // Invalidate the token on the server
+            try {
+                await this._request("api/auth/logout/", "POST", {}, 204)
+            } catch (e) {
+                console.error("Failed to invalidate token on server");
+            }
         }
 
         // Remove the token
@@ -682,6 +718,30 @@ export default class API extends EventTarget {
         return await this._request("users/" + this.USERNAME + "/", "PATCH", {
             password: password,
         }, 200, true)
+    }
+
+    /*
+     * Delete the logged in user on the API
+     * @param {string} password - The password of the user
+     * @returns {Promise} - A promise that resolves to true if the user was
+     *                      deleted
+     * @throws {Error} - If an error occurred
+     * @throws {Error} - If the password is incorrect
+     */
+    async deleteUser(password: string): Promise<boolean> {
+        // Check if the password is correct
+        const correct = this.checkPassword(this.USERNAME, password)
+        if (!correct) {
+            throw new Error("Incorrect password")
+        }
+
+        // Delete the user
+        await this._request("users/" + this.USERNAME + "/", "DELETE", {}, 204, true)
+
+        // Logout
+        this.logout(true)
+
+        return true
     }
 
     /*
