@@ -45,7 +45,7 @@
               :loading="loading"
               type="submit"
             >
-²              {{ $t('settings.danger-zone.delete-account.confirm.yes') }}
+              {{ $t('settings.danger-zone.delete-account.confirm.yes') }}
             </v-btn>
           </v-card-actions>
         </v-card-text>

@@ -7,74 +7,9 @@
         </v-col>
         <!-- TODO: Allow changing email and username -->
         <v-col class="col-1">
-          <!-- <v-card>
-            <v-card-title>{{ $t('settings.title') }}</v-card-title>
-            <v-card-text>
-              <v-list>
-                <v-list-item>
-                  <v-text-field
-                    v-model="userData.username"
-                    :label="$t('settings.username')"
-                    outlined
-                    dense
-                  />
-                </v-list-item>
-              </v-list>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn
-                color="primary"
-                @click="save"
-              >
-                {{ $t('settings.save') }}
-              </v-btn>
-            </v-card-actions>
-          </v-card> -->
-          <!-- Password changing -->
-          <v-card class="mb-4">
-            <v-form
-              ref="passwordForm"
-              v-model="passwordForm"
-              @submit.prevent="savePassword"
-            >
-              <v-card-title>{{ $t('settings.password') }}</v-card-title>
-              <v-card-text>
-                <PasswordField v-model="password" />
-                <PasswordField
-                  v-model="passwordConfirm"
-                  :original-password="password"
-                  confirm
-                />
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer />
-                <v-btn
-                  color="primary"
-                  :loading="passwordLoading"
-                  :disabled="!passwordForm || passwordLoading"
-                  @click="savePassword"
-                >
-                  {{ $t('settings.save') }}
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card>
-          <v-card class="mb-4 danger">
-            <v-card-title>{{ $t('settings.danger-zone.title') }}</v-card-title>
-            <v-card-text>
-              {{ $t('settings.danger-zone.delete-account.description') }}
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer />
-
-              <DeleteAccountConfirm>
-                <v-btn color="error">
-                  {{ $t('settings.danger-zone.delete-account.delete') }}
-                </v-btn>
-              </DeleteAccountConfirm>
-            </v-card-actions>
-          </v-card>
+          <!-- <GeneralSettings :model-value="userData" /> -->
+          <PasswordChangeSettings />
+          <DangerZoneSettings />
         </v-col>
       </v-row>
     </v-container>
@@ -87,25 +22,23 @@ import { User } from '../types';
 import { useAPIStore } from '../stores/api';
 import { useGlobalStore } from '../stores/global';
 import UserPreviewBig from '../components/user/UserPreviewBig.vue';
-import PasswordField from '../components/forms/PasswordField.vue';
-import DeleteAccountConfirm from '../components/confirmations/DeleteAccountConfirm.vue';
+// import GeneralSettings from '../components/settings/GeneralSettings.vue';
+import DangerZoneSettings from '../components/settings/DangerZoneSettings.vue';
+import PasswordChangeSettings from '../components/settings/PasswordChangeSettings.vue';
 
 export default defineComponent({
   name: "SettingsPage",
   components: {
     UserPreviewBig,
-    PasswordField,
-    DeleteAccountConfirm,
+    // GeneralSettings,
+    PasswordChangeSettings,
+    DangerZoneSettings,
   },
   data() {
     return {
       api: useAPIStore().api,
       globalStore: useGlobalStore(),
       userData: useAPIStore().api.EMPTY_USER as User,
-      passwordLoading: false,
-      password: "",
-      passwordConfirm: "",
-      passwordForm: false,
     };
   },
   watch: {
@@ -120,26 +53,8 @@ export default defineComponent({
         this.userData = await this.api.loadLazyLoadingObject(this.api.getUser(this.api.USERNAME))
       },
     },
-  },
-  methods: {
-    async save() {
-      await this.api.updateUser(this.userData);
-    },
-    async savePassword() {
-      this.passwordLoading = true;
-      this.globalStore.progress = true;
-      try {
-        await this.api.updatePassword(this.password);
-      } catch (e) {
-        console.error(e);
-        this.passwordLoading = false;
-        return;
-      }
-      this.passwordLoading = false;
-      this.globalStore.progress = false;
-      this.globalStore.success = "snackbar.success.password-changed.message";
-      this.$refs.passwordForm.reset();
-    },
+    // TODO: Fix watch not working and add a check for API loaded and use disconnected
+    //       and redirect to login page
   },
 });
 </script>

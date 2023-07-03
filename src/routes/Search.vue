@@ -92,7 +92,7 @@ export default defineComponent({
     }
   },
   watch: {
-    debouncedQuery: async function (newQuery: string) {
+    debouncedQuery: async function () {
       this.loadMore(true);
     }
   },

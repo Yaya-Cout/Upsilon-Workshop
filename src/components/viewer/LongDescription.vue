@@ -28,7 +28,7 @@ export default defineComponent({
   name: "LongDescription",
   components: {
     MarkdownView
-},
+  },
   props: {
     project: {
       type: Object as () => Project,

@@ -1,0 +1,31 @@
+<template>
+  <v-card class="mb-4 danger">
+    <v-card-title>{{ $t('settings.danger-zone.title') }}</v-card-title>
+    <v-card-text>
+      {{ $t('settings.danger-zone.delete-account.description') }}
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer />
+
+      <DeleteAccountConfirm>
+        <v-btn color="error">
+          {{ $t('settings.danger-zone.delete-account.delete') }}
+        </v-btn>
+      </DeleteAccountConfirm>
+    </v-card-actions>
+  </v-card>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import DeleteAccountConfirm from '../confirmations/DeleteAccountConfirm.vue';
+
+export default defineComponent({
+  name: "DangerZoneSettings",
+  components: {
+    DeleteAccountConfirm,
+  },
+});
+</script>
+
+<style scoped></style>
