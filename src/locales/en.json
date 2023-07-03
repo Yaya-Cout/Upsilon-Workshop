@@ -121,6 +121,19 @@
     "simulator": "Simulator",
     "view-project-info": "Back to project info"
   },
+  "forms": {
+    "password-field": {
+      "hint": "At least 8 characters",
+      "hint-confirm": "Password must be identical",
+      "label": "Password",
+      "label-confirm": "Confirm password",
+      "rules": {
+        "identical": "Passwords does not match",
+        "min-8-chars": "Password must be at least 8 characters long",
+        "required": "Password is required"
+      }
+    }
+  },
   "login": {
     "close": "Close",
     "error": "Invalid username or password",
@@ -168,10 +181,10 @@
     "title": "Search"
   },
   "settings": {
-    "title": "Settings",
-    "username": "Username",
+    "password": "Password",
     "save": "Save",
-    "password": "Password"
+    "title": "Settings",
+    "username": "Username"
   },
   "snackbar": {
     "close": "Close",
@@ -253,18 +266,5 @@
     "upload": "Upload to calculator",
     "version": "Version {version}",
     "views": "{count} views"
-  },
-  "forms": {
-    "password-field": {
-      "label": "Password",
-      "label-confirm": "Confirm password",
-      "hint": "At least 8 characters",
-      "hint-confirm": "Password must be identical",
-      "rules": {
-        "required": "Password is required",
-        "min-8-chars": "Password must be at least 8 characters long",
-        "identical": "Passwords does not match"
-      }
-    }
   }
 }

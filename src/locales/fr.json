@@ -121,6 +121,19 @@
     "simulator": "Simulateur",
     "view-project-info": "Retour aux infos du projet"
   },
+  "forms": {
+    "password-field": {
+      "hint": "Au moins 8 caractères",
+      "hint-confirm": "Les mots de passe doivent être identiques",
+      "label": "Mot de passe",
+      "label-confirm": "Confirmer le mot de passe",
+      "rules": {
+        "identical": "Les mots de passe sont différents",
+        "min-8-chars": "Le mot de passe doit faire au moins 8 caractères de long",
+        "required": "Un mot de passe est requis"
+      }
+    }
+  },
   "login": {
     "close": "Fermer",
     "error": "Nom d'utilisateur ou mot de passe invalide",
@@ -166,6 +179,12 @@
     "no-results": "Aucun resultat trouvé",
     "search": "Rechercher",
     "title": "Rechercher"
+  },
+  "settings": {
+    "password": "Mot de passe",
+    "save": "Enregistrer",
+    "title": "Paramètres",
+    "username": "Nom d'utilisateur"
   },
   "snackbar": {
     "close": "Fermer",
@@ -247,24 +266,5 @@
     "upload": "Envoyer vers la calculatrice",
     "version": "Version {version}",
     "views": "{count} vues"
-  },
-  "forms": {
-    "password-field": {
-      "hint": "Au moins 8 caractères",
-      "label": "Mot de passe",
-      "label-confirm": "Confirmer le mot de passe",
-      "rules": {
-        "min-8-chars": "Le mot de passe doit faire au moins 8 caractères de long",
-        "required": "Un mot de passe est requis",
-        "identical": "Les mots de passe sont différents"
-      },
-      "hint-confirm": "Les mots de passe doivent être identiques"
-    }
-  },
-  "settings": {
-    "save": "Enregistrer",
-    "title": "Paramètres",
-    "username": "Nom d'utilisateur",
-    "password": "Mot de passe"
   }
 }
