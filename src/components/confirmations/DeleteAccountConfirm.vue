@@ -9,14 +9,14 @@
       </div>
     </template>
     <v-card>
-      <v-card-title class="headline">
-        {{ $t('settings.danger-zone.delete-account.confirm.title') }}
-      </v-card-title>
       <v-form
         ref="form"
         v-model="form"
         @submit.prevent="deleteAccount"
       >
+        <v-card-title class="headline">
+          {{ $t('settings.danger-zone.delete-account.confirm.title') }}
+        </v-card-title>
         <v-alert
           type="warning"
         >
