@@ -18,7 +18,7 @@ export default defineComponent({
   name: "PasswordField",
   props: {
     modelValue: {
-      type: Array as () => string[],
+      type: String,
       required: true,
     },
     confirm: {
