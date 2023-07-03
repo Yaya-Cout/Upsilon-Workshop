@@ -237,6 +237,9 @@
       "logout": {
         "message": "Deconnexion effectuée avec succès"
       },
+      "password-changed": {
+        "message": "Mot de passe changé avec succès"
+      },
       "project-created": {
         "message": "Projet créé"
       },

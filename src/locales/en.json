@@ -237,6 +237,9 @@
       "logout": {
         "message": "Logged out successfully"
       },
+      "password-changed": {
+        "message": "Password changed successfully"
+      },
       "project-created": {
         "message": "Project created successfully"
       },

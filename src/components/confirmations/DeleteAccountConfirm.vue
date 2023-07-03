@@ -17,18 +17,14 @@
         <v-card-title class="headline">
           {{ $t('settings.danger-zone.delete-account.confirm.title') }}
         </v-card-title>
-        <v-alert
-          type="warning"
-        >
+        <v-alert type="warning">
           {{ $t('settings.danger-zone.delete-account.confirm.warning') }}
         </v-alert>
         <v-card-text>
           {{ $t('settings.danger-zone.delete-account.confirm.description') }}
 
 
-          <PasswordField
-            v-model="password"
-          />
+          <PasswordField v-model="password" />
 
           <v-checkbox
             v-model="confirm"
@@ -39,9 +35,7 @@
           <v-card-actions>
             <v-spacer />
 
-            <v-btn
-              @click="dialog = false"
-            >
+            <v-btn @click="dialog = false">
               {{ $t('settings.danger-zone.delete-account.confirm.no') }}
             </v-btn>
 
@@ -51,7 +45,7 @@
               :loading="loading"
               type="submit"
             >
-              {{ $t('settings.danger-zone.delete-account.confirm.yes') }}
+²              {{ $t('settings.danger-zone.delete-account.confirm.yes') }}
             </v-btn>
           </v-card-actions>
         </v-card-text>
