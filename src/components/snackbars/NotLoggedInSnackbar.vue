@@ -1,5 +1,5 @@
 <template>
-  <v-snackbar v-model="api.NOT_LOGGED_IN_ERROR">
+  <v-snackbar v-model="apiStore.notLoggedInError">
     <span>
       {{ $t('app.not-logged-in-snackbar') }}
     </span>
@@ -7,7 +7,7 @@
       <v-btn
         color="error"
         variant="text"
-        @click="api.NOT_LOGGED_IN_ERROR = false"
+        @click="apiStore.notLoggedInError = false"
       >
         {{ $t('snackbar.close') }}
       </v-btn>
@@ -20,11 +20,11 @@ import { defineComponent } from 'vue';
 import { useAPIStore } from '../../stores/api';
 
 export default defineComponent({
-    data() {
-        return {
-            api: useAPIStore().api,
-        };
-    },
+  data() {
+    return {
+      apiStore: useAPIStore(),
+    };
+  },
 });
 </script>
 

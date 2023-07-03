@@ -110,6 +110,7 @@ export default defineComponent({
       project: useAPIStore().api.EMPTY_PROJECT as Project,
       api: useAPIStore().api,
       globalStore: useGlobalStore(),
+      apiStore: useAPIStore(),
       uuid: this.$route.params.uuid as string,
     };
   },
@@ -143,12 +144,12 @@ export default defineComponent({
     },
     hasWriteAccess(): boolean {
       // Get if the user is the owner of the project
-      if (this.project.author === this.api.USERNAME && this.api.USERNAME !== '') {
+      if (this.project.author === this.apiStore.username && this.apiStore.username !== '') {
         return true;
       }
       // Get if the user is a collaborator of the project
       for (const collaborator of this.project.collaborators) {
-        if (collaborator === this.api.USERNAME) {
+        if (collaborator === this.apiStore.username) {
           return true;
         }
       }

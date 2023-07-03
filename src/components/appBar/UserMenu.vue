@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!api.LOGGED_IN">
+  <div v-if="!apiStore.loggedIn">
     <v-btn
       class="mx-2"
       to="/login"
@@ -30,7 +30,7 @@ export default defineComponent({
   },
   data() {
     return {
-      api: useAPIStore().api,
+      apiStore: useAPIStore(),
     };
   },
 });

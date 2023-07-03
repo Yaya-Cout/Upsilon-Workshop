@@ -9,12 +9,12 @@
           v-bind="props"
           icon
         >
-          <AvatarView :username="api.USERNAME" />
+          <AvatarView :username="apiStore.username" />
         </v-btn>
       </template>
       <v-card min-width="300">
         <v-list>
-          <UserPreview :username="api.USERNAME" />
+          <UserPreview :username="apiStore.username" />
         </v-list>
 
         <v-divider />
@@ -40,6 +40,7 @@
     </v-menu>
   </div>
 </template>
+
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAPIStore } from '../../stores/api';
@@ -55,7 +56,7 @@ export default defineComponent({
   },
   data() {
     return {
-      api: useAPIStore().api,
+      apiStore: useAPIStore(),
       menu: false
     };
   },

@@ -1,4 +1,5 @@
 import { Project, Script, User, Group, Tag } from "../types";
+import { useAPIStore } from "../stores/api";
 
 /*
  * Class to interact with the Workshop API
@@ -7,10 +8,6 @@ import { Project, Script, User, Group, Tag } from "../types";
  */
 export default class API extends EventTarget {
     BASE_URL: string;
-    NOT_LOGGED_IN_ERROR: boolean = false;
-    LOGGED_IN: boolean = false;
-    USERNAME: string = "";
-    READY: boolean = false;
     EMPTY_PROJECT: Project = {
         title: "",
         rating: 0,
@@ -147,7 +144,7 @@ export default class API extends EventTarget {
         // Remove the token
         this.setToken("")
 
-        this.LOGGED_IN = false;
+        useAPIStore().loggedIn = false;
 
         return true;
     }
@@ -167,10 +164,10 @@ export default class API extends EventTarget {
     setToken(token: string): void {
         if (token === "") {
             localStorage.removeItem("token")
-            this.LOGGED_IN = false;
+            useAPIStore().loggedIn = false;
             return;
         } else {
-            this.LOGGED_IN = true;
+            useAPIStore().loggedIn = true;
         }
         localStorage.setItem("token", token);
     }
@@ -182,11 +179,11 @@ export default class API extends EventTarget {
     isLoggedIn(): boolean {
         // TODO: Check if the token is valid using the API
         if (this.getToken() === "") {
-            this.LOGGED_IN = false;
+            useAPIStore().loggedIn = false;
         } else {
-            this.LOGGED_IN = true;
+            useAPIStore().loggedIn = true;
         }
-        return this.LOGGED_IN;
+        return useAPIStore().loggedIn;
     }
 
     /*
@@ -198,7 +195,7 @@ export default class API extends EventTarget {
      */
     async _request(endpoint: string, method: string, body: object, expectedStatus: number = 200, loginRequired: boolean = true, skipReady: boolean = false): Promise<any> {
         // If the login is required, wait for the API to be ready
-        if (!this.READY && !skipReady) {
+        if (!useAPIStore().ready && !skipReady) {
             // Wait for the event to be emitted
             await new Promise<void>((resolve) => {
                 this.addEventListener("ready", () => {
@@ -208,7 +205,7 @@ export default class API extends EventTarget {
         }
 
         if (!this.isLoggedIn() && loginRequired) {
-            this.NOT_LOGGED_IN_ERROR = true;
+            useAPIStore().notLoggedInError = true;
             throw new Error("Not logged in");
         }
 
@@ -483,7 +480,7 @@ export default class API extends EventTarget {
             }],
             isPublic: false,
             rating: 3.5,
-            author: this.USERNAME,
+            author: useAPIStore().username,
             tags: [],
             tags_raw: [],
             created: new Date(),
@@ -614,13 +611,13 @@ export default class API extends EventTarget {
      */
     async updateUserInfo(): Promise<void> {
         if (!this.isLoggedIn()) {
-            this.LOGGED_IN = false
-            this.USERNAME = ""
+            useAPIStore().loggedIn = false
+            useAPIStore().username = ""
         } else {
             try {
                 const response = await this._request("current_user/", "GET", {}, 200, false, true)
-                this.LOGGED_IN = true
-                this.USERNAME = response["username"]
+                useAPIStore().loggedIn = true
+                useAPIStore().username = response["username"]
             } catch (e) {
                 this.logout()
                 // TODO: Better error handling
@@ -630,7 +627,7 @@ export default class API extends EventTarget {
         console.log("User info updated")
 
         // Mark the API as initialized
-        this.READY = true
+        useAPIStore().ready = true
 
         // Notify that the API is ready
         this.dispatchEvent(new CustomEvent("ready"))
@@ -697,7 +694,7 @@ export default class API extends EventTarget {
      * @throws {Error} - If an error occurred
      */
     async updateUser(user: User): Promise<object> {
-        const response = await this._request("users/" + this.USERNAME + "/", "PATCH", {
+        const response = await this._request("users/" + useAPIStore().username + "/", "PATCH", {
             username: user.username,
             // TODO: Email
         }, 200, true)
@@ -715,7 +712,7 @@ export default class API extends EventTarget {
      * @throws {Error} - If an error occurred
      */
     async updatePassword(password: string): Promise<object> {
-        return await this._request("users/" + this.USERNAME + "/", "PATCH", {
+        return await this._request("users/" + useAPIStore().username + "/", "PATCH", {
             password: password,
         }, 200, true)
     }
@@ -730,13 +727,13 @@ export default class API extends EventTarget {
      */
     async deleteUser(password: string): Promise<boolean> {
         // Check if the password is correct
-        const correct = this.checkPassword(this.USERNAME, password)
+        const correct = this.checkPassword(useAPIStore().username, password)
         if (!correct) {
             throw new Error("Incorrect password")
         }
 
         // Delete the user
-        await this._request("users/" + this.USERNAME + "/", "DELETE", {}, 204, true)
+        await this._request("users/" + useAPIStore().username + "/", "DELETE", {}, 204, true)
 
         // Logout
         this.logout(true)

@@ -114,6 +114,7 @@ export default defineComponent({
       tab: 0,
       oldTab: 0,
       globalStore: useGlobalStore(),
+      apiStore: useAPIStore(),
       api: useAPIStore().api,
     };
   },
@@ -130,12 +131,12 @@ export default defineComponent({
     },
     hasWriteAccess(): boolean {
       // Get if the user is the owner of the project
-      if (this.project.author === this.api.USERNAME && this.api.USERNAME !== '') {
+      if (this.project.author === this.apiStore.username && this.apiStore.username !== '') {
         return true;
       }
       // Get if the user is a collaborator of the project
       for (const collaborator of this.project.collaborators) {
-        if (collaborator === this.api.USERNAME) {
+        if (collaborator === this.apiStore.username) {
           return true;
         }
       }

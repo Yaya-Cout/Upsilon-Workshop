@@ -55,6 +55,7 @@ export default defineComponent({
   data() {
     return {
       globalStore: useGlobalStore(),
+      apiStore: useAPIStore(),
       api: useAPIStore().api,
       dialog: false,
     };
@@ -75,7 +76,7 @@ export default defineComponent({
     },
     hasWriteAccess(): boolean {
       // Get if the user is the owner of the project
-      if (this.project.author === this.api.USERNAME && this.api.USERNAME !== '') {
+      if (this.project.author === this.apiStore.username && this.apiStore.username !== '') {
         return true;
       }
       return false;

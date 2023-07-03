@@ -37,20 +37,21 @@ export default defineComponent({
   data() {
     return {
       api: useAPIStore().api,
+      apiStore: useAPIStore(),
       globalStore: useGlobalStore(),
       userData: useAPIStore().api.EMPTY_USER as User,
     };
   },
   watch: {
-    "api.USERNAME": {
+    "apiStore.username": {
       immediate: true,
       async handler() {
         // If the username is empty, return
-        if (this.api.USERNAME === "") {
+        if (this.apiStore.username === "") {
           return;
         }
 
-        this.userData = await this.api.loadLazyLoadingObject(this.api.getUser(this.api.USERNAME))
+        this.userData = await this.api.loadLazyLoadingObject(this.api.getUser(this.apiStore.username))
       },
     },
     // TODO: Fix watch not working and add a check for API loaded and use disconnected
