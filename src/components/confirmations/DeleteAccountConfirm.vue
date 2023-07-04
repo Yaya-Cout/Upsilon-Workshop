@@ -90,7 +90,7 @@ export default defineComponent({
 
       // Delete the account
       try {
-        console.log(await this.api.deleteUser(this.password));
+        await this.api.deleteUser(this.password);
       } catch (e) {
         this.globalStore.error = true
         this.loading = false;

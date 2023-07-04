@@ -21,7 +21,6 @@ export default defineComponent({
         } else {
           localStorage.setItem('dontShowDeleteConfirm', 'true');
         }
-        console.log("showDeleteConfirm", this.globalStore.showDeleteConfirm);
       },
     },
   },
