@@ -59,6 +59,8 @@ export default defineComponent({
       } catch (e) {
         console.error(e);
         this.passwordLoading = false;
+        this.globalStore.progress = false;
+        this.globalStore.error = true;
         return;
       }
       this.passwordLoading = false;
