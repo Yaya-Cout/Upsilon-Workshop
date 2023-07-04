@@ -10,11 +10,11 @@
     </template>
     <v-card>
       <v-card-title class="headline">
-        {{ $t('editor.delete-confirm.title', { name: project.files[scriptIndex].title }) }}
+        {{ $t('editor.delete-confirm.title', { name: scriptName }) }}
       </v-card-title>
 
       <v-card-text>
-        {{ $t('editor.delete-confirm.description', { name: project.files[scriptIndex].title }) }}
+        {{ $t('editor.delete-confirm.description', { name: scriptName }) }}
 
         <v-card-actions>
           <v-spacer />
@@ -40,17 +40,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useGlobalStore } from '../../stores/global';
-import { Project } from '../../types';
 
 export default defineComponent({
   name: 'DeleteConfirm',
   props: {
-    project: {
-      type: Object as () => Project,
-      required: true,
-    },
-    scriptIndex: {
-      type: Number,
+    scriptName: {
+      type: String,
       required: true,
     },
   },

@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     v-model="dialog"
-    max-width="290"
+    max-width="340"
   >
     <template #activator="{ props }">
       <div v-bind="props">
@@ -27,8 +27,7 @@
       <v-card-actions>
         <DeleteConfirm
           v-bind="$attrs"
-          :project="project"
-          :script-index="scriptIndex"
+          :script-name="project.files[scriptIndex].title"
         >
           <v-btn
             color="error"
