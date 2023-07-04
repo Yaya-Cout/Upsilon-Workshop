@@ -72,6 +72,7 @@
       "cancel": "Cancel",
       "delete": "Delete",
       "description": "Are you sure you want to delete {name}?",
+      "dont-show-again": "Don't show again",
       "title": "Delete {name}"
     },
     "device": "Calculator",

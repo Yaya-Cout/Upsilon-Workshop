@@ -16,6 +16,12 @@
       <v-card-text>
         {{ $t('editor.delete-confirm.description', { name: scriptName }) }}
 
+        <v-switch
+          v-model="dontShowAgain"
+          :label="$t('editor.delete-confirm.dont-show-again')"
+          hide-details
+        />
+
         <v-card-actions>
           <v-spacer />
 
@@ -55,6 +61,29 @@ export default defineComponent({
       dialog: false,
       globalStore: useGlobalStore(),
     };
+  },
+  computed: {
+    dontShowAgain: {
+      get() : boolean {
+        return !this.globalStore.showDeleteConfirm;
+      },
+      set(value: boolean) {
+        this.globalStore.showDeleteConfirm = !value;
+      },
+    },
+  },
+  watch: {
+    dialog: {
+      handler() {
+        // If the dialog is closed and the user has checked the "don't show again" box, delete the script without asking
+        // TODO: Find a way to enable the dialog again
+        if (this.dialog && this.dontShowAgain) {
+          this.deleteScript();
+          this.dialog = false;
+        }
+      },
+      immediate: true,
+    },
   },
   methods: {
     deleteScript() {

@@ -72,6 +72,7 @@
       "cancel": "Annuler",
       "delete": "Supprimer",
       "description": "Êtes-vous sûr de vouloir supprimer {name} ?",
+      "dont-show-again": "Ne plus afficher",
       "title": "Supprimer {name}"
     },
     "device": "Calculatrice",

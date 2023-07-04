@@ -10,5 +10,7 @@ export const useGlobalStore = defineStore('global', {
     usernameTaken: false,
     // Show the global progress bar (boolean or number between 0 and 100)
     progress: false as boolean | number,
+    // Control if the delete dialog should be shown
+    showDeleteConfirm: true,
   }),
 })
