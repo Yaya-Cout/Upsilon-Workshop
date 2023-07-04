@@ -54,7 +54,10 @@ export default defineComponent({
             for (let file of project.files) {
                 let name = file.title.split('.').shift();
                 let type = file.title.split('.').pop();
-                // TODO: Prevent duplicate script names.
+                // If the script already exists in the storage, we remove it.
+                storage.records = storage.records.filter((record) => record.name !== name);
+                // TODO: Show a popup to ask the user if he wants to overwrite the
+                // existing script.
                 storage.records.push({
                     name: name,
                     type: type,
