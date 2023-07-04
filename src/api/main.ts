@@ -1,5 +1,6 @@
 import { Project, Script, User, Group, Tag } from "../types";
 import { useAPIStore } from "../stores/api";
+import  { nextTick } from "vue";
 
 /*
  * Class to interact with the Workshop API
@@ -7,6 +8,7 @@ import { useAPIStore } from "../stores/api";
  * @class API
  */
 export default class API extends EventTarget {
+    API_STORE = useAPIStore();
     BASE_URL: string;
     EMPTY_PROJECT: Project = {
         title: "",
@@ -144,7 +146,8 @@ export default class API extends EventTarget {
         // Remove the token
         this.setToken("")
 
-        useAPIStore().loggedIn = false;
+        this.API_STORE.loggedIn = false;
+        this.API_STORE.username = ""
 
         return true;
     }
@@ -164,10 +167,10 @@ export default class API extends EventTarget {
     setToken(token: string): void {
         if (token === "") {
             localStorage.removeItem("token")
-            useAPIStore().loggedIn = false;
+            this.API_STORE.loggedIn = false;
             return;
         } else {
-            useAPIStore().loggedIn = true;
+            this.API_STORE.loggedIn = true;
         }
         localStorage.setItem("token", token);
     }
@@ -179,11 +182,11 @@ export default class API extends EventTarget {
     isLoggedIn(): boolean {
         // TODO: Check if the token is valid using the API
         if (this.getToken() === "") {
-            useAPIStore().loggedIn = false;
+            this.API_STORE.loggedIn = false;
         } else {
-            useAPIStore().loggedIn = true;
+            this.API_STORE.loggedIn = true;
         }
-        return useAPIStore().loggedIn;
+        return this.API_STORE.loggedIn;
     }
 
     /*
@@ -195,7 +198,7 @@ export default class API extends EventTarget {
      */
     async _request(endpoint: string, method: string, body: object, expectedStatus: number = 200, loginRequired: boolean = true, skipReady: boolean = false): Promise<any> {
         // If the login is required, wait for the API to be ready
-        if (!useAPIStore().ready && !skipReady) {
+        if (!this.API_STORE.ready && !skipReady) {
             // Wait for the event to be emitted
             await new Promise<void>((resolve) => {
                 this.addEventListener("ready", () => {
@@ -205,7 +208,7 @@ export default class API extends EventTarget {
         }
 
         if (!this.isLoggedIn() && loginRequired) {
-            useAPIStore().notLoggedInError = true;
+            this.API_STORE.notLoggedInError = true;
             throw new Error("Not logged in");
         }
 
@@ -480,7 +483,7 @@ export default class API extends EventTarget {
             }],
             isPublic: false,
             rating: 3.5,
-            author: useAPIStore().username,
+            author: this.API_STORE.username,
             tags: [],
             tags_raw: [],
             created: new Date(),
@@ -611,13 +614,13 @@ export default class API extends EventTarget {
      */
     async updateUserInfo(): Promise<void> {
         if (!this.isLoggedIn()) {
-            useAPIStore().loggedIn = false
-            useAPIStore().username = ""
+            this.API_STORE.loggedIn = false
+            this.API_STORE.username = ""
         } else {
             try {
                 const response = await this._request("current_user/", "GET", {}, 200, false, true)
-                useAPIStore().loggedIn = true
-                useAPIStore().username = response["username"]
+                this.API_STORE.loggedIn = true
+                this.API_STORE.username = response["username"]
             } catch (e) {
                 this.logout()
                 // TODO: Better error handling
@@ -626,8 +629,12 @@ export default class API extends EventTarget {
 
         console.log("User info updated")
 
-        // Mark the API as initialized
-        useAPIStore().ready = true
+        // Await next tick to make sure watchers are updated before emitting
+        // the event
+        await nextTick()
+
+        // Mark the API as ready
+        this.API_STORE.ready = true
 
         // Notify that the API is ready
         this.dispatchEvent(new CustomEvent("ready"))
@@ -694,7 +701,7 @@ export default class API extends EventTarget {
      * @throws {Error} - If an error occurred
      */
     async updateUser(user: User): Promise<object> {
-        const response = await this._request("users/" + useAPIStore().username + "/", "PATCH", {
+        const response = await this._request("users/" + this.API_STORE.username + "/", "PATCH", {
             username: user.username,
             // TODO: Email
         }, 200, true)
@@ -712,7 +719,7 @@ export default class API extends EventTarget {
      * @throws {Error} - If an error occurred
      */
     async updatePassword(password: string): Promise<object> {
-        return await this._request("users/" + useAPIStore().username + "/", "PATCH", {
+        return await this._request("users/" + this.API_STORE.username + "/", "PATCH", {
             password: password,
         }, 200, true)
     }
@@ -727,13 +734,13 @@ export default class API extends EventTarget {
      */
     async deleteUser(password: string): Promise<boolean> {
         // Check if the password is correct
-        const correct = this.checkPassword(useAPIStore().username, password)
+        const correct = this.checkPassword(this.API_STORE.username, password)
         if (!correct) {
             throw new Error("Incorrect password")
         }
 
         // Delete the user
-        await this._request("users/" + useAPIStore().username + "/", "DELETE", {}, 204, true)
+        await this._request("users/" + this.API_STORE.username + "/", "DELETE", {}, 204, true)
 
         // Logout
         this.logout(true)

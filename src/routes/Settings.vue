@@ -54,8 +54,15 @@ export default defineComponent({
         this.userData = await this.api.loadLazyLoadingObject(this.api.getUser(this.apiStore.username))
       },
     },
-    // TODO: Fix watch not working and add a check for API loaded and use disconnected
-    //       and redirect to login page
+    "apiStore.ready": {
+      immediate: true,
+      async handler() {
+        // If the API is ready and the username is empty, redirect to the login page
+        if (useAPIStore().ready && !useAPIStore().loggedIn && useAPIStore().username === "") {
+          this.$router.push({ name: "login" })
+        }
+      },
+    },
   },
 });
 </script>
