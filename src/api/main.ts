@@ -930,9 +930,6 @@ export default class API extends EventTarget {
                     return undefined
                 }
 
-
-
-
                 // Check if the target is loaded
                 if (target._loaded) {
                     // Return the property

@@ -85,9 +85,11 @@ export default defineComponent({
     project: {
       immediate: true,
       async handler(project: Project) {
+        let tagsNames: string[] = [];
         for (const tag of project.tags) {
-          this.tagsNames.push(await tag.name);
+          tagsNames.push(await tag.name);
         }
+        this.tagsNames = tagsNames;
       }
     }
   }
