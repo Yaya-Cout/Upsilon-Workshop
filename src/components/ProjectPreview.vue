@@ -44,11 +44,11 @@
             </v-card-subtitle>
             <v-card-item>
               <v-chip
-                v-for="tag in tags"
-                :key="tag.name"
+                v-for="tag in tagsNames"
+                :key="tag"
                 class="mx-1"
               >
-                {{ tag.name }}
+                {{ tag }}
               </v-chip>
             </v-card-item>
           </div>
@@ -78,7 +78,7 @@ export default defineComponent({
   data() {
     return {
       api: useAPIStore().api,
-      tags: [] as Tag[],
+      tagsNames: [] as string[],
     };
   },
   watch: {
@@ -86,13 +86,8 @@ export default defineComponent({
       immediate: true,
       async handler(project: Project) {
         for (const tag of project.tags) {
-          this.api.loadLazyLoadingObject(tag);
+          this.tagsNames.push(await tag.name);
         }
-        let tags = [];
-        for (const tag of project.tags) {
-          tags.push(await this.api.loadLazyLoadingObject(tag));
-        }
-        this.tags = tags;
       }
     }
   }

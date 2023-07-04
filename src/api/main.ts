@@ -657,7 +657,7 @@ export default class API extends EventTarget {
      * @throws {Error} - If the user does not exist
      */
     getUser(username: string): User {
-        return this.getLazy("_getUser", username)
+        return this.getLazy("_getUser", "username", username)
     }
 
 
@@ -765,7 +765,7 @@ export default class API extends EventTarget {
      * @throws {Error} - If the group does not exist
      */
     getGroup(id: number): Group {
-        return this.getLazy("_getGroup", id)
+        return this.getLazy("_getGroup", "id", id)
     }
 
     /*
@@ -806,7 +806,7 @@ export default class API extends EventTarget {
      * @throws {Error} - If the project does not exist
      */
     getProject(uuid: string): Project {
-        return this.getLazy("_getProject", uuid)
+        return this.getLazy("_getProject", "uuid", uuid)
     }
 
     /*
@@ -872,7 +872,7 @@ export default class API extends EventTarget {
      * @throws {Error} - If the tag does not exist
      */
     getTag(name: string): Tag {
-        return this.getLazy("_getTag", name)
+        return this.getLazy("_getTag", "name", name)
     }
 
     /*
@@ -906,10 +906,12 @@ export default class API extends EventTarget {
     /*
      * Return an object that is lasy-loaded from another function
      * @param {string} func - The name of the function to call
+     * @param {string} key - The key that return the argument (username for
+     *                       getUser, uuid for getProject, etc.)
      * @param {...any} args - The arguments to pass to the function
      * @returns {Proxy} - A proxy that calls the function when needed
      */
-    getLazy(func: string, ...args: any[]): any {
+    getLazy(func: string, key: string, ...args: any[]): any {
         // TODO: Add a way to get the prop without loading the object (e.g. for
         // the name of a user or a project ID)
         // Create the proxy
@@ -918,6 +920,11 @@ export default class API extends EventTarget {
             _loading: false,
         } as any, {
             get: async (target, prop) => {
+                // If the property key is the key, return the argument
+                if (prop === key) {
+                    return args[0]
+                }
+
                 // Check if the target is loaded
                 if (target._loaded) {
                     // Return the property
