@@ -622,7 +622,7 @@ export default class API extends EventTarget {
                 this.API_STORE.loggedIn = true
                 this.API_STORE.username = response["username"]
             } catch (e) {
-                this.logout()
+                await this.logout(true)
                 // TODO: Better error handling
             }
         }
