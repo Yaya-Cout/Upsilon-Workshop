@@ -75,10 +75,4 @@ export default defineComponent({
 .col-1 {
   margin: 16px;
 }
-
-.danger {
-  /* Add a red border */
-  border: 1px solid red;
-  background-color: #ffdddd;
-}
 </style>

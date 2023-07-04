@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mb-4 danger">
+  <v-card class="mb-4 bg-red-lighten-4">
     <v-card-title>{{ $t('settings.danger-zone.title') }}</v-card-title>
     <v-card-text>
       {{ $t('settings.danger-zone.delete-account.description') }}
