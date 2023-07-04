@@ -20,7 +20,7 @@
           color="primary"
           :loading="passwordLoading"
           :disabled="!passwordForm || passwordLoading"
-          @click="savePassword"
+          type="submit"
         >
           {{ $t('settings.save') }}
         </v-btn>
