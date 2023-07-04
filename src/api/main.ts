@@ -230,6 +230,15 @@ export default class API extends EventTarget {
 
         const response = await fetch(this.BASE_URL + endpoint, payload)
 
+        // If we have a 401 error, the token is invalid, so we try to update
+        // the user info and try again if the user is logged out
+        if (response.status === 401 && !skipReady && this.isLoggedIn()) {
+            await this.updateUserInfo()
+            if (!this.isLoggedIn()) {
+                return await this._request(endpoint, method, body, expectedStatus, loginRequired, skipReady)
+            }
+        }
+
         if (response.status !== expectedStatus && expectedStatus !== 0) {
             throw new Error("API request failed");
         }
@@ -622,8 +631,8 @@ export default class API extends EventTarget {
                 this.API_STORE.loggedIn = true
                 this.API_STORE.username = response["username"]
             } catch (e) {
+                // TODO: Check if unauthorized and handle other errors
                 await this.logout(true)
-                // TODO: Better error handling
             }
         }
 
