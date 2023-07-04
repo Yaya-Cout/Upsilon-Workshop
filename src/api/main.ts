@@ -925,6 +925,14 @@ export default class API extends EventTarget {
                     return args[0]
                 }
 
+                // Ignore vue properties
+                if (prop === "__v_isRef" || prop === "__v_isReadonly") {
+                    return undefined
+                }
+
+
+
+
                 // Check if the target is loaded
                 if (target._loaded) {
                     // Return the property
