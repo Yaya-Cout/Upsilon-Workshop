@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog">
-    <template #activator="{ props }">
-      <div v-bind="props">
+    <template #activator="{ props: attrs }">
+      <div v-bind="attrs">
         <slot />
       </div>
     </template>
@@ -40,9 +40,9 @@
               height="24"
             >
           </template>
-          <template #item="{ props, item }">
+          <template #item="{ props: attrs, item }">
             <v-list-item
-              v-bind="props"
+              v-bind="attrs"
               :prepend-avatar="item.raw.icon"
               :title="item.title"
             />

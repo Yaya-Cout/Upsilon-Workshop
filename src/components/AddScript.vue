@@ -3,8 +3,8 @@
     v-model="dialog"
     max-width="290"
   >
-    <template #activator="{ props }">
-      <div v-bind="props">
+    <template #activator="{ props: attrs }">
+      <div v-bind="attrs">
         <slot />
       </div>
     </template>

@@ -60,7 +60,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import { Project, Tag } from '../types';
+import { Project } from '../types';
 import { useAPIStore } from '../stores/api';
 import { VSkeletonLoader } from 'vuetify/lib/labs/components.mjs';
 
