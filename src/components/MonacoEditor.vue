@@ -79,15 +79,17 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { ref, watch, computed, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as monaco from 'monaco-editor';
-import { defineComponent, PropType } from 'vue';
 import { useGlobalStore } from '../stores/global';
 import { useAPIStore } from '../stores/api';
 import { Script, Project } from '../types';
 import SaveProject from './SaveProject.vue';
 import ChangeScript from './ChangeScript.vue';
 import AddScript from './AddScript.vue';
+const { t: $t } = useI18n();
 
 // Those variables are declared there instead of in data because otherwise it causes endless loops.
 // TODO: Clear those variables when the component is destroyed
@@ -95,169 +97,161 @@ var editor: monaco.editor.IStandaloneCodeEditor | null = null;
 var models: monaco.editor.ITextModel[] = [];
 var states: monaco.editor.ICodeEditorViewState[] = [];
 
-export default defineComponent({
-  name: "MonacoEditor",
-  components: {
-    SaveProject,
-    ChangeScript,
-    AddScript,
+const tab = ref(0);
+const oldTab = ref(0);
+
+const globalStore = useGlobalStore();
+const apiStore = useAPIStore();
+const api = useAPIStore().api;
+
+const props = defineProps({
+  project: {
+    type: Object as () => Project,
+    required: true,
   },
-  props: {
-    project: {
-      type: Object as PropType<Project>,
-      required: true,
-    },
-  },
-  emits: ["run", "update-project"],
-  data() {
-    return {
-      tab: 0,
-      oldTab: 0,
-      globalStore: useGlobalStore(),
-      apiStore: useAPIStore(),
-      api: useAPIStore().api,
-    };
-  },
-  computed: {
-    scripts: {
-      get(): Script[] {
-        return this.project.files;
-      },
-      set(value: Script[]) {
-        // TODO: Avoid using mutation
-        // this.project.files = value;
-        this.$emit('update-project', value);
-      },
-    },
-    hasWriteAccess(): boolean {
-      // Get if the user is the owner of the project
-      if (this.project.author === this.apiStore.username && this.apiStore.username !== '') {
-        return true;
-      }
-      // Get if the user is a collaborator of the project
-      for (const collaborator of this.project.collaborators) {
-        if (collaborator === this.apiStore.username) {
-          return true;
-        }
-      }
-      return false;
-    },
-  },
-  watch: {
-    "project.files": {
-      deep: true,
-      handler() {
-        this.createModels();
-      },
-    },
-  },
-  mounted() {
-    const editorElement = document.getElementById("monaco-editor");
-    if (editorElement === null)
-      return;
-    editor = monaco.editor.create(editorElement, {
-      language: "python",
-      automaticLayout: true,
-    });
-    editor.onDidChangeModelContent(this.contentChanged);
-    this.createModels();
-  },
-  methods: {
-    contentChanged() {
-      for (const model of models) {
-        for (var i = 0; i < this.scripts.length; i++) {
-          if (this.project.uuid + this.scripts[i].title === model.uri.path.substring(1)) {
-            this.scripts[i].content = model.getValue();
-          }
-        }
-      }
-    },
-    createModels() {
-      for (const script of this.scripts) {
-        // Get if model already exists
-        let exists = false;
-        for (const model of models) {
-          if (model.uri.path.substring(1) === this.project.uuid + script.title) {
-            // If it exists, check if it needs to be updated
-            if (model.getValue() === script.content) {
-              exists = true;
-              break;
-            }
-            model.setValue(script.content);
-            exists = true;
-            break;
-          }
-        }
-        if (exists) {
-          continue;
-        }
-        // If it doesn't exist, create it
-        models.push(monaco.editor.createModel(script.content, "python", monaco.Uri.from({ scheme: "file", path: this.project.uuid + script.title })));
-      }
-      this.setTab(this.tab);
-    },
-    setTab(tab: any) {
-      // If there is no script, don't do anything
-      if (this.scripts.length === 0) {
-        return;
-      }
-      // If the tab is out of bounds, set it to the first tab
-      if (tab >= this.scripts.length) {
-        tab = 0;
-        this.tab = 0;
-      }
-      // If oldTab is out of bounds, set it to the first tab
-      if (this.oldTab >= this.scripts.length) {
-        this.oldTab = 0;
-      }
-      if (editor == null)
-        throw Error();
-      // Iterate over all models and get the one that corresponds to the tab
-      let id = -1;
-      for (const model of models) {
-        if (model.uri.path.substring(1) === this.project.uuid + this.scripts[tab].title) {
-          id = models.indexOf(model);
-          break;
-        }
-      }
-      if (id === -1) {
-        throw Error("Couldn't find model for tab " + tab);
-      }
-      // Do the same for the old tab
-      let oldId = -1;
-      for (const model of models) {
-        if (model.uri.path.substring(1) === this.project.uuid + this.scripts[this.oldTab].title) {
-          oldId = models.indexOf(model);
-          break;
-        }
-      }
-      if (oldId === -1) {
-        throw Error("Couldn't find model for old tab " + this.oldTab);
-      }
-      states[oldId] = editor.saveViewState();
-      this.oldTab = tab;
-      editor.setModel(models[id]);
-      editor.restoreViewState(states[id]);
-    },
-    run() {
-      this.$emit("run");
-    },
-    rename(scriptId: number, newTitle: string) {
-      this.scripts[scriptId].title = newTitle;
-    },
-    deleteScript(scriptId: number) {
-      this.scripts.splice(scriptId, 1);
-      this.globalStore.success = "snackbar.success.script-deleted.message";
-    },
-    addScript(name: string) {
-      this.scripts.push({
-        title: name,
-        content: "",
-      });
-      this.setTab(this.scripts.length - 1);
-    },
-  }
 });
+
+const emits = defineEmits(['run', 'update-project']);
+
+const scripts = computed({
+  get(): Script[] {
+    return props.project.files;
+  },
+  set(value: Script[]) {
+    // TODO: Use v-model for updating project
+    emits('update-project', value);
+  },
+});
+
+const hasWriteAccess = computed(() => {
+  // Get if the user is the owner of the project
+  if (props.project.author === apiStore.username && apiStore.username !== '') {
+    return true;
+  }
+  // Get if the user is a collaborator of the project
+  for (const collaborator of props.project.collaborators) {
+    if (collaborator === apiStore.username) {
+      return true;
+    }
+  }
+  return false;
+});
+
+watch(scripts, () => {
+  createModels();
+});
+
+onMounted(() => {
+  const editorElement = document.getElementById("monaco-editor");
+  if (editorElement === null)
+    return;
+  editor = monaco.editor.create(editorElement, {
+    language: "python",
+    automaticLayout: true,
+  });
+  editor.onDidChangeModelContent(contentChanged);
+  createModels();
+});
+
+const contentChanged = () => {
+  for (const model of models) {
+    for (var i = 0; i < scripts.value.length; i++) {
+      if (props.project.uuid + scripts.value[i].title === model.uri.path.substring(1)) {
+        scripts.value[i].content = model.getValue();
+      }
+    }
+  }
+};
+
+const createModels = () => {
+  for (const script of scripts.value) {
+    // Get if model already exists
+    let exists = false;
+    for (const model of models) {
+      if (model.uri.path.substring(1) === props.project.uuid + script.title) {
+        // If it exists, check if it needs to be updated
+        if (model.getValue() === script.content) {
+          exists = true;
+          break;
+        }
+        model.setValue(script.content);
+        exists = true;
+        break;
+      }
+    }
+    if (exists) {
+      continue;
+    }
+    // If it doesn't exist, create it
+    models.push(monaco.editor.createModel(script.content, "python", monaco.Uri.from({ scheme: "file", path: props.project.uuid + script.title })));
+  }
+  setTab(tab.value);
+};
+
+const setTab = (newTab: number) => {
+  // If there is no script, don't do anything
+  if (scripts.value.length === 0) {
+    return;
+  }
+  // If the tab is out of bounds, set it to the first tab
+  if (newTab >= scripts.value.length) {
+    newTab = 0;
+    tab.value = 0;
+  }
+  // If oldTab is out of bounds, set it to the first tab
+  if (oldTab.value >= scripts.value.length) {
+    oldTab.value = 0;
+  }
+  if (editor == null)
+    throw Error();
+  // Iterate over all models and get the one that corresponds to the tab
+  let id = -1;
+  for (const model of models) {
+    if (model.uri.path.substring(1) === props.project.uuid + scripts.value[newTab].title) {
+      id = models.indexOf(model);
+      break;
+    }
+  }
+  if (id === -1) {
+    throw Error("Couldn't find model for tab " + newTab);
+  }
+  // Do the same for the old tab
+  let oldId = -1;
+  for (const model of models) {
+    if (model.uri.path.substring(1) === props.project.uuid + scripts.value[oldTab.value].title) {
+      oldId = models.indexOf(model);
+      break;
+    }
+  }
+  if (oldId === -1) {
+    throw Error("Couldn't find model for old tab " + oldTab.value);
+  }
+  states[oldId] = editor.saveViewState();
+  oldTab.value = newTab;
+  editor.setModel(models[id]);
+  editor.restoreViewState(states[id]);
+};
+
+const run = () => {
+  emits("run");
+};
+
+const rename = (scriptId: number, newTitle: string) => {
+  scripts.value[scriptId].title = newTitle;
+};
+
+const deleteScript = (scriptId: number) => {
+  scripts.value.splice(scriptId, 1);
+  globalStore.success = "snackbar.success.script-deleted.message";
+};
+
+const addScript = (name: string) => {
+  scripts.value.push({
+    title: name,
+    content: "",
+  });
+  setTab(scripts.value.length - 1);
+};
 </script>
 
 <style>
