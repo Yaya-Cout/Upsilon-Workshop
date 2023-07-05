@@ -88,100 +88,91 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import cloneDeep from 'lodash/cloneDeep';
 import { Project } from '../types';
 import SelectCollaborators from './editor/SelectCollaborators.vue';
 import SelectTags from './editor/SelectTags.vue';
+const { t: $t } = useI18n();
 
-export default defineComponent({
-  name: 'EditProjectDialog',
-  components: {
-    SelectCollaborators,
-    SelectTags,
-  },
-  props: {
-    project: {
-      type: Object as () => Project,
-      required: true,
-    },
-  },
-  emits: ['update-metadata'],
-  data() {
-    return {
-      dialog: false,
-      titleRules: [
-        (v: string) => !!v || this.$t('editor.edit-project-info-dialog.rules.project-title.required'),
-        (v: string) => (v && v.length <= 100) || this.$t('editor.edit-project-info-dialog.rules.project-title.length')
-      ],
-      languageRules: [
-        (v: string) => !!v || this.$t('editor.edit-project-info-dialog.rules.language.required'),
-        (v: string) => ['python', 'micropython-khicas', 'xcas-python-pow', 'xcas-python-xor', 'xcas', 'xcas-session'].includes(v) || this.$t('editor.edit-project-info-dialog.rules.language.invalid')
-      ],
-      languages: [
-        { name: "python", icon: import.meta.env.BASE_URL + "assets/python.svg" },
-        { name: "xcas", icon: import.meta.env.BASE_URL + "assets/xcas.svg" },
-      ],
-      shortDescriptionRules: [
-        // TODO: Allow empty short description
-        (v: string) => !!v || this.$t('editor.edit-project-info-dialog.rules.short-description.required'),
-        (v: string) => (v && v.length <= 100) || this.$t('editor.edit-project-info-dialog.rules.short-description.length')
-      ],
-      versionRules: [
-        // TODO: Require version
-        (v: string) => (v && v.length <= 100) || this.$t('editor.edit-project-info-dialog.rules.version.length')
-      ],
-      longDescriptionRules: [
-        // TODO: Allow empty long description
-        (v: string) => (v && v.length <= 10000) || this.$t('editor.edit-project-info-dialog.rules.long-description.length')
-      ],
-      title: '',
-      version: '',
-      language: '',
-      shortDescription: '',
-      longDescription: '',
-      collaborators: [] as string[],
-      tags: [] as string[],
-      isPublic: false,
-    };
-  },
-  watch: {
-    project: {
-      immediate: true,
-      deep: true,
-      handler() {
-        this.title = this.project.title;
-        this.version = this.project.version;
-        this.language = this.project.language;
-        this.shortDescription = this.project.short_description;
-        this.longDescription = this.project.long_description;
-        this.isPublic = this.project.isPublic;
-        this.collaborators = this.project.collaborators;
-        this.tags = this.project.tags_raw;
-      },
-    },
-  },
-  methods: {
-    save() {
-      // Make a copy of the project
-      const project = cloneDeep(this.project);
-      // Update the project
-      project.title = this.title;
-      project.version = this.version;
-      project.language = this.language;
-      project.short_description = this.shortDescription;
-      project.long_description = this.longDescription;
-      project.isPublic = this.isPublic;
-      project.collaborators = this.collaborators;
-      project.tags_raw = this.tags;
-      // Emit the updated project
-      this.$emit('update-metadata', project);
-      // Close the dialog
-      this.dialog = false;
-    },
+// TODO: Use v-model for updating project metadata
+const emits = defineEmits(['update-metadata']);
+
+const props = defineProps({
+  project: {
+    type: Object as () => Project,
+    required: true,
   },
 });
+
+const titleRules = [
+  (v: string) => !!v || $t('editor.edit-project-info-dialog.rules.project-title.required'),
+  (v: string) => (v && v.length <= 100) || $t('editor.edit-project-info-dialog.rules.project-title.length')
+];
+const languageRules = [
+  (v: string) => !!v || $t('editor.edit-project-info-dialog.rules.language.required'),
+  (v: string) => ['python', 'micropython-khicas', 'xcas-python-pow', 'xcas-python-xor', 'xcas', 'xcas-session'].includes(v) || $t('editor.edit-project-info-dialog.rules.language.invalid')
+];
+const languages = [
+  { name: "python", icon: import.meta.env.BASE_URL + "assets/python.svg" },
+  { name: "xcas", icon: import.meta.env.BASE_URL + "assets/xcas.svg" },
+];
+const shortDescriptionRules = [
+  // TODO: Allow empty short description
+  (v: string) => !!v || $t('editor.edit-project-info-dialog.rules.short-description.required'),
+  (v: string) => (v && v.length <= 100) || $t('editor.edit-project-info-dialog.rules.short-description.length')
+];
+
+const versionRules = [
+  // TODO: Require version
+  (v: string) => (v && v.length <= 100) || $t('editor.edit-project-info-dialog.rules.version.length')
+];
+
+const longDescriptionRules = [
+  // TODO: Allow empty long description
+  (v: string) => (v && v.length <= 10000) || $t('editor.edit-project-info-dialog.rules.long-description.length')
+];
+
+const dialog = ref(false);
+const title = ref('');
+const version = ref('');
+const language = ref('');
+const shortDescription = ref('');
+const longDescription = ref('');
+const collaborators = ref([] as string[]);
+const tags = ref([] as string[]);
+const isPublic = ref(false);
+
+watch(props.project, () => {
+  title.value = props.project.title;
+  version.value = props.project.version;
+  language.value = props.project.language;
+  shortDescription.value = props.project.short_description;
+  longDescription.value = props.project.long_description;
+  isPublic.value = props.project.isPublic;
+  collaborators.value = props.project.collaborators;
+  tags.value = props.project.tags_raw;
+}, { immediate: true });
+
+const save = () => {
+  // Make a copy of the project
+  const project = cloneDeep(props.project);
+  // Update the project
+  project.title = title.value;
+  project.version = version.value;
+  project.language = language.value;
+  project.short_description = shortDescription.value;
+  project.long_description = longDescription.value;
+  project.isPublic = isPublic.value;
+  project.collaborators = collaborators.value;
+  project.tags_raw = tags.value;
+  // Emit the updated project
+  emits('update-metadata', project);
+  // Close the dialog
+  dialog.value = false;
+};
 </script>
 
 <style scoped></style>
