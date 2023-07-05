@@ -1,12 +1,12 @@
 <template>
   <v-dialog
-    v-if="hasWriteAccess()"
+    v-if="hasWriteAccess"
     v-model="dialog"
     max-width="290"
   >
-    <template #activator="{ props }">
+    <template #activator="{ props: attrs }">
       <span
-        v-bind="props"
+        v-bind="attrs"
       >
         <slot />
       </span>
@@ -39,49 +39,48 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 import { useGlobalStore } from '../stores/global';
 import { useAPIStore } from '../stores/api';
 import { Project } from '../types';
+const { t: $t } = useI18n();
 
-export default defineComponent({
-  props: {
-    project: {
-      type: Object as PropType<Project>,
-      required: true
-    }
+const props = defineProps({
+  project: {
+    type: Object as () => Project,
+    required: true,
   },
-  data() {
-    return {
-      globalStore: useGlobalStore(),
-      apiStore: useAPIStore(),
-      api: useAPIStore().api,
-      dialog: false,
-    };
-  },
-  methods: {
-    async deleteFromAPI() {
-      this.globalStore.progress = true;
-      try {
-        await this.api.deleteProject(this.project);
-        this.$router.push('/');
-        this.globalStore.success = "snackbar.success.project-deleted.message";
-      } catch (e) {
-        // TODO: Handle not logged in error
-        this.globalStore.error = true;
-        console.error(e);
-      }
-      this.globalStore.progress = false;
-    },
-    hasWriteAccess(): boolean {
-      // Get if the user is the owner of the project
-      if (this.project.author === this.apiStore.username && this.apiStore.username !== '') {
-        return true;
-      }
-      return false;
-    },
-  },
+});
+
+const globalStore = useGlobalStore();
+const apiStore = useAPIStore();
+const $router = useRouter();
+const api = useAPIStore().api;
+
+const dialog = ref(false);
+
+const deleteFromAPI = async () => {
+  globalStore.progress = true;
+  try {
+    await api.deleteProject(props.project);
+    $router.push('/');
+    globalStore.success = "snackbar.success.project-deleted.message";
+  } catch (e) {
+    globalStore.error = true;
+    console.error(e);
+  }
+  globalStore.progress = false;
+};
+
+const hasWriteAccess = computed(() => {
+  // Get if the user is the owner of the project
+  if (props.project.author === apiStore.username && apiStore.username !== '') {
+    return true;
+  }
+  return false;
 });
 </script>
 
