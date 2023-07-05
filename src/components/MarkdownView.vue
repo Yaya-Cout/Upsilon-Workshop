@@ -1,42 +1,24 @@
 <template>
-  <div ref="markdown" />
+  <div v-html="markdown" />
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { computed } from 'vue';
 import showdown from 'showdown';
 import xssFilter from 'showdown-xss-filter';
-import { defineComponent } from 'vue';
 
-export default defineComponent({
-  props: {
-    content: {
-      type: String,
-      default: '',
-    },
-  },
-  watch: {
-    content: {
-      handler() {
-        this.renderMarkdown();
-      },
-    },
-  },
-  mounted() {
-    this.renderMarkdown();
-  },
-  methods: {
-    renderMarkdown() {
-      //@ts-ignore
-      this.$refs.markdown.innerHTML = new showdown.Converter(
-        {
-          extensions: [xssFilter],
-        }
-      ).makeHtml(
-        this.content!
-      );
-    },
+const converter = new showdown.Converter({
+  extensions: [xssFilter],
+});
+
+const props = defineProps({
+  content: {
+    type: String,
+    default: '',
   },
 });
+
+const markdown = computed(() => converter.makeHtml(props.content));
 </script>
 
 <style scoped></style>
