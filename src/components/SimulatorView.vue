@@ -10,70 +10,65 @@
     />
   </div>
 </template>
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
+
+<script setup lang="ts">
+import { ref, watch, onMounted } from 'vue';
 import { Script } from '../types';
-export default defineComponent({
-    name: 'SimulatorView',
-    props: {
-        scripts: {
-            type: Object as PropType<Script[]>,
-            required: true
-        },
-    },
-    data() {
-        return {
-            base_url: import.meta.env.BASE_URL,
-            last_scripts_empty: true
-        };
-    },
-    watch: {
-        scripts: {
-            deep: true,
-            handler() {
-                if (this.scripts.length === 0) {
-                    this.last_scripts_empty = true;
-                    return;
-                } else if (this.last_scripts_empty) {
-                    this.last_scripts_empty = false;
-                    this.send();
-                }
-                // If a project is already loaded, we don't update the simulator
-                // because it would cause the simulator to reload and lose its state.
-                // You should call send() from the parent component to force an update.
-            },
-        },
-    },
-    mounted() {
-        const _this = this;
-        window.onmessage = function (e) {
-            if (e.data === 'Loaded') {
-                _this._send();
-            }
-        };
-    },
-    methods: {
-        send() {
-            const iframe = document.getElementById(
-                'simulator-iframe'
-            ) as HTMLIFrameElement;
-            // Reload the iframe to make sure it's in a clean state.
-            iframe.contentDocument?.location.reload();
-        },
-        _send() {
-            const iframe = document.getElementById(
-                'simulator-iframe'
-            ) as HTMLIFrameElement;
-            iframe.contentWindow?.postMessage(
-                this.scripts.map((script) => {
-                    return { name: script.title, content: script.content };
-                })
-            );
-        },
-    },
-    expose: ['send'],
+
+const base_url = import.meta.env.BASE_URL;
+
+const last_scripts_empty = ref(true);
+
+const props = defineProps({
+    scripts: {
+        type: Array as () => Script[],
+        required: true
+    }
 });
 
+watch(props.scripts, () => {
+    if (props.scripts.length === 0) {
+        last_scripts_empty.value = true;
+        return;
+    } else if (last_scripts_empty.value) {
+        last_scripts_empty.value = false;
+        send();
+    }
+    // If a project is already loaded, we don't update the simulator
+    // because it would cause the simulator to reload and lose its state.
+    // You should call send() from the parent component to force an update.
+}, { deep: true });
+
+onMounted(() => {
+    window.onmessage = function (e) {
+        if (e.data === 'Loaded') {
+            _send();
+        }
+    };
+});
+
+const send = () => {
+    const iframe = document.getElementById(
+        'simulator-iframe'
+    ) as HTMLIFrameElement;
+    // Reload the iframe to make sure it's in a clean state.
+    iframe.contentDocument?.location.reload();
+}
+
+const _send = () => {
+    const iframe = document.getElementById(
+        'simulator-iframe'
+    ) as HTMLIFrameElement;
+    iframe.contentWindow?.postMessage(
+        props.scripts.map((script) => {
+            return { name: script.title, content: script.content };
+        })
+    );
+}
+
+defineExpose({
+    send
+});
 </script>
 
 <style scoped>
