@@ -42,54 +42,51 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Project } from '../types';
+const { t: $t } = useI18n();
 
-export default defineComponent({
-  name: 'AddScript',
-  props: {
-    project: {
-      type: Object as () => Project,
-      required: true,
-    },
-  },
-  emits: ['add'],
-  data() {
-    return {
-      dialog: false,
-      name: '',
-      filenameRules: [
-        // Script must have a name
-        (v: string) => (v && v.length > 0) || this.$t('editor.change-script.name-required'),
-        // Script must have an extension
-        (v: string) => (v && v.includes('.')) || this.$t('editor.change-script.extension-required'),
-        // Script must be unique
-        (v: string) => {
-          const existing = this.project.files.find(f => f.title === v);
-          return !existing || this.$t('editor.change-script.name-taken');
-        },
-        // Script must not start with a number
-        (v: string) => (v && isNaN(parseInt(v[0], 10))) || this.$t('editor.change-script.name-starts-with-number'),
-        // Script can only contain letters, numbers and underscores (excluding extension)
-        (v: string) => {
-          const name = v.split('.')[0];
-          return (name && /^[a-zA-Z0-9_]+$/.test(name)) || this.$t('editor.change-script.name-invalid');
-        },
-        (v: string) => {
-          const name = v.split('.')[1];
-          return (name && /^[a-zA-Z0-9]+$/.test(name)) || this.$t('editor.change-script.extension-invalid');
-        }
-      ],
-    };
-  },
-  methods: {
-    add() {
-      this.dialog = false;
-      this.$emit('add', this.name);
-    },
+const emits = defineEmits(['add']);
+
+const props = defineProps({
+  project: {
+    type: Object as () => Project,
+    required: true,
   },
 });
+
+const dialog = ref(false);
+const name = ref('');
+const filenameRules = ref([
+  // Script must have a name
+  (v: string) => (v && v.length > 0) || $t('editor.change-script.name-required'),
+  // Script must have an extension
+  (v: string) => (v && v.includes('.')) || $t('editor.change-script.extension-required'),
+  // Script must be unique
+  (v: string) => {
+    const existing = props.project.files.find(f => f.title === v);
+    return !existing || $t('editor.change-script.name-taken');
+  },
+  // Script must not start with a number
+  (v: string) => (v && isNaN(parseInt(v[0], 10))) || $t('editor.change-script.name-starts-with-number'),
+  // Script can only contain letters, numbers and underscores (excluding extension)
+  (v: string) => {
+    const name = v.split('.')[0];
+    return (name && /^[a-zA-Z0-9_]+$/.test(name)) || $t('editor.change-script.name-invalid');
+  },
+  (v: string) => {
+    const name = v.split('.')[1];
+    return (name && /^[a-zA-Z0-9]+$/.test(name)) || $t('editor.change-script.extension-invalid');
+  }
+]);
+
+const add = () => {
+  dialog.value = false;
+  // TODO: Check if name is valid
+  emits('add', name.value)
+};
 </script>
 
 <style scoped></style>
