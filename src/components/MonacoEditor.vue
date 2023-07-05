@@ -79,6 +79,14 @@
   </div>
 </template>
 
+<script lang="ts">
+// Those variables are declared there instead of in data because otherwise it causes endless loops.
+// TODO: Clear those variables when the component is destroyed
+var editor: monaco.editor.IStandaloneCodeEditor | null = null;
+var models: monaco.editor.ITextModel[] = [];
+var states: monaco.editor.ICodeEditorViewState[] = [];
+</script>
+
 <script setup lang="ts">
 import { ref, watch, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -91,18 +99,11 @@ import ChangeScript from './ChangeScript.vue';
 import AddScript from './AddScript.vue';
 const { t: $t } = useI18n();
 
-// Those variables are declared there instead of in data because otherwise it causes endless loops.
-// TODO: Clear those variables when the component is destroyed
-var editor: monaco.editor.IStandaloneCodeEditor | null = null;
-var models: monaco.editor.ITextModel[] = [];
-var states: monaco.editor.ICodeEditorViewState[] = [];
-
 const tab = ref(0);
 const oldTab = ref(0);
 
 const globalStore = useGlobalStore();
 const apiStore = useAPIStore();
-const api = useAPIStore().api;
 
 const props = defineProps({
   project: {
