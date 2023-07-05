@@ -58,42 +58,27 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
+<script setup lang="ts">
+import { ref, watch } from 'vue';
 import { Project } from '../types';
-import { useAPIStore } from '../stores/api';
 import { VSkeletonLoader } from 'vuetify/lib/labs/components.mjs';
 
-export default defineComponent({
-  name: 'ProjectPreview',
-  components: {
-    VSkeletonLoader
-  },
-  props: {
-    project: {
-      type: Object as PropType<Project>,
-      required: true
-    }
-  },
-  data() {
-    return {
-      api: useAPIStore().api,
-      tagsNames: [] as string[],
-    };
-  },
-  watch: {
-    project: {
-      immediate: true,
-      async handler(project: Project) {
-        let tagsNames: string[] = [];
-        for (const tag of project.tags) {
-          tagsNames.push(await tag.name);
-        }
-        this.tagsNames = tagsNames;
-      }
-    }
+const tagsNames = ref(["test"] as string[]);
+
+const props = defineProps({
+  project: {
+    type: Object as () => Project,
+    required: true
   }
 });
+
+watch(props.project, async (project: Project) => {
+  let NewTagsNames: string[] = [];
+  for (const tag of project.tags) {
+    NewTagsNames.push(await tag.name);
+  }
+  tagsNames.value = NewTagsNames;
+}, { immediate: true });
 </script>
 
 <style scoped>
