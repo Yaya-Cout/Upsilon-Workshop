@@ -49,115 +49,115 @@
   </v-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-export default defineComponent({
-    props: {
-        calculator: {
-            type: Object,
-            required: true,
-        },
-        platformInfo: {
-            type: Object,
-            required: true,
-        },
-        storage: {
-            type: Object,
-            required: true,
-        },
-    },
-    data() {
-        return {
-            expand: false,
-        };
-    },
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+const { t: $t } = useI18n();
 
-    computed: {
-        username() {
-            if (this.$props.platformInfo && this.$props.platformInfo["omega"] && this.$props.platformInfo["omega"]["user"]) {
-                return this.$props.platformInfo["omega"]["user"];
-            } else {
-                return this.$t('calculator.unknown');
-            }
-        },
-        totalSize() {
-            if (!this.$props.platformInfo || !this.$props.platformInfo["storage"] || !this.$props.platformInfo["storage"]["size"]) {
-                return 0;
-            } else {
-                return this.$props.platformInfo["storage"]["size"];
-            }
-        },
-        usedSize() {
-            let usedSize = 0;
-            if (this.$props.storage && this.$props.storage.records) {
-                for (let i = 0; i < this.$props.storage.records.length; i++) {
-                    if (this.$props.storage.records[i].data) {
-                        usedSize += this.$props.storage.records[i].data.size;
-                    } else if (this.$props.storage.records[i].code) {
-                        usedSize += this.$props.storage.records[i].code.length;
-                    } else {
-                        console.warn("Unknown record type: ", this.$props.storage.records[i]);
-                    }
-                }
-            }
-            return usedSize;
-        },
-        storagePercentage() {
-            return Math.round(this.usedSize / this.totalSize * 100);
-        },
-        version() {
-            if (this.$props.platformInfo && this.$props.platformInfo["upsilon"] && this.$props.platformInfo["upsilon"]["version"]) {
-                return this.$props.platformInfo["upsilon"]["version"];
-            } else if (this.$props.platformInfo && this.$props.platformInfo["omega"] && this.$props.platformInfo["omega"]["version"]) {
-                return this.$props.platformInfo["omega"]["version"];
-            } else {
-                return this.$props.platformInfo["version"];
-            }
-        },
-        firmware() {
-            // Return the installed firmware based on the platform info
-            if (this.$props.platformInfo) {
-                if (this.$props.platformInfo["upsilon"]) {
-                    if (!this.$props.platformInfo["upsilon"]["installed"]) {
-                        console.warn("Upsilon is not installed but is present in platform info");
-                    }
-                    return "upsilon";
-                } else if (this.$props.platformInfo["omega"]) {
-                    if (!this.$props.platformInfo["omega"]["installed"]) {
-                        console.warn("Omega is not installed but is present in platform info");
-                    }
-                    return "omega";
-                } else {
-                    return "epsilon";
-                }
-            } else {
-                return "epsilon";
-            }
-        },
-        firmwareLogo() {
-            // Return the logo of the installed firmware
-            // We can't use @/assets/* because the path is not resolved correctly
-            // when the app is built, so we load the images from the public folder
-            if (this.firmware == "upsilon") {
-                return import.meta.env.BASE_URL + "assets/upsilon.svg";
-            } else if (this.firmware == "omega") {
-                // Omega logo is not available in SVG format yet (so we use PNG under MIT license)
-                return import.meta.env.BASE_URL + "assets/omega.png";
-            } else {
-                return import.meta.env.BASE_URL + "assets/epsilon.svg";
-            }
-        },
-    },
+const props = defineProps({
+  calculator: {
+    type: Object,
+    required: true,
+  },
+  platformInfo: {
+    type: Object,
+    required: true,
+  },
+  storage: {
+    type: Object,
+    required: true,
+  },
+});
+
+const username = computed(() => {
+  if (props.platformInfo && props.platformInfo["omega"] && props.platformInfo["omega"]["user"]) {
+    return props.platformInfo["omega"]["user"];
+  } else {
+    return $t('calculator.unknown');
+  }
+});
+
+const totalSize = computed(() => {
+  if (!props.platformInfo || !props.platformInfo["storage"] || !props.platformInfo["storage"]["size"]) {
+    return 0;
+  } else {
+    return props.platformInfo["storage"]["size"];
+  }
+});
+
+const usedSize = computed(() => {
+  let usedSize = 0;
+  if (props.storage && props.storage.records) {
+    for (let i = 0; i < props.storage.records.length; i++) {
+      if (props.storage.records[i].data) {
+        usedSize += props.storage.records[i].data.size;
+      } else if (props.storage.records[i].code) {
+        usedSize += props.storage.records[i].code.length;
+      } else {
+        console.warn("Unknown record type: ", props.storage.records[i]);
+      }
+    }
+  }
+  return usedSize;
+});
+
+const storagePercentage = computed(() => {
+  return Math.round(usedSize.value / totalSize.value * 100);
+});
+
+const version = computed(() => {
+  if (props.platformInfo && props.platformInfo["upsilon"] && props.platformInfo["upsilon"]["version"]) {
+    return props.platformInfo["upsilon"]["version"];
+  } else if (props.platformInfo && props.platformInfo["omega"] && props.platformInfo["omega"]["version"]) {
+    return props.platformInfo["omega"]["version"];
+  } else {
+    return props.platformInfo["version"];
+  }
+});
+
+const firmware = computed(() => {
+  // Return the installed firmware based on the platform info
+  if (props.platformInfo) {
+    if (props.platformInfo["upsilon"]) {
+      if (!props.platformInfo["upsilon"]["installed"]) {
+        console.warn("Upsilon is not installed but is present in platform info");
+      }
+      return "upsilon";
+    } else if (props.platformInfo["omega"]) {
+      if (!props.platformInfo["omega"]["installed"]) {
+        console.warn("Omega is not installed but is present in platform info");
+      }
+      return "omega";
+    } else {
+      return "epsilon";
+    }
+  } else {
+    return "epsilon";
+  }
+});
+
+const firmwareLogo = computed(() => {
+  // Return the logo of the installed firmware
+  // We can't use @/assets/* because the path is not resolved correctly
+  // when the app is built, so we load the images from the public folder
+  if (firmware.value == "upsilon") {
+    return import.meta.env.BASE_URL + "assets/upsilon.svg";
+  } else if (firmware.value == "omega") {
+    // Omega logo is not available in SVG format yet (so we use PNG under MIT license)
+    return import.meta.env.BASE_URL + "assets/omega.png";
+  } else {
+    return import.meta.env.BASE_URL + "assets/epsilon.svg";
+  }
 });
 </script>
 
 <style scoped>
 .os-icon {
-    border-radius: 50%;
+  border-radius: 50%;
 }
 
 .calculator-card {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 </style>
