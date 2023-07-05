@@ -4,40 +4,33 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 import { useCalculatorStore } from '../stores/calculator';
 
-export default defineComponent({
-    data() {
-        return {
-            calculatorStore: useCalculatorStore(),
-            calculator: useCalculatorStore().calculator,
-        };
+const calculatorStore = useCalculatorStore();
+
+const connected = computed({
+    get() {
+        return calculatorStore.connected;
     },
-    computed: {
-        connected: {
-            get() {
-                return this.calculatorStore.connected;
-            },
-            set(value: boolean) {
-                this.calculatorStore.connected = value;
-            },
-        },
-    },
-    methods: {
-        connect() {
-            this.calculator.detect(this.connectedHandler, this.connectErrorHandler);
-        },
-        connectErrorHandler(error: any) {
-            // TODO: Handle errors.
-            console.error("Connection error: " + error);
-        },
-        async connectedHandler() {
-            this.connected = true;
-        },
+    set(value: boolean) {
+        calculatorStore.connected = value;
     },
 });
+
+const connect = () => {
+    calculatorStore.calculator.detect(connectedHandler, connectErrorHandler);
+};
+
+const connectErrorHandler = (error: any) => {
+    // TODO: Handle errors.
+    console.error("Connection error: " + error);
+};
+
+const connectedHandler = async () => {
+    connected.value = true;
+};
 </script>
 
 <style scoped></style>
