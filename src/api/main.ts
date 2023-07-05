@@ -926,7 +926,7 @@ export default class API extends EventTarget {
                 }
 
                 // Ignore vue properties
-                if (prop === "__v_isRef" || prop === "__v_isReadonly") {
+                if (prop === "__v_isRef" || prop === "__v_isReadonly" || prop === "__v_skip") {
                     return undefined
                 }
 
