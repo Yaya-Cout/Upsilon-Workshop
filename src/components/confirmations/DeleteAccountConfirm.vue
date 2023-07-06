@@ -10,7 +10,7 @@
     </template>
     <v-card>
       <v-form
-        ref="form"
+        ref="formObject"
         v-model="form"
         @submit.prevent="deleteAccount"
       >
@@ -54,60 +54,64 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useGlobalStore } from '../../stores/global';
 import { useAPIStore } from '../../stores/api';
 import PasswordField from '../forms/PasswordField.vue';
+import { VForm } from 'vuetify/components/VForm';
 
-export default defineComponent({
-  name: 'DeleteAccountConfirm',
-  components: {
-    PasswordField,
-  },
-  data() {
-    return {
-      dialog: false,
-      globalStore: useGlobalStore(),
-      api: useAPIStore().api,
-      password: '',
-      confirm: false,
-      loading: false,
-      form: false,
-    };
-  },
-  methods: {
-    async deleteAccount() {
-      this.loading = true;
-      this.globalStore.progress = true;
+const globalStore = useGlobalStore();
+const api = useAPIStore().api;
+const $router = useRouter();
 
-      // Ensure the form is valid
-      let valid = await this.$refs.form.validate();
-      if (!valid) {
-        this.loading = false;
+const dialog = ref(false);
+const password = ref('');
+const confirm = ref(false);
+const loading = ref(false);
+const form = ref(false);
+
+const formObject = ref<InstanceType<typeof VForm> | null>(null);
+
+const deleteAccount = async () => {
+    loading.value = true;
+    globalStore.progress = true;
+
+    // If the form object is null, return
+    if (!formObject.value) {
+        loading.value = false;
+        globalStore.error = true;
+        globalStore.progress = false;
+        console.error("Form object is null.");
         return;
-      }
+    }
 
-      // Delete the account
-      try {
-        await this.api.deleteUser(this.password);
-      } catch (e) {
-        this.globalStore.error = true
-        this.loading = false;
-        this.globalStore.progress = false;
+    // Ensure the form is valid
+    let valid = await formObject.value.validate();
+    if (!valid) {
+        loading.value = false;
+        return;
+    }
+
+    // Delete the account
+    try {
+        await api.deleteUser(password.value);
+    } catch (e) {
+        globalStore.error = true
+        loading.value = false;
+        globalStore.progress = false;
         console.error(e);
         return;
-      }
+    }
 
-      this.loading = false;
-      this.globalStore.progress = false;
-      this.globalStore.success = "snackbar.success.account-deleted.message"
-      this.dialog = false;
-      // Redirect to the home page
-      this.$router.push({ name: 'home' });
-    },
-  },
-});
+    loading.value = false;
+    globalStore.progress = false;
+    globalStore.success = "snackbar.success.account-deleted.message"
+    dialog.value = false;
+    // Redirect to the home page
+    $router.push({ name: 'home' });
+};
 </script>
 
 <style scoped></style>
