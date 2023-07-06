@@ -43,55 +43,47 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, watch, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useGlobalStore } from '../../stores/global';
 
-export default defineComponent({
-  name: 'DeleteConfirm',
-  props: {
-    scriptName: {
-      type: String,
-      required: true,
-    },
-  },
-  emits: ['delete'],
-  data() {
-    return {
-      dialog: false,
-      globalStore: useGlobalStore(),
-    };
-  },
-  computed: {
-    dontShowAgain: {
-      get() : boolean {
-        return !this.globalStore.showDeleteConfirm;
-      },
-      set(value: boolean) {
-        this.globalStore.showDeleteConfirm = !value;
-      },
-    },
-  },
-  watch: {
-    dialog: {
-      handler() {
-        // If the dialog is closed and the user has checked the "don't show again" box, delete the script without asking
-        // TODO: Find a way to enable the dialog again
-        if (this.dialog && this.dontShowAgain) {
-          this.deleteScript();
-          this.dialog = false;
-        }
-      },
-      immediate: true,
-    },
-  },
-  methods: {
-    deleteScript() {
-      this.$emit('delete');
-      this.dialog = false;
-    },
+const globalStore = useGlobalStore();
+const { t: $t } = useI18n();
+
+const dialog = ref(false);
+
+const emits = defineEmits(['delete']);
+
+defineProps({
+  scriptName: {
+    type: String,
+    required: true,
   },
 });
+
+const dontShowAgain = computed({
+  get() {
+    return !globalStore.showDeleteConfirm;
+  },
+  set(value: boolean) {
+    globalStore.showDeleteConfirm = !value;
+  },
+});
+
+watch(dialog, () => {
+  // If the dialog is closed and the user has checked the "don't show again" box, delete the script without asking
+  // TODO: Find a way to enable the dialog again
+  if (dialog.value && dontShowAgain.value) {
+    deleteScript();
+    dialog.value = false;
+  }
+});
+
+const deleteScript = () => {
+  emits('delete');
+  dialog.value = false;
+};
 </script>
 
 <style scoped></style>
