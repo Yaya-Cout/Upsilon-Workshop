@@ -26,66 +26,56 @@
   </v-autocomplete>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, watch, computed } from 'vue';
 import { useAPIStore } from '../../stores/api';
 import AvatarView from '../AvatarView.vue';
 
-export default defineComponent({
-  name: "SelectCollaborators",
-  components: { AvatarView },
-  props: {
-    modelValue: {
-      type: Array as () => string[],
-      required: true,
-    },
-  },
-  emits: ["update:modelValue"],
-  data() {
-    return {
-      people: [] as string[],
-      loading: false,
-      search: "",
-      api: useAPIStore().api,
-    };
-  },
-  computed: {
-    collaborators: {
-      get(): string[] {
-        return this.modelValue
-      },
-      set(value: string[]) {
-        this.$emit("update:modelValue", value);
-      },
-    },
-  },
-  watch: {
-    search() {
-      this.searchUsers();
-    },
-  },
-  mounted() {
-    this.searchUsers();
-  },
-  methods: {
-    async searchUsers() {
-      this.loading = true;
-      try {
-        let users = await this.api.getUsers(this.search);
-        let usernameList = [];
-        for (let user of users) {
-          usernameList.push(user.username);
-        }
-        this.people = usernameList;
-
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.loading = false;
-      }
-    },
+const props = defineProps({
+  modelValue: {
+    type: Array as () => string[],
+    required: true,
   },
 });
+
+const api = useAPIStore().api;
+
+const people = ref([] as string[]);
+const loading = ref(false);
+const search = ref("");
+
+const emits = defineEmits(["update:modelValue"]);
+
+const collaborators = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value: string[]) {
+    emits("update:modelValue", value);
+  },
+});
+
+const searchUsers = async () => {
+  loading.value = true;
+  try {
+    let users = await api.getUsers(search.value);
+    let usernameList = [];
+    for (let user of users) {
+      usernameList.push(user.username);
+    }
+    people.value = usernameList;
+
+  } catch (e) {
+    console.error(e);
+  } finally {
+    loading.value = false;
+  }
+};
+
+
+watch(search, () => {
+  searchUsers();
+}, { immediate: true });
 </script>
 
 <style scoped></style>
