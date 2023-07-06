@@ -21,46 +21,30 @@
   </v-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, watchEffect } from 'vue';
 import { User } from '../../types';
 import AvatarView from '../AvatarView.vue';
 import { VSkeletonLoader } from 'vuetify/lib/labs/components.mjs';
 
-export default defineComponent({
-  name: 'UserPreview',
-  components: {
-    AvatarView,
-    VSkeletonLoader,
+const props = defineProps({
+  user: {
+    type: Object as () => User,
+    required: true,
   },
-  props: {
-    user: {
-      type: Object as () => User,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      groups: '',
-    };
-  },
-  watch: {
-    // We watch on userData.groups to update the groups string
-    // when the data is loaded
-    'user.groups': {
-      async handler() {
-        const groups = await this.user?.groups;
-        let groupsString = '';
-        for (const group of groups || []) {
-          const result = await group.name;
-          groupsString += result + ', ';
-        }
-        groupsString = groupsString.slice(0, -2);
-        this.groups = groupsString;
-      },
-      immediate: false,
-    },
-  },
+});
+
+const groups = ref('');
+
+watchEffect(async () => {
+  const groupsAwaited = await props.user?.groups;
+  let groupsString = '';
+  for (const group of groupsAwaited || []) {
+    const result = await group.name;
+    groupsString += result + ', ';
+  }
+  groupsString = groupsString.slice(0, -2);
+  groups.value = groupsString;
 });
 </script>
 
