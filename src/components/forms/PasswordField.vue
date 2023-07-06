@@ -11,49 +11,49 @@
   />
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-export default defineComponent({
-  name: "PasswordField",
-  props: {
-    modelValue: {
-      type: String,
-      required: true,
-    },
-    confirm: {
-      type: Boolean,
-      default: false,
-    },
-    originalPassword: {
-      type: String,
-      default: "",
-    },
-  },
-  emits: ["update:modelValue"],
-  data() {
-    let data = {
-      showPassword: false,
-      passwordRules: [
-        (v: string) => !!v || this.$t('forms.password-field.rules.required'),
-        (v: string) => v.length >= 8 || this.$t('forms.password-field.rules.min-8-chars'),
-      ],
-    };
-    if (this.confirm) {
-      data.passwordRules.push((v: string) => v === this.originalPassword || this.$t('forms.password-field.rules.identical'));
-    }
+const { t: $t } = useI18n();
 
-    return data;
+const props = defineProps({
+  modelValue: {
+    type: String,
+    required: true,
   },
-  computed: {
-    password: {
-      get(): string[] {
-        return this.modelValue
-      },
-      set(value: string[]) {
-        this.$emit("update:modelValue", value);
-      },
-    },
+  confirm: {
+    type: Boolean,
+    default: false,
+  },
+  originalPassword: {
+    type: String,
+    default: "",
+  },
+});
+
+const showPassword = ref(false);
+
+const emits = defineEmits(["update:modelValue"]);
+
+const passwordRules = computed(() => {
+  let rules = [
+    (v: string) => !!v || $t('forms.password-field.rules.required'),
+    (v: string) => v.length >= 8 || $t('forms.password-field.rules.min-8-chars'),
+  ];
+  if (props.confirm) {
+    rules.push((v: string) => v === props.originalPassword || $t('forms.password-field.rules.identical'));
+  }
+  return rules;
+});
+
+
+const password = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value: string) {
+    emits("update:modelValue", value);
   },
 });
 </script>
