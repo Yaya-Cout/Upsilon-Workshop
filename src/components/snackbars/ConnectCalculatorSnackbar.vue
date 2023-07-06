@@ -69,47 +69,31 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, watch, ref } from 'vue';
 import { useCalculatorStore } from '../../stores/calculator';
 import ConnectCalculator from '../ConnectCalculator.vue';
 import WebUSBNotSupported from '../WebUSBNotSupported.vue';
 
-export default defineComponent({
-    components: {
-        ConnectCalculator,
-        WebUSBNotSupported
+const dialog = ref(false);
+const calculatorStore = useCalculatorStore();
+const webUSB = 'usb' in navigator ? true : false;
+
+const connected = computed({
+    get() {
+        return calculatorStore.connected;
     },
-    data() {
-        return {
-            dialog: false,
-            calculatorStore: useCalculatorStore(),
-            calculator: useCalculatorStore().calculator,
-            webUSB: 'usb' in navigator ? true : false,
-        };
-    },
-    computed: {
-        connected: {
-            get() {
-                return this.calculatorStore.connected;
-            },
-            set(value: boolean) {
-                this.calculatorStore.connected = value;
-            },
-        },
-    },
-    watch: {
-        connected: {
-            handler(connected: boolean) {
-                if (connected) {
-                    this.dialog = false;
-                    this.calculatorStore.notConnectedError = false;
-                }
-            },
-            immediate: true,
-        },
+    set(value: boolean) {
+        calculatorStore.connected = value;
     },
 });
+
+watch(connected, (connected: boolean) => {
+    if (connected) {
+        dialog.value = false;
+        calculatorStore.notConnectedError = false;
+    }
+}, { immediate: true });
 </script>
 
 <style scoped></style>
