@@ -35,28 +35,20 @@
   </v-dialog>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
 import { useAPIStore } from '../../stores/api';
 import { useGlobalStore } from '../../stores/global';
 
-export default defineComponent({
-  name: 'DisconnectConfirm',
-  data() {
-    return {
-      dialog: false,
-      api: useAPIStore().api,
-      globalStore: useGlobalStore(),
-    };
-  },
-  methods: {
-    disconnect() {
-      this.api.logout();
-      this.dialog = false;
-      this.globalStore.success = "snackbar.success.logout.message"
-    },
-  },
-});
+const dialog = ref(false);
+const api = useAPIStore().api;
+const globalStore = useGlobalStore();
+
+const disconnect = () => {
+  api.logout();
+  dialog.value = false;
+  globalStore.success = "snackbar.success.logout.message"
+}
 </script>
 
 <style scoped></style>
