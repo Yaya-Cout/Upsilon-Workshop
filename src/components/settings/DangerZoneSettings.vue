@@ -16,16 +16,8 @@
   </v-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import DeleteAccountConfirm from '../confirmations/DeleteAccountConfirm.vue';
-
-export default defineComponent({
-  name: "DangerZoneSettings",
-  components: {
-    DeleteAccountConfirm,
-  },
-});
 </script>
 
 <style scoped></style>
