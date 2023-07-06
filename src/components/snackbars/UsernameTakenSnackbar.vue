@@ -15,17 +15,10 @@
   </v-snackbar>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { useGlobalStore } from '../../stores/global';
 
-export default defineComponent({
-    data() {
-        return {
-          globalStore: useGlobalStore()
-        };
-    },
-});
+const globalStore = useGlobalStore();
 </script>
 
 <style scoped></style>
