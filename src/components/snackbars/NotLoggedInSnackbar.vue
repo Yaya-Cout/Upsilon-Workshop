@@ -15,17 +15,10 @@
   </v-snackbar>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { useAPIStore } from '../../stores/api';
 
-export default defineComponent({
-  data() {
-    return {
-      apiStore: useAPIStore(),
-    };
-  },
-});
+const apiStore = useAPIStore();
 </script>
 
 <style scoped></style>
