@@ -15,29 +15,23 @@
   </v-snackbar>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { watchEffect, ref } from 'vue';
 import { useGlobalStore } from '../../stores/global';
 
-export default defineComponent({
-  data() {
-    return {
-      globalStore: useGlobalStore(),
-      lastMessage: "snackbar.error.generic-message",
-    };
-  },
-  watch: {
-    "globalStore.error": function () {
-      // If the error is a string, set the last message to that string
-      if (typeof this.globalStore.error === 'string') {
-        this.lastMessage = this.globalStore.error;
-      }
+const globalStore = useGlobalStore();
 
-      // If the value is true, set the last message to the default error message
-      if (this.globalStore.error === true) {
-        this.lastMessage = "snackbar.error.generic-message";
-      }
-    },
+const lastMessage = ref("snackbar.error.generic-message");
+
+watchEffect(() => {
+  // If the error is a string, set the last message to that string
+  if (typeof globalStore.error === 'string') {
+    lastMessage.value = globalStore.error;
+  }
+
+  // If the value is true, set the last message to the default error message
+  if (globalStore.error === true) {
+    lastMessage.value = "snackbar.error.generic-message";
   }
 });
 </script>
