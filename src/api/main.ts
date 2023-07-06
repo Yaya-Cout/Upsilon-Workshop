@@ -743,7 +743,7 @@ export default class API extends EventTarget {
      */
     async deleteUser(password: string): Promise<boolean> {
         // Check if the password is correct
-        const correct = this.checkPassword(this.API_STORE.username, password)
+        const correct = await this.checkPassword(this.API_STORE.username, password)
         if (!correct) {
             throw new Error("Incorrect password")
         }
