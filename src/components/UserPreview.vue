@@ -9,20 +9,13 @@
   </v-list-item>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import AvatarView from './AvatarView.vue';
 
-export default defineComponent({
-  name: 'UserPreview',
-  components: {
-    AvatarView,
-  },
-  props: {
-    username: {
-      type: String,
-      required: true,
-    },
+defineProps({
+  username: {
+    type: String,
+    required: true,
   },
 });
 </script>
