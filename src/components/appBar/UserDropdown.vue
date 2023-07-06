@@ -41,26 +41,16 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
 import { useAPIStore } from '../../stores/api';
 import AvatarView from '../AvatarView.vue';
 import DisconnectConfirm from '../confirmations/DisconnectConfirm.vue';
 import UserPreview from '../UserPreview.vue';
 
-export default defineComponent({
-  components: {
-    AvatarView,
-    DisconnectConfirm,
-    UserPreview,
-  },
-  data() {
-    return {
-      apiStore: useAPIStore(),
-      menu: false
-    };
-  },
-});
+const apiStore = useAPIStore();
+
+const menu = ref(false);
 </script>
 
 <style scoped></style>
