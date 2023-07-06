@@ -4,17 +4,9 @@
   <ShowDeleteConfirmManager />
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import CalculatorManager from './CalculatorManager.vue';
 import ShowDeleteConfirmManager from './ShowDeleteConfirmManager.vue';
-
-export default defineComponent({
-  components: {
-    CalculatorManager,
-    ShowDeleteConfirmManager,
-  }
-});
 </script>
 
 <style scoped></style>
