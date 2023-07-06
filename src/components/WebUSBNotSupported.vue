@@ -8,15 +8,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-export default defineComponent({
-    data() {
-        return {
-            webUSB: 'usb' in navigator ? true : false,
-        };
-    },
-});
+<script setup lang="ts">
+const webUSB = 'usb' in navigator ? true : false;
 </script>
 
 <style scoped></style>
