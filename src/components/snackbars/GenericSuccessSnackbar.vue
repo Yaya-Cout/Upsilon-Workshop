@@ -1,5 +1,5 @@
 <template>
-  <v-snackbar v-model="globalStore.success">
+  <v-snackbar v-model="visible">
     <span>
       {{ $t(lastMessage) }}
     </span>
@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { watchEffect, ref } from 'vue';
+import { watchEffect, ref, computed } from 'vue';
 import { useGlobalStore } from '../../stores/global';
 
 const globalStore = useGlobalStore();
@@ -33,6 +33,15 @@ watchEffect(() => {
   if (globalStore.success === true) {
     lastMessage.value = "snackbar.success.generic-message";
   }
+});
+
+const visible = computed({
+  get() : boolean {
+    return globalStore.success !== false;
+  },
+  set(value: boolean) {
+    globalStore.success = value;
+  },
 });
 </script>
 
