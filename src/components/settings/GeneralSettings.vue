@@ -29,57 +29,51 @@
   </v-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, computed } from 'vue';
 import { User } from '../../types';
 import { useAPIStore } from '../../stores/api';
 import { useGlobalStore } from '../../stores/global';
 
-export default defineComponent({
-  name: "DangerZoneSettings",
-  props: {
-    modelValue: {
-      type: Object as () => User,
-      required: true,
-    },
-  },
-  emits: ['update:modelValue'],
-  data() {
-    return {
-      api: useAPIStore().api,
-      globalStore: useGlobalStore(),
-      generalSettingsForm: false,
-      loading: false,
-    };
-  },
-  computed: {
-    userData: {
-      get() {
-        return this.modelValue
-      },
-      set(value: User) {
-        this.$emit('update:modelValue', value);
-      },
-    },
-  },
-  methods: {
-    async save() {
-      this.loading = true;
-      this.globalStore.progress = true;
-      try {
-        await this.api.updateUser(this.userData);
-      } catch (e) {
-        console.error(e);
-        this.loading = false;
-        this.globalStore.progress = false;
-        this.globalStore.error = true;
-      }
-      this.loading = false;
-      this.globalStore.progress = false;
-      this.globalStore.success = true;
-    },
+const api = useAPIStore().api;
+const globalStore = useGlobalStore();
+
+const generalSettingsForm = ref(false);
+const loading = ref(false);
+
+const emits = defineEmits(['update:modelValue']);
+
+const props = defineProps({
+  modelValue: {
+    type: Object as () => User,
+    required: true,
   },
 });
+
+const userData = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value: User) {
+    emits('update:modelValue', value);
+  },
+});
+
+const save = async () => {
+  loading.value = true;
+  globalStore.progress = true;
+  try {
+    await api.updateUser(userData.value);
+  } catch (e) {
+    console.error(e);
+    loading.value = false;
+    globalStore.progress = false;
+    globalStore.error = true;
+  }
+  loading.value = false;
+  globalStore.progress = false;
+  globalStore.success = true;
+};
 </script>
 
 <style scoped></style>
