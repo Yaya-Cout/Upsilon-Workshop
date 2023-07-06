@@ -3,44 +3,36 @@
   <div />
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed, onMounted } from 'vue';
 import { useCalculatorStore } from '../../stores/calculator';
 
-export default defineComponent({
-  data() {
-    return {
-      calculatorStore: useCalculatorStore(),
-      calculator: useCalculatorStore().calculator,
-    };
-  },
-  computed: {
-    connected: {
-      get() {
-        return this.calculatorStore.connected;
-      },
-      set(value: boolean) {
-        this.calculatorStore.connected = value;
-      },
+const calculatorStore = useCalculatorStore();
+
+const connected = computed({
+    get() {
+        return calculatorStore.connected;
     },
-  },
-  mounted() {
+    set(value: boolean) {
+        calculatorStore.connected = value;
+    },
+});
+
+const connectedHandler = async () => {
+    connected.value = true;
+    console.log("Connected");
+};
+
+onMounted(() => {
     if ("usb" in navigator) {
-      this.calculator.autoConnect(this.connectedHandler);
-      const _this = this;
-      navigator.usb.addEventListener("disconnect", function (e: any) {
-        _this.calculator.onUnexpectedDisconnect(e, function () {
-          _this.connected = false;
-          _this.calculator.autoConnect(_this.connectedHandler);
+        calculatorStore.calculator.autoConnect(connectedHandler);
+        navigator.usb.addEventListener("disconnect", function (e: any) {
+            calculatorStore.calculator.onUnexpectedDisconnect(e, function () {
+                connected.value = false;
+                calculatorStore.calculator.autoConnect(connectedHandler);
+            });
         });
-      });
     }
-  },
-  methods: {
-    connectedHandler() {
-      this.connected = true;
-    },
-  },
 });
 </script>
 
