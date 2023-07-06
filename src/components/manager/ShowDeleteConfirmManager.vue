@@ -3,30 +3,25 @@
   <div />
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { watch, onMounted } from 'vue';
 import { useGlobalStore } from '../../stores/global';
 
-export default defineComponent({
-  data() {
-    return {
-      globalStore: useGlobalStore(),
-    };
+const globalStore = useGlobalStore();
+
+watch(
+  () => globalStore.showDeleteConfirm,
+  () => {
+    if (globalStore.showDeleteConfirm) {
+      localStorage.removeItem('dontShowDeleteConfirm');
+    } else {
+      localStorage.setItem('dontShowDeleteConfirm', 'true');
+    }
   },
-  watch: {
-    "globalStore.showDeleteConfirm": {
-      handler() {
-        if (this.globalStore.showDeleteConfirm) {
-          localStorage.removeItem('dontShowDeleteConfirm');
-        } else {
-          localStorage.setItem('dontShowDeleteConfirm', 'true');
-        }
-      },
-    },
-  },
-  mounted() {
-    this.globalStore.showDeleteConfirm = localStorage.getItem('dontShowDeleteConfirm') !== 'true';
-  },
+);
+
+onMounted(() => {
+  globalStore.showDeleteConfirm = localStorage.getItem('dontShowDeleteConfirm') !== 'true';
 });
 </script>
 
