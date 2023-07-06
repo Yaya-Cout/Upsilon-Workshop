@@ -31,17 +31,9 @@
   </v-app-bar>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import ProgressbarComponent from '../ProgressbarComponent.vue';
 import UserMenu from './UserMenu.vue';
-
-export default defineComponent({
-    components: {
-      ProgressbarComponent,
-      UserMenu
-    }
-});
 </script>
 
 <style scoped>
