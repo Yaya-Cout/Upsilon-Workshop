@@ -22,22 +22,16 @@
   </v-snackbar>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { useCalculatorStore } from '../../stores/calculator';
+import { useRouter } from 'vue-router';
 
-export default defineComponent({
-    data() {
-        return {
-            calculatorStore: useCalculatorStore(),
-        };
-    },
-    methods: {
-        manage() {
-            this.$router.push({ name: 'calculator' });
-        }
-    },
-});
+const calculatorStore = useCalculatorStore();
+const $router = useRouter();
+
+const manage = () => {
+    $router.push({ name: 'calculator' });
+}
 </script>
 
 <style scoped></style>
