@@ -1,7 +1,7 @@
 <template>
   <v-card class="mb-4">
     <v-form
-      ref="passwordForm"
+      ref="passwordFormObject"
       v-model="passwordForm"
       @submit.prevent="savePassword"
     >
@@ -29,47 +29,44 @@
   </v-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
 import { useGlobalStore } from '../../stores/global';
 import { useAPIStore } from '../../stores/api';
 import PasswordField from '../forms/PasswordField.vue';
+import { VForm } from 'vuetify/components/VForm';
 
-export default defineComponent({
-  name: "PasswordChangeSettings",
-  components: {
-    PasswordField,
-  },
-  data() {
-    return {
-      api: useAPIStore().api,
-      globalStore: useGlobalStore(),
-      password: '',
-      passwordConfirm: '',
-      passwordForm: false,
-      passwordLoading: false,
-    };
-  },
-  methods: {
-    async savePassword() {
-      this.passwordLoading = true;
-      this.globalStore.progress = true;
-      try {
-        await this.api.updatePassword(this.password);
-      } catch (e) {
-        console.error(e);
-        this.passwordLoading = false;
-        this.globalStore.progress = false;
-        this.globalStore.error = true;
-        return;
-      }
-      this.passwordLoading = false;
-      this.globalStore.progress = false;
-      this.globalStore.success = "snackbar.success.password-changed.message";
-      this.$refs.passwordForm.reset();
-    },
-  },
-});
+const api = useAPIStore().api;
+const globalStore = useGlobalStore();
+
+const password = ref('');
+const passwordConfirm = ref('');
+const passwordLoading = ref(false);
+const passwordForm = ref(false);
+const passwordFormObject = ref<InstanceType<typeof VForm> | null>(null);
+
+const savePassword = async () => {
+  passwordLoading.value = true;
+  globalStore.progress = true;
+  try {
+    await api.updatePassword(password.value);
+  } catch (e) {
+    console.error(e);
+    passwordLoading.value = false;
+    globalStore.progress = false;
+    globalStore.error = true;
+    return;
+  }
+  passwordLoading.value = false;
+  globalStore.progress = false;
+  globalStore.success = "snackbar.success.password-changed.message";
+  // Ensure the form object is not null
+  if (!passwordFormObject.value) {
+    console.error("Form object is null.");
+    return;
+  }
+  passwordFormObject.value.reset();
+}
 </script>
 
 <style scoped></style>
