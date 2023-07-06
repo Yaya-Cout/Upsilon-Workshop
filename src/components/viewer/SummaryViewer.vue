@@ -114,81 +114,72 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { watch, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Project, User } from '../../types';
 import { useAPIStore } from '../../stores/api';
 import UserPreview from '../UserPreview.vue';
 import UploadProject from '../UploadProject.vue';
 import DeleteProject from '../DeleteProject.vue';
+const { locale } = useI18n();
 
-export default defineComponent({
-  name: "SummaryViewer",
-  components: {
-    UserPreview,
-    UploadProject,
-    DeleteProject,
-  },
-  props: {
-    project: {
-      type: Object as () => Project,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      api: useAPIStore().api,
-      collaborators: [] as User[],
-    };
-  },
-  watch: {
-    project: {
-      immediate: true,
-      async handler() {
-        let collaborators = [] as Promise<User>[];
+const api = useAPIStore().api;
 
-        for (const collaborator of this.project.collaborators) {
-          collaborators.push(this.api.loadLazyLoadingObject(this.api.getUser(collaborator)));
-        }
-
-        let collaborators_loaded = await Promise.all(collaborators);
-
-        this.collaborators = collaborators_loaded;
-      },
-    },
-  },
-  methods: {
-    dateToDayString(date: Date) {
-      // Return a string in the format the local date (DD/MM/YYYY or MM/DD/YYYY)
-      if (this.$i18n.locale === 'fr') {
-        const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
-        const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
-        return `${day}/${month}/${date.getFullYear()}`;
-      }
-      const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
-      const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
-      return `${month}/${day}/${date.getFullYear()}`;
-    },
-    dateToExtendedString(date: Date) {
-      // Return a string in the format the local date (DD/MM/YYYY HH:MM:SS or MM/DD/YYYY HH:MM:SS PM/AM)
-      if (this.$i18n.locale === 'fr') {
-        const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
-        const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
-        const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
-        const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
-        const seconds = date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds();
-        return `${day}/${month}/${date.getFullYear()} ${hours}:${minutes}:${seconds}`;
-      }
-      const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
-      const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
-      const hours = date.getHours() % 12 === 0 ? 12 : date.getHours() % 12;
-      const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
-      const seconds = date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds();
-      const ampm = date.getHours() < 12 ? 'AM' : 'PM';
-      return `${month}/${day}/${date.getFullYear()} ${hours}:${minutes}:${seconds} ${ampm}`;
-    },
+const props = defineProps({
+  project: {
+    type: Object as () => Project,
+    required: true,
   },
 });
+
+let collaborators = ref([] as User[]);
+
+watch(
+  () => props.project,
+  async () => {
+    let NewCollaborators = [] as Promise<User>[];
+
+    for (const collaborator of props.project.collaborators) {
+      NewCollaborators.push(api.loadLazyLoadingObject(api.getUser(collaborator)));
+    }
+
+    let collaborators_loaded = await Promise.all(NewCollaborators);
+
+    collaborators.value = collaborators_loaded;
+  },
+);
+
+const dateToDayString = (date: Date) => {
+  // Return a string in the format the local date (DD/MM/YYYY or MM/DD/YYYY)
+  if (locale.value === 'fr') {
+    const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+    const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+    return `${day}/${month}/${date.getFullYear()}`;
+  }
+  const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+  const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+  return `${month}/${day}/${date.getFullYear()}`;
+};
+
+const dateToExtendedString = (date: Date) => {
+  // Return a string in the format the local date (DD/MM/YYYY HH:MM:SS or MM/DD/YYYY HH:MM:SS PM/AM)
+  if (locale.value === 'fr') {
+    const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+    const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+    const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
+    const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+    const seconds = date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds();
+    return `${day}/${month}/${date.getFullYear()} ${hours}:${minutes}:${seconds}`;
+  }
+  const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+  const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+  const hours = date.getHours() % 12 === 0 ? 12 : date.getHours() % 12;
+  const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+  const seconds = date.getSeconds() < 10 ? `0${date.getSeconds()}` : date.getSeconds();
+  const ampm = date.getHours() < 12 ? 'AM' : 'PM';
+  return `${month}/${day}/${date.getFullYear()} ${hours}:${minutes}:${seconds} ${ampm}`;
+};
 </script>
 
 <style scoped>
