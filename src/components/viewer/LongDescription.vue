@@ -19,21 +19,14 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { Project } from '../../types';
 import MarkdownView from '../MarkdownView.vue';
 
-export default defineComponent({
-  name: "LongDescription",
-  components: {
-    MarkdownView
-  },
-  props: {
-    project: {
-      type: Object as () => Project,
-      required: true,
-    },
+defineProps({
+  project: {
+    type: Object as () => Project,
+    required: true,
   },
 });
 </script>
