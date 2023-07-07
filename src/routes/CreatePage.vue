@@ -9,7 +9,7 @@
       </h1>
 
       <v-form
-        ref="createForm"
+        ref="formObject"
         v-model="form"
         @submit.prevent="create"
       >
@@ -69,91 +69,96 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useAPIStore } from '../stores/api';
 import { useGlobalStore } from '../stores/global';
 import { Project, Script } from '../types';
+import { VForm } from 'vuetify/components/VForm';
+const { t: $t } = useI18n();
 
-export default defineComponent({
-  data() {
-    return {
-      name: '',
-      language: 'python',
-      isPublic: false,
-      nameRules: [
-        (v: string) => !!v || this.$t('create.rules.name.required'),
-        (v: string) => (v && v.length <= 100) || this.$t('create.rules.name.length'),
-      ],
-      languageRules: [
-        (v: string) => !!v || this.$t('create.rules.language.required'),
-        (v: string) => ['python', 'micropython-khicas', 'xcas-python-pow', 'xcas-python-xor', 'xcas', 'xcas-session'].includes(v) || this.$t('create.rules.language.invalid'),
-      ],
-      languages: [
-        { name: "python", icon: import.meta.env.BASE_URL + "assets/python.svg" },
-        { name: "xcas", icon: import.meta.env.BASE_URL + "assets/xcas.svg" },
-      ],
-      loading: false,
-      form: false,
-      api: useAPIStore().api,
-      globalStore: useGlobalStore(),
-    }
-  },
-  methods: {
-    async create() {
-      this.loading = true
-      const { valid } = await this.$refs.createForm.validate()
+const name = ref('');
+const language = ref('python');
+const isPublic = ref(false);
+const loading = ref(false);
+const form = ref(false);
+const formObject = ref<InstanceType<typeof VForm> | null>(null);
 
-      if (!valid) {
-        this.loading = false
-        return
-      }
+const $router = useRouter();
+const api = useAPIStore().api;
+const globalStore = useGlobalStore();
+const nameRules = [
+  (v: string) => !!v || $t('create.rules.name.required'),
+  (v: string) => (v && v.length <= 100) || $t('create.rules.name.length'),
+];
+const languageRules = [
+  (v: string) => !!v ||$t('create.rules.language.required'),
+  (v: string) => ['python', 'micropython-khicas', 'xcas-python-pow', 'xcas-python-xor', 'xcas', 'xcas-session'].includes(v) || $t('create.rules.language.invalid'),
+];
+const languages = [
+  { name: "python", icon: import.meta.env.BASE_URL + "assets/python.svg" },
+  { name: "xcas", icon: import.meta.env.BASE_URL + "assets/xcas.svg" },
+];
 
-      // Generate a pythonic name
-      // Uppercase and lowercase letters, numbers not at the start, and underscores are allowed
-      let filename = this.name.replace(/[^a-zA-Z0-9_]/g, '_').replace(/^[^a-zA-Z]/g, '_') + '.py'
-
-      // Create empty project
-      const project: Project = {
-        title: this.name,
-        language: this.language,
-        files: [
-          {
-            title: filename,
-            content: '',
-          }
-        ] as Script[],
-        short_description: '',
-        long_description: '',
-        isPublic: this.isPublic,
-        // Everything else is set to avoid type errors and is not used
-        rating: 0,
-        author: '',
-        uuid: '',
-        created: new Date(),
-        modified: new Date(),
-        tags: [],
-        tags_raw: [],
-        views: 0,
-        version: "1.0.0",
-        collaborators: [],
-
-        _loaded: false,
-        _loading: false,
-      }
-      try {
-        let id = await this.api.createProject(project)
-        this.globalStore.success = "snackbar.success.project-created.message"
-        this.$router.push({ name: 'view', params: { uuid: id } })
-      } catch (e) {
-        console.error(e)
-        this.globalStore.error = true
-      }
-
-      this.loading = false
-    },
+const create = async () => {
+  loading.value = true;
+  if (!formObject.value) {
+    loading.value = false;
+    console.error('Form object not found');
+    return;
   }
-});
+  const { valid } = await formObject.value.validate();
+
+  if (!valid) {
+    loading.value = false;
+    return;
+  }
+
+  // Generate a pythonic name
+  // Uppercase and lowercase letters, numbers not at the start, and underscores are allowed
+  let filename = name.value.replace(/[^a-zA-Z0-9_]/g, '_').replace(/^[^a-zA-Z]/g, '_') + '.py';
+
+  // Create empty project
+  const project: Project = {
+    title: name.value,
+    language: language.value,
+    files: [
+      {
+        title: filename,
+        content: '',
+      }
+    ] as Script[],
+    short_description: '',
+    long_description: '',
+    isPublic: isPublic.value,
+    // Everything else is set to avoid type errors and is not used
+    rating: 0,
+    author: '',
+    uuid: '',
+    created: new Date(),
+    modified: new Date(),
+    tags: [],
+    tags_raw: [],
+    views: 0,
+    version: "1.0.0",
+    collaborators: [],
+
+    _loaded: false,
+    _loading: false,
+  };
+  try {
+    let id = await api.createProject(project);
+    globalStore.success = "snackbar.success.project-created.message";
+    $router.push({ name: 'view', params: { uuid: id } });
+  } catch (e) {
+    console.error(e);
+    globalStore.error = true;
+  }
+
+  loading.value = false;
+};
 </script>
 
 <style>

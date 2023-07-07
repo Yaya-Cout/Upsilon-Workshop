@@ -120,7 +120,7 @@
 <script setup lang="ts">
 import { watch, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Project, User } from '../../types';
+import { Project } from '../../types';
 import { useAPIStore } from '../../stores/api';
 import UserPreview from '../UserPreview.vue';
 import UploadProject from '../UploadProject.vue';
