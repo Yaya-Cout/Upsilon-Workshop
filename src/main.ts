@@ -6,7 +6,7 @@ import App from './App.vue';
 import vuetify from './plugins/vuetify';
 import pinia from './plugins/pinia';
 import { loadFonts } from './plugins/webfontloader';
-import About from './routes/About.vue';
+import AboutPage from './routes/AboutPage.vue';
 import Calculator from './routes/Calculator.vue';
 import Create from './routes/Create.vue';
 import Editor from './routes/Editor.vue';
@@ -25,7 +25,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL || "/"),
   routes: [
     { path: '/', component: Home, name: "home", meta: { title: "Home" } },
-    { path: '/about', component: About, name: "about", meta: { title: "About" } },
+    { path: '/about', component: AboutPage, name: "about", meta: { title: "About" } },
     { path: '/create', component: Create, name: "create", meta: { title: "Create" } },
     { path: '/calculator', component: Calculator, name: "calculator", meta: { title: "Calculator" } },
     { path: '/edit/:uuid', component: Editor, name: "edit", meta: { title: "Editor" } },
