@@ -16,53 +16,35 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { User } from '../types';
+
+<script setup lang="ts">
+import { watchEffect, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useAPIStore } from '../stores/api';
-import { useGlobalStore } from '../stores/global';
 import UserPreviewBig from '../components/user/UserPreviewBig.vue';
 // import GeneralSettings from '../components/settings/GeneralSettings.vue';
 import DangerZoneSettings from '../components/settings/DangerZoneSettings.vue';
 import PasswordChangeSettings from '../components/settings/PasswordChangeSettings.vue';
+const $router = useRouter();
 
-export default defineComponent({
-  components: {
-    UserPreviewBig,
-    // GeneralSettings,
-    PasswordChangeSettings,
-    DangerZoneSettings,
-  },
-  data() {
-    return {
-      api: useAPIStore().api,
-      apiStore: useAPIStore(),
-      globalStore: useGlobalStore(),
-      userData: useAPIStore().api.EMPTY_USER as User,
-    };
-  },
-  watch: {
-    "apiStore.username": {
-      immediate: true,
-      async handler() {
-        // If the username is empty, return
-        if (this.apiStore.username === "") {
-          return;
-        }
+const api = useAPIStore().api;
+const apiStore = useAPIStore();
+const userData = ref(api.EMPTY_USER);
 
-        this.userData = await this.api.loadLazyLoadingObject(this.api.getUser(this.apiStore.username))
-      },
-    },
-    "apiStore.ready": {
-      immediate: true,
-      async handler() {
-        // If the API is ready and the username is empty, redirect to the login page
-        if (useAPIStore().ready && !useAPIStore().loggedIn && useAPIStore().username === "") {
-          this.$router.push({ name: "login" })
-        }
-      },
-    },
-  },
+watchEffect(async () => {
+  // If the username is empty, return
+  if (apiStore.username === "") {
+    return;
+  }
+
+  userData.value = await api.loadLazyLoadingObject(api.getUser(apiStore.username));
+});
+
+watchEffect(() => {
+  // If the API is ready and the username is empty, redirect to the login page
+  if (apiStore.ready && !apiStore.loggedIn && apiStore.username === "") {
+    $router.push({ name: "login" });
+  }
 });
 </script>
 
