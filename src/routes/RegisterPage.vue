@@ -9,7 +9,7 @@
       </h1>
 
       <v-form
-        ref="registerForm"
+        ref="formObject"
         v-model="form"
         @submit.prevent="register"
       >
@@ -59,78 +59,72 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 import { useAPIStore } from '../stores/api';
 import { useGlobalStore } from '../stores/global';
 import PasswordField from '../components/forms/PasswordField.vue';
+import { VForm } from 'vuetify/components/VForm';
+const { t: $t } = useI18n();
+const $router = useRouter();
 
-export default defineComponent({
-  components: {
-    PasswordField,
-  },
-  data() {
-    let data = {
-      email: '',
-      username: '',
-      password: '',
-      passwordConfirmation: '',
-      emailRules: [
-        (v: string) => !!v || this.$t('register.email-required-error'),
-        (v: string) => /.+@.+\..+/.test(v) || this.$t('register.email-invalid-error'),
-      ],
-      usernameRules: [
-        (v: string) => !!v || this.$t('register.username-required-error'),
-        (v: string) => /^[a-zA-Z0-9@+-]+$/.test(v) || this.$t('register.username-invalid-error'),
-        (v: string) => v.length <= 150 || this.$t('register.username-too-long-error'),
-      ],
-      passwordRules: [
-        (v: string) => !!v || this.$t('register.password-required-error'),
-        (v: string) => v.length >= 8 || this.$t('register.least-8-chars-error'),
-      ],
-      passwordConfirmRules: [] as object[],
-      showPassword: false,
-      showPasswordConfirmation: false,
-      loading: false,
-      form: false,
-      api: useAPIStore().api,
-      snackbar: false,
-      globalStore: useGlobalStore()
-    }
-    data.passwordConfirmRules.push((v: string) => v === data.password || this.$t('register.password-identical-error'))
-    return data
-  },
-  methods: {
-    async register() {
-      this.loading = true
-      const { valid } = await this.$refs.registerForm.validate()
+const email = ref('');
+const username = ref('');
+const password = ref('');
+const passwordConfirmation = ref('');
+const loading = ref(false);
+const form = ref(false);
+const formObject = ref<InstanceType<typeof VForm> | null>(null);
 
-      if (!valid || this.password !== this.passwordConfirmation) {
-        this.loading = false
-        return
-      }
+const emailRules = [
+  (v: string) => !!v || $t('register.email-required-error'),
+  (v: string) => /.+@.+\..+/.test(v) || $t('register.email-invalid-error'),
+];
+const usernameRules = [
+  (v: string) => !!v || $t('register.username-required-error'),
+  (v: string) => /^[a-zA-Z0-9@+-]+$/.test(v) || $t('register.username-invalid-error'),
+  (v: string) => v.length <= 150 || $t('register.username-too-long-error'),
+];
+const api = useAPIStore().api;
+const globalStore = useGlobalStore();
 
-      let { success, response } = await this.api.register(this.username, this.password, this.email).catch(this.registrationFailed)
-      if (!success) {
-        this.registrationFailed(response)
-      } else {
-        this.registrationSuccess()
-      }
-      this.loading = false
-    },
-    registrationSuccess() {
-      this.globalStore.success = "snackbar.success.register.account-created"
-      this.$router.push({ name: 'login' })
-    },
-    registrationFailed(response: any) {
-      if (response["username"] && response["username"][0] === "A user with that username already exists.") {
-        this.globalStore.usernameTaken = true;
-      } else {
-        this.globalStore.error = true;
-      }
-    }
+const register = async () => {
+  loading.value = true;
+  if (!formObject.value) {
+    loading.value = false;
+    console.error('Form object not found');
+    return;
   }
-});
+  const { valid } = await formObject.value.validate();
+
+  if (!valid || password.value !== passwordConfirmation.value) {
+    loading.value = false;
+    return;
+  }
+
+  let { success, response } = await api.register(username.value, password.value, email.value).catch(registrationFailed);
+  if (!success) {
+    registrationFailed(response);
+  } else {
+    registrationSuccess();
+  }
+  loading.value = false;
+};
+
+const registrationSuccess = () => {
+  globalStore.success = "snackbar.success.register.account-created";
+  $router.push({ name: 'login' });
+};
+
+const registrationFailed = (response: any) => {
+  if (response["username"] && response["username"][0] === "A user with that username already exists.") {
+    globalStore.usernameTaken = true;
+  } else {
+    globalStore.error = true;
+  }
+};
 </script>
 
 <style>
