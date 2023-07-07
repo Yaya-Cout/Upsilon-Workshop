@@ -13,7 +13,7 @@
             <v-card-text>
               <v-list>
                 <v-row class="mx-2 my-0">
-                  <ProjectPreviewVue
+                  <ProjectPreview
                     v-for="project in projects"
                     :key="project.uuid"
                     :project="project"
@@ -34,7 +34,7 @@
             <v-card-text>
               <v-list>
                 <v-row class="mx-2 my-0">
-                  <ProjectPreviewVue
+                  <ProjectPreview
                     v-for="project in collaborations"
                     :key="project.uuid"
                     :project="project"
@@ -52,90 +52,118 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import { User, Project } from '../types';
+<script setup lang="ts">
+import { ref, onMounted, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { useAPIStore } from '../stores/api';
-import ProjectPreviewVue from '../components/ProjectPreview.vue';
+import { useGlobalStore } from '../stores/global';
+import { Project } from '../types';
 import UserPreviewBig from '../components/user/UserPreviewBig.vue';
+import ProjectPreview from '../components/ProjectPreview.vue';
 
-export default defineComponent({
-  components: {
-    ProjectPreviewVue,
-    UserPreviewBig,
-  },
-  data() {
-    return {
-      api: useAPIStore().api,
-      username: this.$route.params.username as string,
-      userData: useAPIStore().api.EMPTY_USER as User,
-      groups: 'none' as string,
-      // TODO: Factorize this
-      projects: [useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT] as Project[],
-      collaborations: [useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT, useAPIStore().api.EMPTY_PROJECT] as Project[]
-    }
-  },
-  watch: {
-    // We watch on userData.groups to update the groups string
-    // when the data is loaded
-    'userData.groups': {
-      async handler() {
-        const groups = await this.userData?.groups;
-        let groupsString = '';
-        for (const group of groups || []) {
-          const result = await group.name;
-          groupsString += result + ', ';
-        }
-        groupsString = groupsString.slice(0, -2);
-        this.groups = groupsString;
-      },
-      immediate: false,
-    },
-  },
-  async mounted() {
-    try {
-      this.userData = await this.api.loadLazyLoadingObject(this.api.getUser(this.username));
-    } catch (e) {
-      // Redirect to 404 page
-      this.$router.push({ name: 'notfound' });
-    }
-    let projects = [] as Project[];
-    let collaborations = [] as Project[];
+const api = useAPIStore().api;
+const globalStore = useGlobalStore();
+const $router = useRouter();
+const $route = useRoute();
 
-    // Iterate over the project and start loading them
-    for (const project of await this.userData.projects) {
-      this.api.loadLazyLoadingObject(project);
-      projects.push(this.api.EMPTY_PROJECT);
-      projects[projects.length - 1]._loading = true;
-    }
-    // Iterate over the collaborations and start loading them
-    for (const project of await this.userData.collaborations) {
-      this.api.loadLazyLoadingObject(project);
-      collaborations.push(this.api.EMPTY_PROJECT);
-      collaborations[collaborations.length - 1]._loading = true;
-    }
-    this.projects = projects;
-    this.collaborations = collaborations;
+const userData = ref(api.EMPTY_USER);
+const projects = ref([api.EMPTY_PROJECT, api.EMPTY_PROJECT, api.EMPTY_PROJECT, api.EMPTY_PROJECT] as Project[]);
+const groups = ref('none' as string);
+const collaborations = ref([api.EMPTY_PROJECT, api.EMPTY_PROJECT, api.EMPTY_PROJECT, api.EMPTY_PROJECT] as Project[]);
+const username = ref($route.params.username as string);
 
-    let index = 0;
-    for (const project of await this.userData.projects) {
-      this.loadProject(project, index);
-      index++;
-    }
-    index = 0;
-    for (const project of await this.userData.collaborations) {
-      this.loadCollaboration(project, index);
-      index++;
-    }
+watch(username, async () => {
+  try {
+    userData.value = await api.loadLazyLoadingObject(api.getUser(username.value));
+  } catch (e) {
+    // Redirect to 404 page
+    $router.push({ name: 'notfound' });
+  }
+  let newProjects = [] as Project[];
+  let newCollaborations = [] as Project[];
 
-  },
-  methods: {
-    async loadProject(project: Project, index: number) {
-      this.projects[index] = await this.api.loadLazyLoadingObject(project);
-    },
-    async loadCollaboration(project: Project, index: number) {
-      this.collaborations[index] = await this.api.loadLazyLoadingObject(project);
-    }
+  // Iterate over the project and start loading them
+  for (const project of await userData.value.projects) {
+    api.loadLazyLoadingObject(project);
+    newProjects.push(api.EMPTY_PROJECT);
+    newProjects[newProjects.length - 1]._loading = true;
+  }
+  // Iterate over the collaborations and start loading them
+  for (const project of await userData.value.collaborations) {
+    api.loadLazyLoadingObject(project);
+    newCollaborations.push(api.EMPTY_PROJECT);
+    newCollaborations[newCollaborations.length - 1]._loading = true;
+  }
+  projects.value = newProjects;
+  collaborations.value = newCollaborations;
+
+  let index = 0;
+  for (const project of await userData.value.projects) {
+    loadProject(project, index);
+    index++;
+  }
+  index = 0;
+  for (const project of await userData.value.collaborations) {
+    loadCollaboration(project, index);
+    index++;
+  }
+});
+
+watch(userData, async () => {
+  // We watch on userData.groups to update the groups string
+  // when the data is loaded
+  const groupsLoaded = await userData.value?.groups;
+  let groupsString = '';
+  for (const group of groupsLoaded || []) {
+    const result = await group.name;
+    groupsString += result + ', ';
+  }
+  groupsString = groupsString.slice(0, -2);
+  groups.value = groupsString;
+}, { immediate: true });
+
+async function loadProject(project: Project, index: number) {
+  projects.value[index] = await api.loadLazyLoadingObject(project);
+}
+
+async function loadCollaboration(project: Project, index: number) {
+  collaborations.value[index] = await api.loadLazyLoadingObject(project);
+}
+
+onMounted(async () => {
+  try {
+    userData.value = await api.loadLazyLoadingObject(api.getUser(username.value));
+  } catch (e) {
+    // Redirect to 404 page
+    $router.push({ name: 'notfound' });
+  }
+  let newProjects = [] as Project[];
+  let newCollaborations = [] as Project[];
+
+  // Iterate over the project and start loading them
+  for (const project of await userData.value.projects) {
+    api.loadLazyLoadingObject(project);
+    newProjects.push(api.EMPTY_PROJECT);
+    newProjects[newProjects.length - 1]._loading = true;
+  }
+  // Iterate over the collaborations and start loading them
+  for (const project of await userData.value.collaborations) {
+    api.loadLazyLoadingObject(project);
+    newCollaborations.push(api.EMPTY_PROJECT);
+    newCollaborations[newCollaborations.length - 1]._loading = true;
+  }
+  projects.value = newProjects;
+  collaborations.value = newCollaborations;
+
+  let index = 0;
+  for (const project of await userData.value.projects) {
+    loadProject(project, index);
+    index++;
+  }
+  index = 0;
+  for (const project of await userData.value.collaborations) {
+    loadCollaboration(project, index);
+    index++;
   }
 });
 </script>
