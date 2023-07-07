@@ -24,7 +24,6 @@ import SummaryViewer from '../components/viewer/SummaryViewer.vue';
 import LongDescription from '../components/viewer/LongDescription.vue';
 
 export default defineComponent({
-  name: 'ViewerPage',
   components: {
     SimulatorView,
     SummaryViewer,

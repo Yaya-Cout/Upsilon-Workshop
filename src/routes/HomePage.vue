@@ -24,7 +24,6 @@ import ProjectPreview from '../components/ProjectPreview.vue';
 import { Project } from '../types';
 
 export default defineComponent({
-  name: 'HomePage',
   components: { ProjectPreview },
   data() {
     return {

@@ -76,7 +76,6 @@ import { useGlobalStore } from '../stores/global';
 import { Project, Script } from '../types';
 
 export default defineComponent({
-  name: 'CreatePage',
   data() {
     return {
       name: '',

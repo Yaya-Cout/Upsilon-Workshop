@@ -27,7 +27,6 @@ import DangerZoneSettings from '../components/settings/DangerZoneSettings.vue';
 import PasswordChangeSettings from '../components/settings/PasswordChangeSettings.vue';
 
 export default defineComponent({
-  name: "SettingsPage",
   components: {
     UserPreviewBig,
     // GeneralSettings,

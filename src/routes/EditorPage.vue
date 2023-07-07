@@ -102,7 +102,6 @@ import { useGlobalStore } from '../stores/global';
 import { Project } from '../types';
 
 export default defineComponent({
-  name: 'EditorPage',
   components: { MonacoEditor, SimulatorView, DeviceInterface, EditProjectDialog },
   data() {
     return {

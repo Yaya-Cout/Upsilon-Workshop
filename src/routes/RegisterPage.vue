@@ -66,7 +66,6 @@ import { useGlobalStore } from '../stores/global';
 import PasswordField from '../components/forms/PasswordField.vue';
 
 export default defineComponent({
-  name: 'RegisterPage',
   components: {
     PasswordField,
   },

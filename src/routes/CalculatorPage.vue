@@ -139,7 +139,6 @@ import WebUSBNotSupported from '../components/WebUSBNotSupported.vue';
 import DeleteConfirm from '../components/confirmations/DeleteConfirm.vue';
 
 export default defineComponent({
-  name: 'CalculatorPage',
   components: {
     CalculatorCard,
     ConnectCalculator,

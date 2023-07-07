@@ -60,7 +60,6 @@ import ProjectPreviewVue from '../components/ProjectPreview.vue';
 import UserPreviewBig from '../components/user/UserPreviewBig.vue';
 
 export default defineComponent({
-  name: 'UserPage',
   components: {
     ProjectPreviewVue,
     UserPreviewBig,

@@ -66,7 +66,6 @@ import { useAPIStore } from '../stores/api';
 import PasswordField from '../components/forms/PasswordField.vue';
 
 export default defineComponent({
-  name: 'LoginPage',
   components: {
     PasswordField,
   },

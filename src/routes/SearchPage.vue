@@ -62,7 +62,6 @@ import { Project, Tag } from '../types';
 import ProjectPreview from '../components/ProjectPreview.vue';
 
 export default defineComponent({
-  name: "SearchPage",
   components: {
     ProjectPreview,
   },

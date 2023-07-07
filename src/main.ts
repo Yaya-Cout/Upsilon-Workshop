@@ -7,35 +7,35 @@ import vuetify from './plugins/vuetify';
 import pinia from './plugins/pinia';
 import { loadFonts } from './plugins/webfontloader';
 import AboutPage from './routes/AboutPage.vue';
-import Calculator from './routes/Calculator.vue';
-import Create from './routes/Create.vue';
-import Editor from './routes/Editor.vue';
-import Home from './routes/Home.vue';
-import Login from './routes/Login.vue';
-import NotFound from './routes/NotFound.vue'
-import Register from './routes/Register.vue';
-import Search from './routes/Search.vue';
-import Settings from './routes/Settings.vue';
-import User from './routes/User.vue';
-import Viewer from './routes/Viewer.vue';
+import CalculatorPage from './routes/CalculatorPage.vue';
+import CreatePage from './routes/CreatePage.vue';
+import EditorPage from './routes/EditorPage.vue';
+import HomePage from './routes/HomePage.vue';
+import LoginPage from './routes/LoginPage.vue';
+import NotFoundPage from './routes/NotFoundPage.vue'
+import RegisterPage from './routes/RegisterPage.vue';
+import SearchPage from './routes/SearchPage.vue';
+import SettingsPage from './routes/SettingsPage.vue';
+import UserPage from './routes/UserPage.vue';
+import ViewerPage from './routes/ViewerPage.vue';
 
 loadFonts()
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL || "/"),
   routes: [
-    { path: '/', component: Home, name: "home", meta: { title: "Home" } },
+    { path: '/', component: HomePage, name: "home", meta: { title: "Home" } },
     { path: '/about', component: AboutPage, name: "about", meta: { title: "About" } },
-    { path: '/create', component: Create, name: "create", meta: { title: "Create" } },
-    { path: '/calculator', component: Calculator, name: "calculator", meta: { title: "Calculator" } },
-    { path: '/edit/:uuid', component: Editor, name: "edit", meta: { title: "Editor" } },
-    { path: '/search', component: Search, name: "search", meta: { title: "Search" } },
-    { path: '/view/:uuid', component: Viewer, name: "view", meta: { title: "Viewer" } },
-    { path: '/login', component: Login, name: "login", meta: { title: "Login" } },
-    { path: '/register', component: Register, name: "register", meta: { title: "Register" } },
-    { path: '/user/:username', component: User, name: "user", meta: { title: "User" } },
-    { path: '/settings', component: Settings, name: "settings", meta: { title: "Settings" } },
-    { path: '/:pathMatch(.*)*', component: NotFound, name: "notfound", meta: { title: "Not Found" } },
+    { path: '/create', component: CreatePage, name: "create", meta: { title: "Create" } },
+    { path: '/calculator', component: CalculatorPage, name: "calculator", meta: { title: "Calculator" } },
+    { path: '/edit/:uuid', component: EditorPage, name: "edit", meta: { title: "Editor" } },
+    { path: '/search', component: SearchPage, name: "search", meta: { title: "Search" } },
+    { path: '/view/:uuid', component: ViewerPage, name: "view", meta: { title: "Viewer" } },
+    { path: '/login', component: LoginPage, name: "login", meta: { title: "Login" } },
+    { path: '/register', component: RegisterPage, name: "register", meta: { title: "Register" } },
+    { path: '/user/:username', component: UserPage, name: "user", meta: { title: "User" } },
+    { path: '/settings', component: SettingsPage, name: "settings", meta: { title: "Settings" } },
+    { path: '/:pathMatch(.*)*', component: NotFoundPage, name: "notfound", meta: { title: "Not Found" } },
   ]
 })
 
