@@ -1,3 +1,5 @@
+// TODO: Promise everywhere and fix the types in the other files
+
 // A workshop project is a project that is created by a user and that can be
 // shared with other users. It is composed of a list of scripts and a title.
 export type Project = {

@@ -31,8 +31,8 @@
               </v-list-subheader>
               <UserPreview
                 v-for="collaborator in collaborators"
-                :key="collaborator.username"
-                :username="collaborator.username"
+                :key="collaborator"
+                :username="collaborator"
                 class="mr-2"
               />
             </v-list>
@@ -133,15 +133,15 @@ const props = defineProps({
   },
 });
 
-let collaborators = ref([] as User[]);
+let collaborators = ref([] as string[]);
 
 watch(
   () => props.project,
   async () => {
-    let NewCollaborators = [] as Promise<User>[];
+    let NewCollaborators = [] as Promise<string>[];
 
     for (const collaborator of props.project.collaborators) {
-      NewCollaborators.push(api.loadLazyLoadingObject(api.getUser(collaborator)));
+      NewCollaborators.push(api.getUser(collaborator).username);
     }
 
     let collaborators_loaded = await Promise.all(NewCollaborators);
