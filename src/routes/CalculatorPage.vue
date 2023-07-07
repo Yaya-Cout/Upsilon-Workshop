@@ -128,134 +128,123 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import cloneDeep from 'lodash/cloneDeep';
 import { useAPIStore } from '../stores/api';
 import { useCalculatorStore } from "../stores/calculator";
-import cloneDeep from 'lodash/cloneDeep';
 import CalculatorCard from '../components/CalculatorCard.vue';
 import ConnectCalculator from '../components/ConnectCalculator.vue';
 import WebUSBNotSupported from '../components/WebUSBNotSupported.vue';
 import DeleteConfirm from '../components/confirmations/DeleteConfirm.vue';
 
-export default defineComponent({
-  components: {
-    CalculatorCard,
-    ConnectCalculator,
-    WebUSBNotSupported,
-    DeleteConfirm
+const calculatorStore = useCalculatorStore();
+const calculator = calculatorStore.calculator;
+const apiStore = useAPIStore();
+const api = apiStore.api;
+const webUSB = "usb" in navigator ? true : false;
+const $router = useRouter();
+
+// TODO: Create a type for storage.
+const storage = ref([]);
+const platformInfo = ref({});
+const showAll = ref(false);
+const timeout = ref(3000);
+const deleted = ref(false);
+const savingScript = ref([] as boolean[]);
+const scriptSaved = ref(false);
+const scriptSavedName = ref("");
+const scriptSavedId = ref("");
+
+const connected = computed({
+  get() {
+    return calculatorStore.connected;
   },
-  data() {
-    return {
-      webUSB: "usb" in navigator ? true : false,
-      calculatorStore: useCalculatorStore(),
-      calculator: useCalculatorStore().calculator,
-      storage: [],
-      platformInfo: {},
-      api: useAPIStore().api,
-      showAll: false,
-      timeout: 3000,
-      deleted: false as boolean,
-      savingScript: [] as boolean[],
-      scriptSaved: false as boolean,
-      scriptSavedName: "",
-      scriptSavedId: "" as string,
+  set(value: boolean) {
+    calculatorStore.connected = value;
+  },
+})
+
+const connectedHandler = () => {
+  connected.value = true;
+};
+
+const disconnect = () => {
+  calculator.device.device_.close()
+  disconnectHandler(false);
+};
+
+const disconnectHandler = (unexpected: boolean = true) => {
+  connected.value = false;
+  if (unexpected) {
+    calculator.autoConnect(connectedHandler);
+  }
+};
+
+const reloadScripts = () => {
+  calculator.backupStorage().then((NewStorage: any) => {
+    storage.value = NewStorage;
+    savingScript.value = new Array(storage.value.records.length).fill(false);
+  });
+};
+
+const deleteScript = (name: string, type: string) => {
+  for (let i = 0; i < storage.value.records.length; i++) {
+    if (storage.value.records[i].name == name && storage.value.records[i].type == type) {
+      storage.value.records.splice(i, 1);
+      break;
     }
-  },
-  computed: {
-    connected: {
-      get() {
-        return this.calculatorStore.connected;
-      },
-      set(value: boolean) {
-        this.calculatorStore.connected = value;
-      },
-    },
-  },
-  watch: {
-    connected: {
-      handler: async function (connected) {
-        if (connected) {
-          this.platformInfo = await this.calculator.getPlatformInfo();
-          this.reloadScripts();
-        } else {
-          this.platformInfo = {};
-          this.storage = [];
-        }
-      },
-      immediate: true
-    }
-  },
-  methods: {
-    async connectedHandler() {
-      this.connected = true;
-    },
-    connectErrorHandler(error: any) {
-      // TODO: Handle errors.
-      console.error("Connection error: " + error);
-    },
-    disconnect() {
-      this.calculator.device.device_.close()
-      this.disconnectHandler(false);
-    },
-    disconnectHandler(unexpected: boolean = true) {
-      this.connected = false;
-      if (unexpected) {
-        this.calculator.autoConnect(this.connectedHandler);
-      }
-    },
-    reloadScripts() {
-      this.calculator.backupStorage().then((storage: any) => {
-        this.storage = storage;
-        this.savingScript = new Array(this.storage.records.length).fill(false);
-      });
-    },
-    async deleteScript(name: string, type: string) {
-      for (let i = 0; i < this.storage.records.length; i++) {
-        if (this.storage.records[i].name == name && this.storage.records[i].type == type) {
-          this.storage.records.splice(i, 1);
-          break;
-        }
-      }
+  }
 
-      this.calculator.installStorage(cloneDeep(this.storage), this.deletedScriptHandler);
-    },
-    deletedScriptHandler() {
-      this.deleted = true;
-      this.reloadScripts();
-    },
-    async saveScript(name: string, type: string, index: number) {
-      this.savingScript[index] = true;
+  calculator.installStorage(cloneDeep(storage.value), deletedScriptHandler);
+};
 
-      try {
-        let record = this.storage.records.find((record: any) => record.name == name && record.type == type);
+const deletedScriptHandler = () => {
+  deleted.value = true;
+  reloadScripts();
+};
 
-        // TODO: Check if the record is valid. (assert)
+const saveScript = async (name: string, type: string, index: number) => {
+  savingScript.value[index] = true;
 
-        let title = record.name + "." + record.type;
+  try {
+    let record = storage.value.records.find((record: any) => record.name == name && record.type == type);
+    // TODO: Check if the record is valid. (assert)
 
-        // TODO: Check if the script is already saved.
+    let title = record.name + "." + record.type;
 
-        let project_id = await this.api.createOneFileProject(title, record.code)
-        // Code to use if you want to test the saving script without actually saving it to the server.
-        // await new Promise(resolve => setTimeout(resolve, 1000));
-        // let project_id = "11fa071a-4b2f-4d85-8c2e-20a945e26550";
+    // TODO: Check if the script is already saved.
 
-        this.scriptSaved = false;
-        this.scriptSavedName = title;
-        this.scriptSavedId = project_id;
-        this.scriptSaved = true;
-      } catch (e) {
-        // TODO: Handle errors.
-        console.error(e);
-      }
-      this.savingScript[index] = false;
-    },
-    openScript(id: string) {
-      this.$router.push({ name: 'view', params: { uuid: id } });
-    },
-  },
-});
+    let project_id = await api.createOneFileProject(title, record.code)
+    // Code to use if you want to test the saving script without actually saving it to the server.
+    // await new Promise(resolve => setTimeout(resolve, 1000));
+    // let project_id = "11fa071a-4b2f-4d85-8c2e-20a945e26550";
+
+    scriptSaved.value = false;
+    scriptSavedName.value = title;
+    scriptSavedId.value = project_id;
+    scriptSaved.value = true;
+  } catch (e) {
+    // TODO: Handle errors.
+    console.error(e);
+  }
+  savingScript.value[index] = false;
+};
+
+const openScript = (id: string) => {
+  $router.push({ name: 'view', params: { uuid: id } });
+};
+
+watch(connected, async (connected) => {
+  if (connected) {
+    platformInfo.value = await calculator.getPlatformInfo();
+    reloadScripts();
+  } else {
+    platformInfo.value = {};
+    storage.value = [];
+  }
+}, { immediate: true });
 </script>
 
 <style>
