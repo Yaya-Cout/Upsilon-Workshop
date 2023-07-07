@@ -9,7 +9,7 @@
       </h1>
 
       <v-form
-        ref="loginForm"
+        ref="formObject"
         v-model="form"
         @submit.prevent="login"
       >
@@ -60,57 +60,58 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useAPIStore } from '../stores/api';
 import PasswordField from '../components/forms/PasswordField.vue';
+import { VForm } from 'vuetify/components/VForm';
+const { t: $t } = useI18n();
+const $router = useRouter();
 
-export default defineComponent({
-  components: {
-    PasswordField,
-  },
-  data() {
-    return {
-      username: '',
-      password: '',
-      usernameRules: [
-        (v: string) => !!v || this.$t('login.rules.username.required'),
-      ],
-      passwordRules: [
-        (v: string) => !!v || this.$t('login.rules.password.required'),
-      ],
-      show: false,
-      loading: false,
-      form: false,
-      api: useAPIStore().api,
-      snackbar: false,
-      timeout: 10000
-    }
-  },
-  methods: {
-    async login() {
-      this.loading = true
-      const { valid } = await this.$refs.loginForm.validate()
+const username = ref('');
+const password = ref('');
+const loading = ref(false);
+const form = ref(false);
+// TODO: Use the global snackbar
+const snackbar = ref(false);
+const formObject = ref<InstanceType<typeof VForm> | null>(null);
 
-      if (!valid) {
-        this.loading = false
-        return
-      }
+const usernameRules = [
+  (v: string) => !!v || $t('login.rules.username.required'),
+];
+const api = useAPIStore().api;
+const timeout = 10000;
 
-      await this.api.login(this.username, this.password)
-        .then(this.connected)
-        .catch(this.connectionFailed);
-
-      this.loading = false
-    },
-    connected() {
-      this.$router.push({ name: 'home' })
-    },
-    connectionFailed() {
-      this.snackbar = true
-    }
+const login = async () => {
+  loading.value = true
+  if (!formObject.value) {
+    loading.value = false
+    console.error('Form object not found')
+    return
   }
-});
+  const { valid } = await formObject.value.validate()
+
+  if (!valid) {
+    loading.value = false
+    return
+  }
+
+  await api.login(username.value, password.value)
+    .then(connected)
+    .catch(connectionFailed);
+
+  loading.value = false
+};
+
+const connected = () => {
+  $router.push({ name: 'home' })
+};
+
+const connectionFailed = () => {
+  snackbar.value = true
+};
 </script>
 
 <style>
