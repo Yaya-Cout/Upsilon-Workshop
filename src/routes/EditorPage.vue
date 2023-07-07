@@ -62,7 +62,7 @@
           <v-window v-model="tab">
             <v-window-item value="simulator">
               <SimulatorView
-                ref="simulator"
+                ref="simulatorObject"
                 :scripts="project.files"
               />
             </v-window-item>
@@ -90,87 +90,89 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import DeviceInterface from '../components/DeviceInterface.vue';
-import EditProjectDialog from '../components/EditProjectDialog.vue';
-// const MonacoEditor = () => import('../components/MonacoEditor.vue');
-import MonacoEditor from '../components/MonacoEditor.vue';
-import SimulatorView from '../components/SimulatorView.vue';
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useAPIStore } from '../stores/api';
 import { useGlobalStore } from '../stores/global';
 import { Project } from '../types';
+import DeviceInterface from '../components/DeviceInterface.vue';
+import EditProjectDialog from '../components/EditProjectDialog.vue';
+import MonacoEditor from '../components/MonacoEditor.vue';
+import SimulatorView from '../components/SimulatorView.vue';
 
-export default defineComponent({
-  components: { MonacoEditor, SimulatorView, DeviceInterface, EditProjectDialog },
-  data() {
-    return {
-      tab: null,
-      project: useAPIStore().api.EMPTY_PROJECT as Project,
-      api: useAPIStore().api,
-      globalStore: useGlobalStore(),
-      apiStore: useAPIStore(),
-      uuid: this.$route.params.uuid as string,
-    };
-  },
-  async mounted() {
-    this.globalStore.progress = true;
-    // Before loading the project, add the uuid to the dummy project
-    this.api.EMPTY_PROJECT.uuid = this.uuid;
-    try {
-      this.project = await this.api.loadLazyLoadingObject(this.api.getProject(this.uuid));
-    } catch (e) {
-      // Redirect to 404
-      this.$router.push({ name: 'notfound' });
-    }
-    this.globalStore.progress = false;
-  },
-  methods: {
-    onRecordSelect(record: any) {
-      if (record.type === 'py') {
-        this.project.files.push({
-          title: record.name + '.py',
-          content: record.code,
-        });
-      }
-    },
-    run() {
-      if (this.$refs.simulator && this.$refs.simulator.send) {
-        this.$refs.simulator.send();
-      } else {
-        console.error('Simulator component not found');
-      }
-    },
-    hasWriteAccess(): boolean {
-      // Get if the user is the owner of the project
-      if (this.project.author === this.apiStore.username && this.apiStore.username !== '') {
-        return true;
-      }
-      // Get if the user is a collaborator of the project
-      for (const collaborator of this.project.collaborators) {
-        if (collaborator === this.apiStore.username) {
-          return true;
-        }
-      }
-      return false;
-    },
-    async updateMetadata(metadata: any) {
-      this.globalStore.progress = true;
-      this.project = metadata;
-      try {
-        await this.api.updateProjectMetadata(metadata);
-        this.globalStore.success = "snackbar.success.project-saved.message";
-      } catch (e) {
-        this.globalStore.error = true;
-        console.error(e);
-      }
-      this.globalStore.progress = false;
-    },
-    updateProject(project: Project) {
-      this.project = project;
-    },
-  },
+const tab = ref(null);
+const project = ref(useAPIStore().api.EMPTY_PROJECT as Project);
+const simulatorObject = ref<InstanceType<typeof SimulatorView> | null>(null);
+
+const $router = useRouter();
+const $route = useRoute();
+const api = useAPIStore().api;
+const globalStore = useGlobalStore();
+const apiStore = useAPIStore();
+const uuid = $route.params.uuid as string;
+
+
+onMounted(async () => {
+  globalStore.progress = true;
+  // Before loading the project, add the uuid to the dummy project
+  api.EMPTY_PROJECT.uuid = uuid;
+  try {
+    project.value = await api.loadLazyLoadingObject(api.getProject(uuid));
+  } catch (e) {
+    // Redirect to 404
+    $router.push({ name: 'notfound' });
+  }
+  globalStore.progress = false;
 });
+
+const onRecordSelect = (record: any) => {
+  if (record.type === 'py') {
+    project.value.files.push({
+      title: record.name + '.py',
+      content: record.code,
+    });
+  }
+};
+
+const run = () => {
+  if (simulatorObject.value) {
+    simulatorObject.value.send();
+  } else {
+    console.error('Simulator component not found');
+  }
+};
+
+const hasWriteAccess = (): boolean => {
+  // Get if the user is the owner of the project
+  if (project.value.author === apiStore.username && apiStore.username !== '') {
+    return true;
+  }
+  // Get if the user is a collaborator of the project
+  for (const collaborator of project.value.collaborators) {
+    if (collaborator === apiStore.username) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const updateMetadata = async (metadata: any) => {
+  globalStore.progress = true;
+  project.value = metadata;
+  try {
+    await api.updateProjectMetadata(metadata);
+    globalStore.success = "snackbar.success.project-saved.message";
+  } catch (e) {
+    globalStore.error = true;
+    console.error(e);
+  }
+  globalStore.progress = false;
+};
+
+const updateProject = (NewProject: Project) => {
+  project.value = NewProject;
+};
 </script>
 
 <style scoped></style>
