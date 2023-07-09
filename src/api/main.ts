@@ -48,7 +48,7 @@ export default class API extends EventTarget {
     constructor() {
         super()
 
-        this.BASE_URL = "https://yann.n1n1.xyz/"
+        this.BASE_URL = "http://[2a01:e0a:169:7510:b92f:9e21:19dd:149]:8080/"
 
         // Update user info
         this.updateUserInfo()
