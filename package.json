@@ -41,7 +41,7 @@
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
-    "@intlify/vite-plugin-vue-i18n": "^6.0.1",
+    "@intlify/vite-plugin-vue-i18n": "^7.0.0",
     "typescript": "^5.1.6",
     "vite-plugin-vuetify": "^1.0.0-alpha.12",
     "vue-cli-plugin-vuetify": "~2.5.8",
