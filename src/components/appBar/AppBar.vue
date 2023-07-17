@@ -1,4 +1,5 @@
 <template>
+  <NotReachableWarning />
   <v-app-bar elevation="5">
     <ProgressbarComponent />
     <v-app-bar-title>
@@ -33,6 +34,7 @@
 
 <script setup lang="ts">
 import ProgressbarComponent from '../ProgressbarComponent.vue';
+import NotReachableWarning from './NotReachableWarning.vue';
 import UserMenu from './UserMenu.vue';
 </script>
 

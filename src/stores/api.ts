@@ -8,5 +8,6 @@ export const useAPIStore = defineStore('API', {
     ready: false,
     loggedIn: false,
     notLoggedInError: false,
+    serverNotReachable: false,
   }),
 })

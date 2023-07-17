@@ -228,7 +228,23 @@ export default class API extends EventTarget {
             payload.body = JSON.stringify(body)
         }
 
-        const response = await fetch(this.BASE_URL + endpoint, payload)
+        let response;
+        try {
+            response = await fetch(this.BASE_URL + endpoint, payload)
+        } catch (e) {
+            // We need to catch here because the browser raise a CORS error
+            this.API_STORE.serverNotReachable = true;
+            throw new Error("Server not reachable")
+        }
+
+        // If the status code is 503 (Service Unavailable) or 000 (server not reachable), set the not reachable error
+        if (response.status === 503 || response.status === 0) {
+            this.API_STORE.serverNotReachable = true;
+            console.log("Server not reachable")
+        } else {
+            this.API_STORE.serverNotReachable = false;
+            console.log("Server reachable")
+        }
 
         // If we have a 401 error, the token is invalid, so we try to update
         // the user info and try again if the user is logged out
