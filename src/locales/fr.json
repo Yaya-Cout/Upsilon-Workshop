@@ -157,6 +157,10 @@
     "explore": "Explorer",
     "login": "Connexion",
     "logout": "Déconnexion",
+    "not-reachable": {
+      "close": "Fermer",
+      "description": "Impossible de joindre le serveur. Merci de vérifier votre connexion internet et réessayez ! Cela peut également être un problème temporaire avec le serveur."
+    },
     "search": "Rechercher",
     "settings": "Paramètres",
     "signup": "S'inscrire",

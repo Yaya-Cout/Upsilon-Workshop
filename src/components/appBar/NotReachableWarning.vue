@@ -7,10 +7,10 @@
     elevation="2"
     class="top-banner"
   >
-    The server is not reachable. Please check your internet connection and try again! This might also be a temporary issue with the server.
+    {{ $t('navbar.not-reachable.description') }}
     <template #actions>
       <v-btn @click="closeBanner">
-        Close
+        {{ $t('navbar.not-reachable.close') }}
       </v-btn>
     </template>
   </v-banner>

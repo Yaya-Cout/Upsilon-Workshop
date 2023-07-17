@@ -157,6 +157,10 @@
     "explore": "Explore",
     "login": "Log in",
     "logout": "Log out",
+    "not-reachable": {
+      "close": "Close",
+      "description": "The server is not reachable. Please check your internet connection and try again! This might also be a temporary issue with the server."
+    },
     "search": "Search",
     "settings": "Settings",
     "signup": "Sign up",
