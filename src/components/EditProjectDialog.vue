@@ -48,7 +48,10 @@
             />
           </template>
         </v-autocomplete>
-        <SelectCollaborators v-model="collaborators" />
+        <SelectCollaborators
+          v-model="collaborators"
+          :author="props.project.author"
+        />
         <SelectTags v-model="tags" />
         <v-text-field
           v-model="shortDescription"

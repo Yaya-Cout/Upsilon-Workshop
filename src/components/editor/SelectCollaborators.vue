@@ -36,6 +36,10 @@ const props = defineProps({
     type: Array as () => string[],
     required: true,
   },
+  author: {
+    type: String,
+    required: true,
+  },
 });
 
 const api = useAPIStore().api;
@@ -61,6 +65,9 @@ const searchUsers = async () => {
     let users = await api.getUsers(search.value);
     let usernameList = [];
     for (let user of users) {
+      if (user.username === props.author) {
+        continue;
+      }
       usernameList.push(user.username);
     }
     people.value = usernameList;
