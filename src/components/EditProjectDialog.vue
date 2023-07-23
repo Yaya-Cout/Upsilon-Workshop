@@ -132,7 +132,7 @@ const versionRules = [
 
 const longDescriptionRules = [
   // TODO: Allow empty long description
-  (v: string) => (v && v.length <= 10000) || $t('editor.edit-project-info-dialog.rules.long-description.length')
+  (v: string) => (v === "" || v && v.length <= 10000) || $t('editor.edit-project-info-dialog.rules.long-description.length')
 ];
 
 const dialog = ref(false);
