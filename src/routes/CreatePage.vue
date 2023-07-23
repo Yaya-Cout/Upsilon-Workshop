@@ -19,6 +19,7 @@
             prepend-inner-icon="mdi-pencil"
             :label="$t('create.name')"
             :rules="nameRules"
+            :hint="$t('create.name-hint')"
             counter="100"
             clearable
           />

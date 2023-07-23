@@ -28,6 +28,7 @@
     "is-public": "Public",
     "language": "Language",
     "name": "Project name",
+    "name-hint": "Project name can contain special characters",
     "rules": {
       "language": {
         "invalid": "Language must be one of the following: python, micropython-khicas, xcas-python-pow, xcas-python-xor, xcas, xcas-session",
