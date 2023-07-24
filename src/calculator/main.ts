@@ -45,7 +45,6 @@ function newCalculator() {
         get: (target, prop) => {
             // const { asyncQueue } = useCalculatorStore();
             const asyncQueue = queue;
-            console.log(asyncQueue, prop);
             // If the property is not a function, return it
             if (typeof target[prop] !== 'function') {
                 return target[prop];
@@ -53,7 +52,6 @@ function newCalculator() {
 
             // If the property is a function, return a function that queues the function call
             return async (...args : any[]) => {
-                console.log("Waiting function", prop, args, asyncQueue);
                 // Get the next function id
                 const functionId = asyncQueue.nextFunctionId;
 
@@ -71,8 +69,6 @@ function newCalculator() {
                         });
                     });
                 }
-
-                console.log("Running function", prop, args, asyncQueue);
 
                 // Call the function
                 const result = await target[prop](...args);
