@@ -1,6 +1,6 @@
 import { Project, Script, User, Group, Tag } from "../types";
 import { useAPIStore } from "../stores/api";
-import  { nextTick } from "vue";
+import { nextTick } from "vue";
 
 /*
  * Class to interact with the Workshop API

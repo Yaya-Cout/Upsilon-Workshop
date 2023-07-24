@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
-import NumWorks from "upsilon.js";
+import { newCalculator } from '../calculator/main'
 
 export const useCalculatorStore = defineStore('calculator', {
   state: () => ({
-    calculator: new NumWorks(),
+    calculator: newCalculator(),
     connected: false,
     notConnectedError: false,
     tooMuchDataError: false,
