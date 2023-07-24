@@ -62,11 +62,16 @@
                   :disabled="savingScript[index]"
                   @click="saveScript(record.name, record.type, index)"
                 />
-                <!-- TODO: Implement it -->
-                <v-btn
-                  icon="mdi-pencil"
-                  variant="text"
-                />
+                <!-- If fullName is null, then the record is invalid. -->
+                <RenameScript
+                  v-if="record.fullName"
+                  v-model="record.fullName"
+                >
+                  <v-btn
+                    icon="mdi-pencil"
+                    variant="text"
+                  />
+                </RenameScript>
                 <!-- TODO: Download -->
                 <DeleteConfirm
                   :script-name="record.name + '.' + record.type"
@@ -129,25 +134,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import cloneDeep from 'lodash/cloneDeep';
+import { Storage } from '../types';
 import { useAPIStore } from '../stores/api';
 import { useCalculatorStore } from "../stores/calculator";
+import { useGlobalStore } from '../stores/global';
 import CalculatorCard from '../components/CalculatorCard.vue';
 import ConnectCalculator from '../components/ConnectCalculator.vue';
 import WebUSBNotSupported from '../components/WebUSBNotSupported.vue';
 import DeleteConfirm from '../components/confirmations/DeleteConfirm.vue';
+import RenameScript from '../components/RenameScript.vue';
 
 const calculatorStore = useCalculatorStore();
 const calculator = calculatorStore.calculator;
 const apiStore = useAPIStore();
+const globalStore = useGlobalStore();
 const api = apiStore.api;
 const webUSB = "usb" in navigator ? true : false;
 const $router = useRouter();
 
-// TODO: Create a type for storage.
-const storage = ref([]);
+const storage = ref({magik: false, records: []} as Storage);
 const platformInfo = ref({});
 const showAll = ref(false);
 const timeout = ref(3000);
@@ -182,8 +190,37 @@ const disconnectHandler = (unexpected: boolean = true) => {
   }
 };
 
+watchEffect(() => {
+  let install = false;
+  for (let i = 0; i < storage.value.records.length; i++) {
+    let record = storage.value.records[i];
+    let fullName = record.fullName;
+    if (!fullName) {
+      throw new Error("Record doesn't have a fullName");
+    }
+    let name = fullName.split(".")[0];
+    let type = fullName.split(".")[1];
+    if (record.name != name || record.type != type) {
+      record.name = name;
+      record.type = type;
+      install = true;
+    }
+  }
+
+  if (install) {
+    calculator.installStorage(cloneDeep(storage.value), () => {});
+  }
+});
+
 const reloadScripts = () => {
   calculator.backupStorage().then((NewStorage: any) => {
+    console.log(NewStorage)
+    for (let i = 0; i < NewStorage.records.length; i++) {
+      if (!NewStorage.records[i].fullName) {
+        NewStorage.records[i].fullName = NewStorage.records[i].name + "." + NewStorage.records[i].type;
+      }
+    }
+
     storage.value = NewStorage;
     savingScript.value = new Array(storage.value.records.length).fill(false);
   });
@@ -210,7 +247,9 @@ const saveScript = async (name: string, type: string, index: number) => {
 
   try {
     let record = storage.value.records.find((record: any) => record.name == name && record.type == type);
-    // TODO: Check if the record is valid. (assert)
+    if (!record) {
+      throw new Error("Record not found");
+    }
 
     let title = record.name + "." + record.type;
 
@@ -226,8 +265,8 @@ const saveScript = async (name: string, type: string, index: number) => {
     scriptSavedId.value = project_id;
     scriptSaved.value = true;
   } catch (e) {
-    // TODO: Handle errors.
     console.error(e);
+    globalStore.error = true;
   }
   savingScript.value[index] = false;
 };
@@ -242,7 +281,7 @@ watch(connected, async (connected) => {
     reloadScripts();
   } else {
     platformInfo.value = {};
-    storage.value = [];
+    storage.value = {magik: false, records: []};
   }
 }, { immediate: true });
 </script>

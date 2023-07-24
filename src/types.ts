@@ -106,3 +106,24 @@ export type Tag = {
     // Internal field to know if the tag is loading or not
     _loading: boolean,
 }
+
+////// Types for the calculator //////
+
+// A record is a file in the calculator. It is composed of a name, a type and a
+// code. It can also contain a fullName which is not returned by Upsilon.js.
+export type Record = {
+    name: string,
+    type: string,
+    fullName: string | null,
+    code: string,
+}
+
+// A storage is returned by the backupStorage function from Upsilon.js. It is
+// composed of a list of records and a magik field.
+export type Storage = {
+    // The magik should always be true. It's used to check if the storage is valid.
+    magik: boolean,
+
+    // The list of records in the storage
+    records: Record[],
+}
