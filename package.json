@@ -25,7 +25,7 @@
     "jdenticon": "^3.2.0",
     "lodash": "^4.17.21",
     "monaco-editor": "^0.41.0",
-    "pinia": "^2.0.33",
+    "pinia": "^2.1.6",
     "roboto-fontface": "*",
     "showdown": "^2.1.0",
     "showdown-xss-filter": "^0.2.0",
