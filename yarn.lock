@@ -177,10 +177,10 @@
   resolved "https://registry.yarnpkg.com/@intlify/shared/-/shared-9.3.0-beta.24.tgz#23e08af9fc904fe3ef896786f9e659da6bb567b5"
   integrity sha512-AKxJ8s7eKIQWkNaf4wyyoLRwf4puCuQgjSChlDJm5JBEt6T8HGgnYTJLRXu6LD/JACn3Qwu6hM/XRX1c9yvjmQ==
 
-"@intlify/unplugin-vue-i18n@^0.12.2":
-  version "0.12.2"
-  resolved "https://registry.yarnpkg.com/@intlify/unplugin-vue-i18n/-/unplugin-vue-i18n-0.12.2.tgz#64f7aad79cff1c4e8ff199cc059ea2bb9c36b2bb"
-  integrity sha512-IIgzLRSPUKZM1FBdUAZ9NwVPiLUr4ea5g/HLWe2lB7gNtPDz4FOfUNUllIT504hT+3pDoJmjaYJ6pyqT7F4Wuw==
+"@intlify/unplugin-vue-i18n@^0.12.3":
+  version "0.12.3"
+  resolved "https://registry.yarnpkg.com/@intlify/unplugin-vue-i18n/-/unplugin-vue-i18n-0.12.3.tgz#fae7d92d3e7bfe9e710fb332b28d22e0f8d999f2"
+  integrity sha512-0riPtSfTM58JmGNMmJho/aHD2z3K24BESYAmkLvKlo61/LbaPvnjYU1DbSbJEm6bSjE2oEjUj+di3QaYxXei/w==
   dependencies:
     "@intlify/bundle-utils" "^7.0.2"
     "@intlify/shared" "9.3.0-beta.24"
