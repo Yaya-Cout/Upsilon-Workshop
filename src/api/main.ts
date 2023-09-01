@@ -243,7 +243,6 @@ export default class API extends EventTarget {
             console.log("Server not reachable")
         } else {
             this.API_STORE.serverNotReachable = false;
-            console.log("Server reachable")
         }
 
         // If we have a 401 error, the token is invalid, so we try to update
