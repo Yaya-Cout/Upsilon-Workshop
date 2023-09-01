@@ -14,8 +14,9 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import SimulatorView from '../components/SimulatorView.vue';
 import { useAPIStore } from '../stores/api';
 import { useGlobalStore } from '../stores/global';
@@ -23,32 +24,25 @@ import { Project } from '../types';
 import SummaryViewer from '../components/viewer/SummaryViewer.vue';
 import LongDescription from '../components/viewer/LongDescription.vue';
 
-export default defineComponent({
-  components: {
-    SimulatorView,
-    SummaryViewer,
-    LongDescription,
-  },
-  data() {
-    return {
-      project: useAPIStore().api.EMPTY_PROJECT as Project,
-      api: useAPIStore().api,
-      globalStore: useGlobalStore(),
-      uuid: this.$route.params.uuid as string,
-    };
-  },
-  async mounted() {
-    this.globalStore.progress = true;
-    // Before loading the project, add the uuid to the dummy project
-    this.project.uuid = this.uuid;
-    try {
-      this.project = await this.api.loadLazyLoadingObject(this.api.getProject(this.uuid));
-    } catch (e) {
-      // Redirect to 404 page
-      this.$router.push({ name: 'notfound' });
-    }
-    this.globalStore.progress = false;
-  },
+const api = useAPIStore().api;
+const globalStore = useGlobalStore();
+const $route = useRoute();
+const $router = useRouter();
+
+const project = ref(useAPIStore().api.EMPTY_PROJECT as Project);
+const uuid = ref($route.params.uuid as string);
+
+onMounted(async () => {
+  globalStore.progress = true;
+  // Before loading the project, add the uuid to the dummy project
+  project.value.uuid = $route.params.uuid as string;
+  try {
+    project.value = await api.loadLazyLoadingObject(api.getProject(uuid.value));
+  } catch (e) {
+    // Redirect to 404 page
+    $router.push({ name: 'notfound' });
+  }
+  globalStore.progress = false;
 });
 </script>
 
