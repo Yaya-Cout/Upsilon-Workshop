@@ -13,18 +13,21 @@
     <v-btn
       class="mx-2"
       to="/search"
+      color="primary"
     >
       {{ $t('navbar.explore') }}
     </v-btn>
     <v-btn
       class="mx-2"
       to="/create"
+      color="primary"
     >
       {{ $t('navbar.start') }}
     </v-btn>
     <v-btn
       class="mx-2"
       to="/calculator"
+      color="primary"
     >
       {{ $t('navbar.calculator') }}
     </v-btn>

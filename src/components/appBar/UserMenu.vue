@@ -3,6 +3,7 @@
     <v-btn
       class="mx-2"
       to="/login"
+      color="primary"
     >
       {{ $t('navbar.login') }}
     </v-btn>
@@ -10,6 +11,7 @@
       class="mx-2"
       variant="outlined"
       to="/register"
+      color="primary"
     >
       {{ $t('navbar.signup') }}
     </v-btn>
