@@ -11,21 +11,10 @@
   </v-app>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import MainManager from './components/manager/MainManager.vue';
 import MainSnackbar from './components/snackbars/MainSnackbar.vue';
 import AppBar from './components/appBar/AppBar.vue';
-
-export default defineComponent({
-  name: 'App',
-
-  components: {
-    MainManager,
-    MainSnackbar,
-    AppBar
-  }
-});
 </script>
 
 <style>
