@@ -60,104 +60,113 @@
     </div>
   </div>
 </template>
-<script lang="ts">
+
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue';
 import { useCalculatorStore } from '../stores/calculator';
-import { defineComponent, PropType } from 'vue';
 import { Script } from '../types';
 
-export default defineComponent({
-    name: 'DeviceInterface',
-    props: {
-        scripts: {
-            type: Object as PropType<Script[]>,
-            default: () => {},
-        },
-    },
-    emits: ['record-select'],
-    data() {
-        return {
-            showAll: false,
-            storage: null,
-            descriptor: '',
-            calculatorStore: useCalculatorStore(),
-            calculator: useCalculatorStore().calculator,
-        };
-    },
-    computed: {
-        connected: {
-            get() {
-                return this.calculatorStore.connected;
-            },
-            set(value: boolean) {
-                this.calculatorStore.connected = value;
-            },
-        },
-    },
-    methods: {
-        onDisconnect() {
-            this.connected = false;
-        },
-        disconnect() {
-            this.calculator.device.device_.close();
-            this.onDisconnect();
-            this.calculator.stopAutoConnect();
-        },
-        async connect() {
-            await this.calculator.detect(() => {
-                this.calculator.stopAutoConnect();
-                this.onConnect();
-            }, this.onError);
-        },
-        async onConnect() {
-            this.calculator.stopAutoConnect();
-            this.connected = true;
-            const platformInfo = await this.calculator.getPlatformInfo();
+const calculatorStore = useCalculatorStore();
+const calculator = calculatorStore.calculator;
 
-            this.descriptor = 'Connected to ';
-            if (platformInfo.magik == false) {
-                this.descriptor =
-                    "Can't get scripts from device. Check that the calculator is in the right mode for receiving scripts.";
-                return;
-            }
-            if (
-                platformInfo.omega.installed &&
-                platformInfo.omega.user.length > 0
-            )
-                this.descriptor += platformInfo.omega.user + "'s Numworks:\n";
-            else this.descriptor += "someone's Numworks:\n";
+const showAll = ref(false);
+const storage = ref(null);
+const descriptor = ref('');
 
-            this.descriptor += 'E' + platformInfo.version;
-            if (platformInfo.omega.installed)
-                this.descriptor += ' - O' + platformInfo.omega.version;
-            if (platformInfo.upsilon.installed)
-                this.descriptor += ' - U' + platformInfo.upsilon.version;
-            this.descriptor += ' - ' + platformInfo.commit;
-            this.storage = await this.calculator.backupStorage();
-        },
-        //FIXME fix duplication
-        async send() {
-            this.storage = await this.calculator.backupStorage();
-            for (const script of this.scripts) {
-                //@ts-ignore
-                this.storage.records.push({
-                    name: script.title.substring(0, script.title.length - 3),
-                    type: 'py',
-                    autoImport: true,
-                    code: script.content,
-                });
-            }
-            this.calculator.installStorage(this.storage, () => {
-                //TODO add visual feedback
-            });
-        },
-        onRecordSelect(record: any) {
-            this.$emit('record-select', record);
-        },
-        onError(err: any) {
-            console.error(err);
-        },
+const emits = defineEmits(['record-select']);
+
+const props = defineProps({
+    scripts: {
+        type: Object as () => Script[],
+        default: () => {},
     },
 });
+
+const connected = computed({
+    get() {
+        return calculatorStore.connected;
+    },
+    set(value: boolean) {
+        calculatorStore.connected = value;
+    },
+});
+
+function onDisconnect() {
+    connected.value = false;
+}
+
+function disconnect() {
+    calculator.device.device_.close();
+    onDisconnect();
+    calculator.stopAutoConnect();
+}
+
+async function connect() {
+    await calculator.detect(() => {
+        calculator.stopAutoConnect();
+        onConnect();
+    }, onError);
+}
+
+async function onConnect() {
+    calculator.stopAutoConnect();
+    connected.value = true;
+    const platformInfo = await calculator.getPlatformInfo();
+
+    descriptor.value = 'Connected to ';
+    if (platformInfo.magik == false) {
+        descriptor.value =
+            "Can't get scripts from device. Check that the calculator is in the right mode for receiving scripts.";
+        return;
+    }
+    if (
+        platformInfo.omega.installed &&
+        platformInfo.omega.user.length > 0
+    )
+        descriptor.value += platformInfo.omega.user + "'s Numworks:\n";
+    else descriptor.value += "someone's Numworks:\n";
+
+    descriptor.value += 'E' + platformInfo.version;
+    if (platformInfo.omega.installed)
+        descriptor.value += ' - O' + platformInfo.omega.version;
+    if (platformInfo.upsilon.installed)
+        descriptor.value += ' - U' + platformInfo.upsilon.version;
+    descriptor.value += ' - ' + platformInfo.commit;
+    storage.value = await calculator.backupStorage();
+}
+
+//FIXME fix duplication
+async function send() {
+    storage.value = await calculator.backupStorage();
+    for (const script of props.scripts) {
+        //@ts-ignore
+        storage.value.records.push({
+            name: script.title.substring(0, script.title.length - 3),
+            type: 'py',
+            autoImport: true,
+            code: script.content,
+        });
+    }
+    calculator.installStorage(storage.value, () => {
+        //TODO add visual feedback
+    });
+}
+
+function onRecordSelect(record: any) {
+  emits('record-select', record);
+}
+
+function onError(err: any) {
+    console.error(err);
+}
+
+watch(connected, () => {
+    if (connected.value) {
+        onConnect();
+    } else {
+        onDisconnect();
+    }
+}, { immediate: true });
 </script>
 
 <style scoped></style>
