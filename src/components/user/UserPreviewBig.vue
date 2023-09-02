@@ -1,8 +1,8 @@
 <template>
   <v-card>
     <v-card-title>
-      <AvatarView :username="user.username" />
-      <span class="ml-2">{{ user.username }}</span>
+      <AvatarView :username="username" />
+      <span class="ml-2">{{ username }}</span>
     </v-card-title>
     <v-card-text>
       <v-list>
@@ -35,8 +35,10 @@ const props = defineProps({
 });
 
 const groups = ref('');
+const username = ref('');
 
 watchEffect(async () => {
+  username.value = await props.user?.username;
   const groupsAwaited = await props.user?.groups;
   let groupsString = '';
   for (const group of groupsAwaited || []) {

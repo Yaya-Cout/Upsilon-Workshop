@@ -9,15 +9,15 @@
     label="Collaborators"
     multiple
   >
-    <template #chip="{ props, item }">
-      <v-chip v-bind="props">
+    <template #chip="{ props: attrs, item }">
+      <v-chip v-bind="attrs">
         <AvatarView :username="item.raw" />
         <span>{{ item.raw }}</span>
       </v-chip>
     </template>
 
-    <template #item="{ props, item }">
-      <v-list-item v-bind="props">
+    <template #item="{ props: attrs, item }">
+      <v-list-item v-bind="attrs">
         <template #prepend>
           <AvatarView :username="item.raw" />
         </template>
