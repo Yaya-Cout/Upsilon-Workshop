@@ -14,24 +14,19 @@
         >
           <v-card>
             <v-card-title>
-              <h3>{{ project.title }}</h3>
-            </v-card-title>
-            <v-card-item>
-              <v-chip
-                variant="outlined"
-                class="mx-1"
+              <v-skeleton-loader
+                :loading="!project._loaded"
+                type="heading"
               >
-                Public
-              </v-chip>
-              <v-chip class="mx-1">
-                Games
-              </v-chip>
-              <v-chip class="mx-1">
-                Upsilon
-              </v-chip>
-              <v-chip class="mx-1">
-                Omega
-              </v-chip>
+                <h3>{{ project.title }}</h3>
+              </v-skeleton-loader>
+            </v-card-title>
+            <v-card-item v-if="tags.length > 0">
+              <TagView
+                v-for="(tag, index) in tags"
+                :key="index"
+                :tag="tag"
+              />
             </v-card-item>
             <v-card-actions>
               <EditProjectDialog
@@ -95,15 +90,13 @@ import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAPIStore } from '../stores/api';
 import { useGlobalStore } from '../stores/global';
-import { Project } from '../types';
+import { Project, Tag } from '../types';
+import { VSkeletonLoader } from 'vuetify/lib/labs/components.mjs';
 import DeviceInterface from '../components/DeviceInterface.vue';
 import EditProjectDialog from '../components/EditProjectDialog.vue';
 import MonacoEditor from '../components/MonacoEditor.vue';
 import SimulatorView from '../components/SimulatorView.vue';
-
-const tab = ref(null);
-const project = ref(useAPIStore().api.EMPTY_PROJECT as Project);
-const simulatorObject = ref<InstanceType<typeof SimulatorView> | null>(null);
+import TagView from '../components/TagView.vue';
 
 const $router = useRouter();
 const $route = useRoute();
@@ -112,6 +105,12 @@ const globalStore = useGlobalStore();
 const apiStore = useAPIStore();
 const uuid = $route.params.uuid as string;
 
+const tab = ref(null);
+const project = ref(api.EMPTY_PROJECT as Project);
+const tags = ref([api.EMPTY_TAG, api.EMPTY_TAG] as Tag[]);
+const simulatorObject = ref<InstanceType<typeof SimulatorView> | null>(null);
+
+project.value._loaded = false;
 
 onMounted(async () => {
   globalStore.progress = true;
@@ -123,6 +122,7 @@ onMounted(async () => {
     // Redirect to 404
     $router.push({ name: 'notfound' });
   }
+  tags.value = await project.value.tags;
   globalStore.progress = false;
 });
 

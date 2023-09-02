@@ -39,6 +39,14 @@ export default class API extends EventTarget {
         _loaded: false,
         _loading: false,
     };
+    EMPTY_TAG: Tag = {
+        name: "",
+        description: "",
+        projects: [],
+
+        _loaded: false,
+        _loading: true,
+    };
 
     ITEM_PER_PAGE: number = 50;
 
