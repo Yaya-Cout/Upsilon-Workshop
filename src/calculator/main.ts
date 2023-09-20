@@ -71,13 +71,22 @@ function newCalculator() {
                 }
 
                 // Call the function
-                const result = await target[prop](...args);
+                let error, result;
+                try {
+                    result = await target[prop](...args);
+                } catch (e) {
+                    error = e;
+                }
 
                 // Increment the running function id
                 asyncQueue.runningFunctionId += 1;
 
                 // Emit a "functionFinished" event
                 asyncQueue.eventBus.dispatchEvent(new Event('functionFinished'));
+
+                if (error) {
+                    throw error;
+                }
 
                 // Return the result
                 return result;
