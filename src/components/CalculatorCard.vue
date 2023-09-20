@@ -89,9 +89,9 @@ const usedSize = computed(() => {
   let usedSize = 0;
   if (props.storage && props.storage.records) {
     for (let i = 0; i < props.storage.records.length; i++) {
-      if (props.storage.records[i].data) {
+      if ("data" in props.storage.records[i]) {
         usedSize += props.storage.records[i].data.size;
-      } else if (props.storage.records[i].code) {
+      } else if ("code" in props.storage.records[i]) {
         usedSize += props.storage.records[i].code.length;
       } else {
         console.warn("Unknown record type: ", props.storage.records[i]);
