@@ -213,7 +213,7 @@
     "close": "Fermer",
     "connect-calculator": {
       "calculator-not-connected": "La calculatrice n'est pas connectée",
-      "detect-calculator": "Détécter la calculatrice",
+      "detect-calculator": "Détecter la calculatrice",
       "dialog-details": "Vous devez connecter votre calculatrice pour utiliser cette fonctionnalité. Appuyez sur le bouton ci-contre pour détécter votre calculatrice."
     },
     "error": {
