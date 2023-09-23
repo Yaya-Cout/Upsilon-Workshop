@@ -120,6 +120,12 @@
       "run-tooltip": "Exécuter le projet",
       "save-tooltip": "Enregistrer le projet"
     },
+    "replace-confirm": {
+      "cancel": "Annuler",
+      "description": "Êtes-vous sûr de vouloir remplacer {name} ?",
+      "replace": "Remplacer",
+      "title": "Remplacer {name}"
+    },
     "simulator": "Simulateur",
     "view-project-info": "Retour aux infos du projet"
   },
@@ -263,6 +269,9 @@
       },
       "script-deleted": {
         "message": "Script supprimé"
+      },
+      "script-replaced": {
+        "message": "Script remplacé avec succès"
       }
     },
     "too-much-data": {

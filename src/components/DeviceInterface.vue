@@ -31,27 +31,34 @@
         hide-details
       />
       <v-list>
-        <v-list-item
+        <ReplaceConfirm
           v-for="
             (record, index) in storage.records.filter((record)=>record.type === 'py' || showAll)"
           :key="index"
-          density="compact"
-          class="records"
-          :title="
-            //@ts-ignore
-            record.name + '.' + record.type
-          "
-          @click="onRecordSelect(record)"
+          :script-name="record.name + '.' + record.type"
+          :scripts="scripts"
+          @replace="onRecordSelect(record)"
         >
-          <template #append>
-            <v-btn
-              density="compact"
-              icon="mdi-delete"
-              variant="text"
-              @click="deleteRecord(record)"
-            />
-          </template>
-        </v-list-item>
+          <v-list-item
+            :key="index"
+            density="compact"
+            class="records"
+            :title="
+              //@ts-ignore
+              record.name + '.' + record.type
+            "
+            @click="function() {}"
+          >
+            <template #append>
+              <v-btn
+                density="compact"
+                icon="mdi-delete"
+                variant="text"
+                @click="deleteRecord(record)"
+              />
+            </template>
+          </v-list-item>
+        </ReplaceConfirm>
       </v-list>
     </div>
   </div>
@@ -62,6 +69,7 @@ import { ref, computed, watch } from 'vue';
 import { useCalculatorStore } from '../stores/calculator';
 import { useGlobalStore } from '../stores/global';
 import { Script } from '../types';
+import ReplaceConfirm from './confirmations/ReplaceConfirm.vue';
 
 const calculatorStore = useCalculatorStore();
 const calculator = calculatorStore.calculator;

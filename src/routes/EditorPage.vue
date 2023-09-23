@@ -128,9 +128,11 @@ onMounted(async () => {
 
 const onRecordSelect = (record: any) => {
   if (record.type === 'py') {
-    // If the file is already in the project, don't add it
+    // If the file is already in the project, replace it with the new one
     for (const file of project.value.files) {
       if (file.title === record.name + '.py') {
+        file.content = record.code;
+        globalStore.success = 'snackbar.success.script-replaced.message';
         return;
       }
     }
