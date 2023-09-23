@@ -128,6 +128,12 @@ onMounted(async () => {
 
 const onRecordSelect = (record: any) => {
   if (record.type === 'py') {
+    // If the file is already in the project, don't add it
+    for (const file of project.value.files) {
+      if (file.title === record.name + '.py') {
+        return;
+      }
+    }
     project.value.files.push({
       title: record.name + '.py',
       content: record.code,

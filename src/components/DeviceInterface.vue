@@ -131,7 +131,6 @@ async function onConnect() {
     storage.value = await calculator.backupStorage();
 }
 
-//FIXME fix duplication
 async function send() {
     storage.value = await calculator.backupStorage();
     for (const script of props.scripts) {
