@@ -6,7 +6,7 @@
     >
       {{ $t('upsilon-workshop') }}
     </h1>
-    <v-row class="mx-2 my-0">
+    <v-row class="mx-2 my-0 full-width">
       <ProjectPreview
         v-for="project in projects"
         :key="project.uuid"
@@ -40,4 +40,8 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.full-width {
+  width: 100%;
+}
+</style>
