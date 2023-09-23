@@ -3,6 +3,11 @@
     <v-card class="mx-auto px-6 py-8 mt-2 mb-2">
       <v-card-item>
         <v-card-title>
+          <v-skeleton-loader
+            v-if="!project._loaded"
+            type="heading"
+            height="32px"
+          />
           <h1 class="text-center mb-2">
             {{ project.title }}
           </h1>
@@ -45,7 +50,16 @@
               density="compact"
               prepend-icon="mdi-calendar-range"
             >
-              <v-list-item-subtitle class="fit-content">
+              <v-skeleton-loader
+                v-if="!project._loaded"
+                type="text"
+                density="compact"
+                height="24px"
+              />
+              <v-list-item-subtitle
+                v-else
+                class="fit-content"
+              >
                 {{ dateToDayString(project.created) }}
                 <v-tooltip activator="parent">
                   {{ $t('viewer.created-on', { date: dateToExtendedString(project.created) }) }}
@@ -56,7 +70,16 @@
               density="compact"
               prepend-icon="mdi-calendar-edit"
             >
-              <v-list-item-subtitle class="fit-content">
+              <v-skeleton-loader
+                v-if="!project._loaded"
+                type="text"
+                density="compact"
+                height="24px"
+              />
+              <v-list-item-subtitle
+                v-else
+                class="fit-content"
+              >
                 {{ dateToDayString(project.modified) }}
                 <v-tooltip activator="parent">
                   {{ $t('viewer.modified-on', { date: dateToExtendedString(project.modified) }) }}
@@ -67,7 +90,15 @@
               density="compact"
               prepend-icon="mdi-eye"
             >
-              <v-list-item-subtitle class="fit-content">
+              <v-skeleton-loader
+                v-if="!project._loaded"
+                type="text"
+                density="compact"
+                height="24px"
+              /><v-list-item-subtitle
+                v-else
+                class="fit-content"
+              >
                 {{ project.views }}
                 <v-tooltip activator="parent">
                   {{ $t('viewer.views', { count: project.views }) }}
@@ -78,7 +109,15 @@
               density="compact"
               prepend-icon="mdi-update"
             >
-              <v-list-item-subtitle class="fit-content">
+              <v-skeleton-loader
+                v-if="!project._loaded"
+                type="text"
+                density="compact"
+                height="24px"
+              /><v-list-item-subtitle
+                v-else
+                class="fit-content"
+              >
                 {{ project.version }}
                 <v-tooltip activator="parent">
                   {{ $t('viewer.version', { version: project.version }) }}
@@ -89,29 +128,33 @@
         </v-row>
       </v-card-item>
       <v-card-actions>
-        <v-btn
-          :to="'/edit/' + project.uuid"
-          variant="outlined"
-          class="mr-2"
+        <v-slide-group
+          show-arrows
         >
-          {{ $t('viewer.edit') }}
-        </v-btn>
-        <UploadProject
-          :project="project"
-          class="mr-2"
-        >
-          <v-btn variant="outlined">
-            {{ $t('viewer.upload') }}
+          <v-btn
+            :to="'/edit/' + project.uuid"
+            variant="outlined"
+            class="mr-2"
+          >
+            {{ $t('viewer.edit') }}
           </v-btn>
-        </UploadProject>
-        <DeleteProject
-          :project="project"
-          class="mr-2"
-        >
-          <v-btn variant="outlined">
-            {{ $t('viewer.delete') }}
-          </v-btn>
-        </DeleteProject>
+          <UploadProject
+            :project="project"
+            class="mr-2"
+          >
+            <v-btn variant="outlined">
+              {{ $t('viewer.upload') }}
+            </v-btn>
+          </UploadProject>
+          <DeleteProject
+            :project="project"
+            class="mr-2"
+          >
+            <v-btn variant="outlined">
+              {{ $t('viewer.delete') }}
+            </v-btn>
+          </DeleteProject>
+        </v-slide-group>
       </v-card-actions>
     </v-card>
   </div>
@@ -122,6 +165,7 @@ import { watch, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Project } from '../../types';
 import { useAPIStore } from '../../stores/api';
+import { VSkeletonLoader } from 'vuetify/lib/labs/components.mjs';
 import UserPreview from '../UserPreview.vue';
 import UploadProject from '../UploadProject.vue';
 import DeleteProject from '../DeleteProject.vue';
