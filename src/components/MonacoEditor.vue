@@ -88,7 +88,7 @@ var states: monaco.editor.ICodeEditorViewState[] = [];
 </script>
 
 <script setup lang="ts">
-import { ref, watch, computed, onMounted } from 'vue';
+import { ref, watchEffect, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as monaco from 'monaco-editor';
 import { useGlobalStore } from '../stores/global';
@@ -101,6 +101,7 @@ const { t: $t } = useI18n();
 
 const tab = ref(0);
 const oldTab = ref(0);
+const fistCreateModels = ref(true);
 
 const globalStore = useGlobalStore();
 const apiStore = useAPIStore();
@@ -138,7 +139,15 @@ const hasWriteAccess = computed(() => {
   return false;
 });
 
-watch(scripts, () => {
+// Dirty hack to watch for changes in scripts (not working with traditional watch)
+watchEffect(() => {
+  for (const script of scripts.value) {
+    // Required to force WatchEffect to update
+  }
+  if (fistCreateModels.value) {
+    fistCreateModels.value = false;
+    return;
+  }
   createModels();
 });
 

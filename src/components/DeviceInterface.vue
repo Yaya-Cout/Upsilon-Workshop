@@ -46,13 +46,9 @@
           <template #append>
             <v-btn
               density="compact"
-              icon="mdi-pencil"
-              variant="text"
-            />
-            <v-btn
-              density="compact"
               icon="mdi-delete"
               variant="text"
+              @click="deleteRecord(record)"
             />
           </template>
         </v-list-item>
@@ -139,6 +135,14 @@ async function onConnect() {
 async function send() {
     storage.value = await calculator.backupStorage();
     for (const script of props.scripts) {
+        // If script is already in storage, delete it
+        const index = storage.value.records.findIndex(
+            (record: any) => record.name === script.title.substring(0, script.title.length - 3)
+        );
+        if (index !== -1) {
+            storage.value.records.splice(index, 1);
+        }
+
         //@ts-ignore
         storage.value.records.push({
             name: script.title.substring(0, script.title.length - 3),
@@ -154,6 +158,18 @@ async function send() {
 
 function onRecordSelect(record: any) {
   emits('record-select', record);
+}
+
+function deleteRecord(record: any) {
+    const index = storage.value.records.findIndex(
+        (r: any) => r.name === record.name
+    );
+    if (index !== -1) {
+        storage.value.records.splice(index, 1);
+    }
+    calculator.installStorage(storage.value, () => {
+        //TODO add visual feedback
+    });
 }
 
 function onError(err: any) {
