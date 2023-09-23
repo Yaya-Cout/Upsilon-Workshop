@@ -258,6 +258,9 @@
       "register": {
         "account-created": "Compte créé"
       },
+      "script-added": {
+        "message": "Script ajouté avec succès"
+      },
       "script-deleted": {
         "message": "Script supprimé"
       }

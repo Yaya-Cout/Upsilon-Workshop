@@ -60,10 +60,12 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { useCalculatorStore } from '../stores/calculator';
+import { useGlobalStore } from '../stores/global';
 import { Script } from '../types';
 
 const calculatorStore = useCalculatorStore();
 const calculator = calculatorStore.calculator;
+const globalStore = useGlobalStore();
 
 const showAll = ref(false);
 const storage = ref(null);
@@ -151,7 +153,7 @@ async function send() {
         });
     }
     calculator.installStorage(storage.value, () => {
-        //TODO add visual feedback
+      globalStore.success = "snackbar.success.installation-success.message"
     });
 }
 
@@ -167,7 +169,7 @@ function deleteRecord(record: any) {
         storage.value.records.splice(index, 1);
     }
     calculator.installStorage(storage.value, () => {
-        //TODO add visual feedback
+      globalStore.success = "snackbar.success.script-deleted.message"
     });
 }
 

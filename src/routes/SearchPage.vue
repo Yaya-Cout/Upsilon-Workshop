@@ -28,7 +28,7 @@
           <!-- TODO: Add menu to select and search tags -->
         </v-row>
 
-        <v-row>
+        <v-row class="mx-2 my-0 full-width">
           <ProjectPreview
             v-for="project in projects.slice(0, 50)"
             :key="project.uuid"
@@ -166,5 +166,9 @@ const toogleTag = (tag: Tag) => {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+}
+
+.full-width {
+  width: 100%;
 }
 </style>

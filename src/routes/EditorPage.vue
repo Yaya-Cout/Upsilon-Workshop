@@ -138,6 +138,7 @@ const onRecordSelect = (record: any) => {
       title: record.name + '.py',
       content: record.code,
     });
+    globalStore.success = 'snackbar.success.script-added.message';
   }
 };
 
