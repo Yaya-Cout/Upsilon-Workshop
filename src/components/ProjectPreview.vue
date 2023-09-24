@@ -1,18 +1,19 @@
 <template>
   <!-- We use a div to avoid the v-card being a direct child of the v-row and
         being affected by other v-cards in the same row -->
-  <div>
+  <div class="mb-2">
     <v-card
-      class="ma-2 rounded-lg project-preview"
+      class="ma-2 rounded-lg project-preview full-height"
       elevation="4"
       :to="'/view/' + project.uuid"
     >
       <v-skeleton-loader
         :loading="!project._loaded"
         type="article"
+        class="full-height"
       >
-        <div class="flex justify-between project-preview">
-          <div class="elevation-10">
+        <div class="flex justify-between project-preview full-height">
+          <div class="elevation-10 full-height">
             <v-card-title
               class="pb-0"
             >
@@ -57,7 +58,7 @@
               <v-chip
                 v-for="tag in tagsNames"
                 :key="tag"
-                class="mx-1"
+                class="mx-1 my-1"
               >
                 {{ tag }}
               </v-chip>
@@ -158,5 +159,9 @@ const percentage = computed(() => {
 .project-preview {
   min-width: 300px;
   max-width: 0px;
+}
+
+.full-height {
+  height: 100%;
 }
 </style>
