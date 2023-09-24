@@ -39,6 +39,14 @@
           </v-btn>
         </v-container>
       </v-form>
+      <v-btn
+        block
+        class="mt-2"
+        color="secondary"
+        to="/register"
+      >
+        {{ $t('login.go-register-page') }}
+      </v-btn>
     </v-card>
     <v-snackbar
       v-model="snackbar"
