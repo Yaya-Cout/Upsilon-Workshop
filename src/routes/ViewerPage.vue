@@ -7,7 +7,10 @@
           <LongDescription :project="project" />
         </v-col>
         <v-col>
-          <SimulatorView :scripts="project.files" />
+          <SimulatorView
+            ref="simulatorObject"
+            :scripts="project.files"
+          />
         </v-col>
       </v-row>
     </v-container>
@@ -31,6 +34,7 @@ const $router = useRouter();
 
 const project = ref(useAPIStore().api.EMPTY_PROJECT as Project);
 const uuid = ref($route.params.uuid as string);
+const simulatorObject = ref<InstanceType<typeof SimulatorView> | null>(null);
 
 onMounted(async () => {
   globalStore.progress = true;
@@ -42,8 +46,17 @@ onMounted(async () => {
     // Redirect to 404 page
     $router.push({ name: 'notfound' });
   }
+  reloadSimulator();
   globalStore.progress = false;
 });
+
+const reloadSimulator = () => {
+  if (simulatorObject.value) {
+    simulatorObject.value.send();
+  } else {
+    console.error('Simulator object is null');
+  }
+};
 </script>
 
 <style scoped></style>

@@ -1,18 +1,19 @@
 <template>
   <!-- We use a div to avoid the v-card being a direct child of the v-row and
         being affected by other v-cards in the same row -->
-  <div>
+  <div class="mb-2">
     <v-card
-      class="ma-2 rounded-lg project-preview"
+      class="ma-2 rounded-lg project-preview full-height"
       elevation="4"
       :to="'/view/' + project.uuid"
     >
       <v-skeleton-loader
         :loading="!project._loaded"
         type="article"
+        class="full-height"
       >
-        <div class="flex justify-between project-preview">
-          <div class="elevation-10">
+        <div class="flex justify-between project-preview full-height">
+          <div class="elevation-10 full-height">
             <v-card-title
               class="pb-0"
             >
@@ -46,18 +47,16 @@
               <v-icon small>
                 mdi-content-save
               </v-icon>
-              {{ human_readable_weight }}
-              <v-tooltip
-                activator="parent"
-              >
-                {{ hover_weight }}
-              </v-tooltip>
+              <SizeView
+                :project="project"
+                class="size-view"
+              />
             </v-card-subtitle>
             <v-card-item>
               <v-chip
                 v-for="tag in tagsNames"
                 :key="tag"
-                class="mx-1"
+                class="mx-1 my-1"
               >
                 {{ tag.replace('%20',' ') }}
               </v-chip>
@@ -70,16 +69,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useCalculatorStore } from '../stores/calculator';
+import { ref, watch } from 'vue';
 import { Project } from '../types';
 import { VSkeletonLoader } from 'vuetify/lib/labs/components.mjs';
+import SizeView from './viewer/SizeView.vue';
 
 const tagsNames = ref(["test"] as string[]);
-
-const { locale } = useI18n();
-const calculatorStore = useCalculatorStore();
 
 const props = defineProps({
   project: {
@@ -95,68 +90,19 @@ watch(props.project, async (project: Project) => {
   }
   tagsNames.value = NewTagsNames;
 }, { immediate: true });
-
-const weight = computed(() => {
-  let weight = 0;
-  for (const file in props.project.files) {
-    weight += props.project.files[file].title.length;
-    weight += props.project.files[file].content.length;
-  }
-  return weight;
-});
-
-const human_readable_weight = computed(() => {
-  let human_readable_weight = "";
-  if (weight.value < 1000) {
-    human_readable_weight = weight.value + " ";
-  } else if (weight.value < 1000000) {
-    human_readable_weight = (weight.value / 1000).toFixed(2) + " K";
-  }
-  if (locale.value == "fr") {
-    human_readable_weight += "o";
-  } else {
-    human_readable_weight += "B";
-  }
-
-  if (percentage.value != -1) {
-    human_readable_weight += " (" + percentage.value + "%)";
-  }
-
-  return human_readable_weight;
-});
-
-const hover_weight = computed(() => {
-  let hover_weight = "";
-  if (weight.value < 1000) {
-    hover_weight = weight.value + " ";
-  } else if (weight.value < 1000000) {
-    hover_weight = (weight.value / 1000).toFixed(2) + " K";
-  }
-  if (locale.value == "fr") {
-    hover_weight = hover_weight + " octets";
-  } else {
-    hover_weight = hover_weight + " bytes";
-  }
-
-  if (percentage.value != -1) {
-    hover_weight = hover_weight + " (" + percentage.value + "%)";
-  }
-
-  return hover_weight;
-});
-
-const percentage = computed(() => {
-  if (calculatorStore.storageSize == -1) {
-    return -1;
-  } else {
-    return Math.round(weight.value / calculatorStore.storageSize * 100);
-  }
-});
 </script>
 
 <style scoped>
 .project-preview {
   min-width: 300px;
   max-width: 0px;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.size-view {
+  margin-left: 0.25rem;
 }
 </style>
