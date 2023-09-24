@@ -44,7 +44,7 @@
             </v-card-subtitle>
             <v-card-subtitle>
               <v-icon small>
-                mdi-harddisk
+                mdi-content-save
               </v-icon>
               {{ human_readable_weight }}
               <v-tooltip
@@ -70,18 +70,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, watchEffect, computed } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useCalculatorStore } from '../stores/calculator';
 import { Project } from '../types';
 import { VSkeletonLoader } from 'vuetify/lib/labs/components.mjs';
 
 const tagsNames = ref(["test"] as string[]);
-const percentage = ref(-1);
 
 const { locale } = useI18n();
 const calculatorStore = useCalculatorStore();
-const calculator = calculatorStore.calculator;
 
 const props = defineProps({
   project: {
@@ -147,16 +145,13 @@ const hover_weight = computed(() => {
   return hover_weight;
 });
 
-watchEffect(async () => {
-  if (calculatorStore.connected) {
-    let platformInfo = await calculator.getPlatformInfo();
-    let totalSize = platformInfo.storage.size;
-    percentage.value = Math.round(weight.value / totalSize * 100);
+const percentage = computed(() => {
+  if (calculatorStore.storageSize == -1) {
+    return -1;
   } else {
-    percentage.value = -1;
+    return Math.round(weight.value / calculatorStore.storageSize * 100);
   }
 });
-
 </script>
 
 <style scoped>

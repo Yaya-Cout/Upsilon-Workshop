@@ -4,22 +4,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { watchEffect, onMounted } from 'vue';
 import { useCalculatorStore } from '../../stores/calculator';
 
 const calculatorStore = useCalculatorStore();
 
-const connected = computed({
-    get() {
-        return calculatorStore.connected;
-    },
-    set(value: boolean) {
-        calculatorStore.connected = value;
-    },
+watchEffect(async () => {
+    if (calculatorStore.connected) {
+    let platformInfo = await calculatorStore.calculator.getPlatformInfo();
+    calculatorStore.storageSize = platformInfo.storage.size;
+  } else {
+    calculatorStore.storageSize = -1;
+  }
 });
 
 const connectedHandler = async () => {
-    connected.value = true;
+    calculatorStore.connected = true;
     console.log("Connected");
 };
 
@@ -28,7 +28,7 @@ onMounted(() => {
         calculatorStore.calculator.autoConnect(connectedHandler);
         navigator.usb.addEventListener("disconnect", function (e: any) {
             calculatorStore.calculator.onUnexpectedDisconnect(e, function () {
-                connected.value = false;
+                calculatorStore.connected = false;
                 calculatorStore.calculator.autoConnect(connectedHandler);
             });
         });
