@@ -42,6 +42,17 @@
                 {{ project.short_description }}
               </v-tooltip>
             </v-card-subtitle>
+            <v-card-subtitle>
+              <v-icon small>
+                mdi-harddisk
+              </v-icon>
+              {{ human_readable_weight }}
+              <v-tooltip
+                activator="parent"
+              >
+                {{ hover_weight }}
+              </v-tooltip>
+            </v-card-subtitle>
             <v-card-item>
               <v-chip
                 v-for="tag in tagsNames"
@@ -59,11 +70,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, watchEffect, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useCalculatorStore } from '../stores/calculator';
 import { Project } from '../types';
 import { VSkeletonLoader } from 'vuetify/lib/labs/components.mjs';
 
 const tagsNames = ref(["test"] as string[]);
+const percentage = ref(-1);
+
+const { locale } = useI18n();
+const calculatorStore = useCalculatorStore();
+const calculator = calculatorStore.calculator;
 
 const props = defineProps({
   project: {
@@ -79,6 +97,66 @@ watch(props.project, async (project: Project) => {
   }
   tagsNames.value = NewTagsNames;
 }, { immediate: true });
+
+const weight = computed(() => {
+  let weight = 0;
+  for (const file in props.project.files) {
+    weight += props.project.files[file].title.length;
+    weight += props.project.files[file].content.length;
+  }
+  return weight;
+});
+
+const human_readable_weight = computed(() => {
+  let human_readable_weight = "";
+  if (weight.value < 1000) {
+    human_readable_weight = weight.value + " ";
+  } else if (weight.value < 1000000) {
+    human_readable_weight = (weight.value / 1000).toFixed(2) + " K";
+  }
+  if (locale.value == "fr") {
+    human_readable_weight += "o";
+  } else {
+    human_readable_weight += "B";
+  }
+
+  if (percentage.value != -1) {
+    human_readable_weight += " (" + percentage.value + "%)";
+  }
+
+  return human_readable_weight;
+});
+
+const hover_weight = computed(() => {
+  let hover_weight = "";
+  if (weight.value < 1000) {
+    hover_weight = weight.value + " ";
+  } else if (weight.value < 1000000) {
+    hover_weight = (weight.value / 1000).toFixed(2) + " K";
+  }
+  if (locale.value == "fr") {
+    hover_weight = hover_weight + " octets";
+  } else {
+    hover_weight = hover_weight + " bytes";
+  }
+
+  if (percentage.value != -1) {
+    hover_weight = hover_weight + " (" + percentage.value + "%)";
+  }
+
+  return hover_weight;
+});
+
+watchEffect(async () => {
+  if (calculatorStore.connected) {
+    let platformInfo = await calculator.getPlatformInfo();
+    let totalSize = platformInfo.storage.size;
+    percentage.value = Math.round(weight.value / totalSize * 100);
+  } else {
+    percentage.value = -1;
+  }
+});
+
 </script>
 
 <style scoped>
