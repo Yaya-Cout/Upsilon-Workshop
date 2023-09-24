@@ -124,6 +124,26 @@
                 </v-tooltip>
               </v-list-item-subtitle>
             </v-list-item>
+            <v-list-item
+              density="compact"
+              prepend-icon="mdi-content-save"
+            >
+              <v-skeleton-loader
+                v-if="!project._loaded"
+                type="text"
+                density="compact"
+                height="24px"
+              /><v-list-item-subtitle
+                v-else
+                class="fit-content"
+              >
+                <div>
+                  <SizeView
+                    :project="project"
+                  />
+                </div>
+              </v-list-item-subtitle>
+            </v-list-item>
           </v-col>
         </v-row>
       </v-card-item>
@@ -169,6 +189,7 @@ import { VSkeletonLoader } from 'vuetify/lib/labs/components.mjs';
 import UserPreview from '../UserPreview.vue';
 import UploadProject from '../UploadProject.vue';
 import DeleteProject from '../DeleteProject.vue';
+import SizeView from './SizeView.vue';
 const { locale } = useI18n();
 
 const api = useAPIStore().api;
