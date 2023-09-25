@@ -286,7 +286,7 @@ watch(connected, async (connected) => {
 }, { immediate: true });
 </script>
 
-<style>
+<style scoped>
 #calculator-page {
   display: flex;
   vertical-align: middle;

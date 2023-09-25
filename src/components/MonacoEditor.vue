@@ -42,9 +42,9 @@
           {{ $t('editor.monaco-editor.run-tooltip') }}
         </v-tooltip>
       </v-btn>
-      <!-- TODO: Save button should be disabled when there are no changes -->
-      <!-- TODO: Save button should call run before saving -->
-      <SaveProject
+    <!-- TODO: Save button should be disabled when there are no changes -->
+    <!-- TODO: Save button should call run before saving -->
+    <SaveProject
         v-if="hasWriteAccess"
         :project="project"
       >
@@ -264,7 +264,7 @@ const addScript = (name: string) => {
 };
 </script>
 
-<style>
+<style scoped>
 .monaco-editor-wrapper {
   /* height: 100%; */
   height: calc(100% - 48px);
