@@ -39,14 +39,10 @@
           </v-btn>
         </v-container>
       </v-form>
-      <v-btn
-        block
-        class="mt-2"
-        color="secondary"
-        to="/register"
-      >
-        {{ $t('login.go-register-page') }}
-      </v-btn>
+      <a
+        href="/register" 
+        style="display: inline-block; width: 100%; text-align: center;"
+      >{{ $t('login.go-register-page') }}</a>
     </v-card>
     <v-snackbar
       v-model="snackbar"

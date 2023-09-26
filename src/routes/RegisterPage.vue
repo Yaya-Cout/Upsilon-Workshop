@@ -55,14 +55,10 @@
           </v-btn>
         </v-container>
       </v-form>
-      <v-btn
-        block
-        class="mt-2"
-        color="secondary"
-        to="/login"
-      >
-        {{ $t('register.go-login-page') }}
-      </v-btn>
+      <a
+        href="/login" 
+        style="display: inline-block; width: 100%; text-align: center;"
+      >{{ $t('register.go-login-page') }}</a>
     </v-card>
   </div>
 </template>
