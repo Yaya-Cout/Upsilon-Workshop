@@ -264,7 +264,7 @@ const addScript = (name: string) => {
 };
 </script>
 
-<style>
+<style scoped>
 .monaco-editor-wrapper {
   /* height: 100%; */
   height: calc(100% - 48px);

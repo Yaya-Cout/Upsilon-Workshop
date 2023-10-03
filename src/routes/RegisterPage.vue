@@ -133,7 +133,7 @@ const registrationFailed = (response: any) => {
 };
 </script>
 
-<style>
+<style scoped>
 #register-page {
   display: flex;
   vertical-align: middle;

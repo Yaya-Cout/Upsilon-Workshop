@@ -58,7 +58,7 @@
                 :key="tag"
                 class="mx-1 my-1"
               >
-                {{ tag.replace('%20',' ') }}
+                {{ tag.replace(/%20/g,' ') }}
               </v-chip>
             </v-card-item>
           </div>
