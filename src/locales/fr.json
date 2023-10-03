@@ -157,7 +157,8 @@
     },
     "submit": "Se connecter",
     "title": "Connexion",
-    "username": "Nom d'utilisateur"
+    "username": "Nom d'utilisateur",
+    "go-register-page": "Ou créer un compte"
   },
   "navbar": {
     "calculator": "Calculatrice",
@@ -184,7 +185,8 @@
     "username-invalid-error": "Le nom d'utilisateur est invalide",
     "username-pattern": "Le nom d'utilisateur ne peut contenir que les lettres, des nombres, {'@'}, + et -",
     "username-required-error": "Un nom d'utilisateur est requis",
-    "username-too-long-error": "Le nom d'utilisateur est trop long"
+    "username-too-long-error": "Le nom d'utilisateur est trop long",
+    "go-login-page": "Ou se connecter"
   },
   "search": {
     "load-more": "Charger plus",
