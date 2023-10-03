@@ -55,10 +55,12 @@
           </v-btn>
         </v-container>
       </v-form>
-      <a
-        href="/login" 
-        style="display: inline-block; width: 100%; text-align: center;"
-      >{{ $t('register.go-login-page') }}</a>
+      <router-link
+        class="switch-page-login-register"
+        to="/login" 
+      >
+        {{ $t('register.go-login-page') }}
+      </router-link>
     </v-card>
   </div>
 </template>
@@ -140,5 +142,11 @@ const registrationFailed = (response: any) => {
 
 #register-page>div {
   margin: auto;
+}
+
+.switch-page-login-register {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
 }
 </style>
