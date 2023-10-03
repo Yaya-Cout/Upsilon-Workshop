@@ -17,7 +17,7 @@ import MainSnackbar from './components/snackbars/MainSnackbar.vue';
 import AppBar from './components/appBar/AppBar.vue';
 </script>
 
-<style>
+<style scoped>
 .v-main {
   backdrop-filter: blur(6px);
   max-width: 100%;

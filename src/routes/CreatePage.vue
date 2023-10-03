@@ -162,7 +162,7 @@ const create = async () => {
 };
 </script>
 
-<style>
+<style scoped>
 #create-page {
   display: flex;
   vertical-align: middle;

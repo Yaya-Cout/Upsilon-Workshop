@@ -351,7 +351,7 @@ export default class API extends EventTarget {
             // Convert the tags
             for (const tag of project["tags"]) {
                 projects[projects.length - 1].tags.push(this.getTag(tag.split("/").at(-2)))
-                projects[projects.length - 1].tags_raw.push(tag.split("/").slice(-2)[0].replace("%20", " "))
+                projects[projects.length - 1].tags_raw.push(tag.split("/").slice(-2)[0].replace(/%20/g, " "))
             }
 
             // Convert the collaborators
@@ -426,7 +426,7 @@ export default class API extends EventTarget {
         const tags: Tag[] = []
         for (const tag of response.results) {
             tags.push({
-                name: tag["name"].replace("%20", " "),
+                name: tag["name"].replace(/%20/g, " "),
                 description: tag["description"],
                 projects: [],
                 _loaded: true,
@@ -556,7 +556,7 @@ export default class API extends EventTarget {
         const tags: string[] = []
         for (const tag of project.tags_raw) {
             // Add the root URL/tags/name to the list of tags
-            tags.push(this.BASE_URL + "tags/" + tag.replace(" ", "%20") + "/")
+            tags.push(this.BASE_URL + "tags/" + tag.replace(/ /g, "%20") + "/")
         }
 
         // Update the project
@@ -591,7 +591,7 @@ export default class API extends EventTarget {
         const tags: string[] = []
         for (const tag of project.tags_raw) {
             // Add the root URL/tags/name to the list of tags
-            tags.push(this.BASE_URL + "tags/" + tag.replace(" ", "%20") + "/")
+            tags.push(this.BASE_URL + "tags/" + tag.replace(/ /g, "%20") + "/")
         }
 
         // Update the project
@@ -877,7 +877,7 @@ export default class API extends EventTarget {
         // Convert the tags
         for (const tag of response["tags"]) {
             project.tags.push(this.getTag(tag.split("/").at(-2)))
-            project.tags_raw.push(tag.split("/").at(-2).replace("%20", " "))
+            project.tags_raw.push(tag.split("/").at(-2).replace(/%20/g, " "))
         }
 
         // Convert the collaborators
@@ -895,7 +895,7 @@ export default class API extends EventTarget {
      * @throws {Error} - If the tag does not exist
      */
     getTag(name: string): Tag {
-        return this.getLazy("_getTag", "name", name.replace("%20", " "))
+        return this.getLazy("_getTag", "name", name.replace(/%20/g, " "))
     }
 
     /*
@@ -905,7 +905,7 @@ export default class API extends EventTarget {
      * @throws {Error} - If the tag does not exist
      */
     async _getTag(name: string): Promise<Tag> {
-        const response = await this._request("tags/" + name.replace(" ", "%20") + "/", "GET", {}, 200, false)
+        const response = await this._request("tags/" + name.replace(/ /g, "%20") + "/", "GET", {}, 200, false)
 
         // Convert the response to a tag
         const tag: Tag = {
