@@ -58,7 +58,7 @@
             <v-window-item value="simulator">
               <SimulatorView
                 ref="simulatorObject"
-                :scripts="project.files"
+                :project="project"
               />
             </v-window-item>
 

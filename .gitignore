@@ -26,3 +26,5 @@ dist-ssr
 
 data.json
 public/simulator/epsilon.js
+public/simulator/epsilon-casworks.js
+public/simulator/xcas-ups.js

@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- This is not the regular simulator, it is the version made to work with the numworks workshop. -->
+<!-- If used in a different context, unexpected behaviour may occur. -->
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Upsilon</title>
+    <style>
+        .calculator {
+            position: relative;
+        }
+        
+        .calculator-aspect-ratio {
+            padding-bottom: 191.38%;
+        }
+        
+        .calculator canvas,
+        .calculator .loader {
+            position: absolute;
+            left: 16.55%;
+            top: 8.6%;
+            width: 66.9%;
+            height: 26.22%;
+        }
+        
+        .calculator span {
+            position: absolute;
+            display: block;
+            border-radius: 999px;
+            cursor: pointer;
+        }
+        
+        .calculator span:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        .calculator span:active {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .calculator span[data-key='0'] {
+            left: 11.47%;
+            top: 44.28%;
+            width: 12.07%;
+            height: 3.92%;
+        }
+        
+        .calculator span[data-key='1'] {
+            left: 19.91%;
+            top: 39.91%;
+            width: 7.5%;
+            height: 6.31%;
+        }
+        
+        .calculator span[data-key='2'] {
+            left: 19.91%;
+            top: 46.22%;
+            width: 7.5%;
+            height: 6.31%;
+        }
+        
+        .calculator span[data-key='3'] {
+            left: 23.71%;
+            top: 44.28%;
+            width: 12.07%;
+            height: 3.92%;
+        }
+        
+        .calculator span[data-key='4'] {
+            left: 64.22%;
+            top: 43.38%;
+            width: 11.12%;
+            height: 5.81%;
+        }
+        
+        .calculator span[data-key='5'] {
+            left: 77.41%;
+            top: 43.38%;
+            width: 11.12%;
+            height: 5.81%;
+        }
+        
+        .calculator span[data-key='6'] {
+            left: 43.28%;
+            top: 40.9%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='7'] {
+            left: 43.28%;
+            top: 47.03%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='12'] {
+            left: 11.47%;
+            top: 54.5%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+        
+        .calculator span[data-key='13'] {
+            left: 24.66%;
+            top: 54.5%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+        
+        .calculator span[data-key='14'] {
+            left: 37.84%;
+            top: 54.5%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+
+        .calculator span[data-key='15'] {
+            left: 51.03%;
+            top: 54.5%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+
+        .calculator span[data-key='16'] {
+            left: 64.22%;
+            top: 54.5%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+        
+        .calculator span[data-key='17'] {
+            left: 77.41%;
+            top: 54.5%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+        
+        .calculator span[data-key='18'] {
+            left: 11.47%;
+            top: 60%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+        
+        .calculator span[data-key='19'] {
+            left: 24.66%;
+            top: 60%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+        
+        .calculator span[data-key='20'] {
+            left: 37.84%;
+            top: 60%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+        
+        .calculator span[data-key='21'] {
+            left: 51.03%;
+            top: 60%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+        
+        .calculator span[data-key='22'] {
+            left: 64.22%;
+            top: 60%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+        
+        .calculator span[data-key='23'] {
+            left: 77.41%;
+            top: 60%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+        
+        .calculator span[data-key='24'] {
+            left: 11.47%;
+            top: 65.54%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+        
+        .calculator span[data-key='25'] {
+            left: 24.66%;
+            top: 65.54%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+        
+        .calculator span[data-key='26'] {
+            left: 37.84%;
+            top: 65.54%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+        
+        .calculator span[data-key='27'] {
+            left: 51.03%;
+            top: 65.54%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+
+        .calculator span[data-key='28'] {
+            left: 64.22%;
+            top: 65.54%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+
+        .calculator span[data-key='29'] {
+            left: 77.41%;
+            top: 65.54%;
+            width: 11.12%;
+            height: 3.92%;
+        }
+        
+        .calculator span[data-key='30'] {
+            left: 11.47%;
+            top: 71.08%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='31'] {
+            left: 27.33%;
+            top: 71.08%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='32'] {
+            left: 43.28%;
+            top: 71.08%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='33'] {
+            left: 59.14%;
+            top: 71.08%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='34'] {
+            left: 75.09%;
+            top: 71.08%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='36'] {
+            left: 11.47%;
+            top: 77.25%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='37'] {
+            left: 27.33%;
+            top: 77.25%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='38'] {
+            left: 43.28%;
+            top: 77.25%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='39'] {
+            left: 59.14%;
+            top: 77.25%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='40'] {
+            left: 75.09%;
+            top: 77.25%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='42'] {
+            left: 11.47%;
+            top: 83.38%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='43'] {
+            left: 27.33%;
+            top: 83.38%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='44'] {
+            left: 43.28%;
+            top: 83.38%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='45'] {
+            left: 59.14%;
+            top: 83.38%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='46'] {
+            left: 75.09%;
+            top: 83.38%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='48'] {
+            left: 11.47%;
+            top: 89.55%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='49'] {
+            left: 27.33%;
+            top: 89.55%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='50'] {
+            left: 43.28%;
+            top: 89.55%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='51'] {
+            left: 59.14%;
+            top: 89.55%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator span[data-key='52'] {
+            left: 75.09%;
+            top: 89.55%;
+            width: 13.45%;
+            height: 4.55%;
+        }
+        
+        .calculator-mirror canvas {
+            image-rendering: -moz-crisp-edges;
+            image-rendering: pixelated;
+            -ms-interpolation-mode: nearest-neighbor;
+        }
+        
+        .calculator.loading canvas {
+            display: none;
+        }
+        
+        .calculator .loader {
+            display: none;
+        }
+        
+        .calculator.loading .loader {
+            display: block;
+            background-color: #000;
+            position: absolute;
+        }
+        
+        .calculator .loader span {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            top: 50%;
+            margin-top: -40px;
+            left: 50%;
+            margin-left: -40px;
+        }
+        
+        @keyframes calculator-loader-rotation {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .calculator .loader span:after {
+            content: ' ';
+            display: block;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border-radius: 50%;
+            border: 6px solid #fff;
+            border-color: #fff transparent #fff transparent;
+            animation: calculator-loader-rotation 1.2s linear infinite;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        
+        .col-fullscreen {
+            display: none;
+            width: 60%;
+            float: left;
+        }
+        
+        .col-fullscreen canvas {
+            margin-top: 7%;
+            width: 100%;
+        }
+        
+        body.fullscreen .col-fullscreen {
+            display: block;
+        }
+        
+        body.fullscreen .col-calculator {
+            width: 35%;
+            float: left;
+        }
+        
+        a.action {
+            display: block;
+            width: 4%;
+            padding: 1.5% 3%;
+            border: 1px solid black;
+            border-radius: 100px;
+            cursor: pointer;
+            opacity: 0.65;
+        }
+        
+        a.action:hover {
+            opacity: 1;
+            background-color: rgba(0, 0, 0, 0.125);
+        }
+        
+        a.action svg {
+            display: block;
+        }
+        
+        .calculator-container {
+            margin: 0 auto;
+            position: relative;
+            display: inline-block;
+            text-align: left;
+        }
+        
+        .calculator-container>img {
+            max-height: 92vh;
+            max-width: 100%;
+            display: block;
+        }
+        
+        .calculator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .calculator-container .actions {
+            position: absolute;
+            top: 94vh;
+            text-align: center;
+            left: 0;
+            right: 0;
+            margin-left: 20px;
+        }
+        
+        .calculator-container .actions a {
+            display: inline-block;
+            margin-right: 10px;
+            background: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-calculator">
+            <div class="calculator-container">
+                <img src="background_simulator_light.webp" alt="NumWorks Calculator" />
+                <div class="calculator loading">
+                    <div class="loader"><span></span></div>
+                    <canvas tabindex="1"></canvas>
+                    <span data-key="0"></span>
+                    <span data-key="1"></span>
+                    <span data-key="2"></span>
+                    <span data-key="3"></span>
+                    <span data-key="4"></span>
+                    <span data-key="5"></span>
+                    <span data-key="6"></span>
+                    <span data-key="7"></span>
+                    <span data-key="12"></span>
+                    <span data-key="13"></span>
+                    <span data-key="14"></span>
+                    <span data-key="15"></span>
+                    <span data-key="16"></span>
+                    <span data-key="17"></span>
+                    <span data-key="18"></span>
+                    <span data-key="19"></span>
+                    <span data-key="20"></span>
+                    <span data-key="21"></span>
+                    <span data-key="22"></span>
+                    <span data-key="23"></span>
+                    <span data-key="24"></span>
+                    <span data-key="25"></span>
+                    <span data-key="26"></span>
+                    <span data-key="27"></span>
+                    <span data-key="28"></span>
+                    <span data-key="29"></span>
+                    <span data-key="30"></span>
+                    <span data-key="31"></span>
+                    <span data-key="32"></span>
+                    <span data-key="33"></span>
+                    <span data-key="34"></span>
+                    <span data-key="36"></span>
+                    <span data-key="37"></span>
+                    <span data-key="38"></span>
+                    <span data-key="39"></span>
+                    <span data-key="40"></span>
+                    <span data-key="42"></span>
+                    <span data-key="43"></span>
+                    <span data-key="44"></span>
+                    <span data-key="45"></span>
+                    <span data-key="46"></span>
+                    <span data-key="48"></span>
+                    <span data-key="49"></span>
+                    <span data-key="50"></span>
+                    <span data-key="51"></span>
+                    <span data-key="52"></span>
+                </div>
+                <div class="actions">
+                    <a id="action-fullscreen" class="action">
+                        <svg viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g
+                                    stroke="none"
+                                    stroke-width="1"
+                                    fill="none"
+                                    fill-rule="evenodd"
+                                >
+                                    <g fill="#434343">
+                                        <path
+                                            d="M5.075,6.95 L6.918,5.088 L3.938,2.062 L5.955,0.018 L0.052,0.018 L0.052,6.004 L2.098,3.928 L5.075,6.95 Z"
+                                            class="si-glyph-fill"
+                                        ></path>
+                                        <path
+                                            d="M16.0034788,9.916 L13.832,12.013 L10.799,8.96 L8.918,10.841 L11.957,13.897 L9.961,15.9813842 L16.0034788,15.9813842 L16.0034788,9.916 Z"
+                                        ></path>
+                                    </g>
+                                </g>
+                            </svg>
+                    </a>
+                    <a id="action-screenshot" class="action">
+                        <svg viewBox="0 1.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <title>871</title>
+                                <defs></defs>
+                                <g
+                                    stroke="none"
+                                    stroke-width="1"
+                                    fill="none"
+                                    fill-rule="evenodd"
+                                >
+                                    <g
+                                        transform="translate(0.995000, 2.980000)"
+                                        fill="#434343"
+                                    >
+                                        <circle
+                                            cx="7.958"
+                                            cy="6.958"
+                                            r="2.958"
+                                            class="si-glyph-fill"
+                                        ></circle>
+                                        <path
+                                            d="M14.666,2.042 L10.953,2.042 L9.937,0.031 L6,0.031 L5,2.042 L1.333,2.042 C0.597,2.042 0,2.639 0,3.375 L0,10.625 C0,11.361 0.597,11.959 1.333,11.959 L14.666,11.959 C15.402,11.959 16,11.361 16,10.625 L16,3.375 C16,2.639 15.402,2.042 14.666,2.042 L14.666,2.042 Z M6.953,0.969 L9.047,0.969 L9.047,2.031 L6.953,2.031 L6.953,0.969 L6.953,0.969 Z M8.002,11.033 C5.764,11.033 3.947,9.221 3.947,6.985 C3.947,4.749 5.763,2.937 8.002,2.937 C10.242,2.937 12.057,4.749 12.057,6.985 C12.057,9.221 10.242,11.033 8.002,11.033 L8.002,11.033 Z M14,4.031 L11.953,4.031 L11.953,2.969 L14,2.969 L14,4.031 L14,4.031 Z"
+                                            class="si-glyph-fill"
+                                        ></path>
+                                    </g>
+                                </g>
+                            </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-fullscreen calculator-mirror">
+            <canvas width="320" height="240"></canvas>
+        </div>
+    </div>
+    <script>
+        // Compatibility with Parisse's simulator
+        let UI = {
+            save: function() { return false },
+            Datestart: Date.now(),
+            ready: function() { return false },
+            detectmob: function() { return false },
+            loadfile: function() { },
+        }
+        // Prevent the simulator from asking to restore the previous session
+        function confirm() { return true }
+
+        function stop() {
+            if (emModule)
+                if (emModule.asm)
+                    emModule._IonSimulatorEventsPushEvent(217);
+                else
+                    console.warn('IonSimulatorEventsPushEvent not found');
+            else
+                console.warn('emModule not found');
+            // We need to wait for the simulator to be stopped (using the
+            delete emModule;
+            emModule = undefined;
+        }
+
+        function start(scripts = []) {
+            emModule = {};
+            var calculatorElement =
+                emModule.element || document.querySelector('.calculator');
+            var mainCanvas = calculatorElement.querySelector('canvas');
+            if (typeof emModule.mirrorCanvas === 'undefined') {
+                emModule.mirrorCanvas = document.querySelector(
+                    '.calculator-mirror canvas'
+                );
+            }
+            var mirrorCanvasContext = emModule.mirrorCanvas ?
+                emModule.mirrorCanvas.getContext('2d') :
+                null;
+            var defaultModule = {
+                canvas: mainCanvas,
+                arguments: [],
+                onEpsilonIdle: function() {
+                    calculatorElement.classList.remove('loading');
+                },
+                downloadScreenshot: function() {
+                    this._IonDisplayForceRefresh();
+                    var link = document.createElement('a');
+                    link.download = 'screenshot.png';
+                    link.href = mainCanvas
+                        .toDataURL('image/png')
+                        .replace('image/png', 'image/octet-stream');
+                    link.click();
+                },
+            };
+            if (mirrorCanvasContext) {
+                defaultModule.onDisplayRefresh = function() {
+                    mirrorCanvasContext.drawImage(mainCanvas, 0, 0);
+                };
+            }
+            for (var attrname in defaultModule) {
+                if (!emModule.hasOwnProperty(attrname)) {
+                    emModule[attrname] = defaultModule[attrname];
+                }
+            }
+
+            emModule.arguments.push('--language');
+            emModule.arguments.push('en');
+            for (script of scripts) {
+                emModule.arguments.push('--code-script');
+                emModule.arguments.push(script.name + ':' + script.content);
+            }
+            emModule.arguments.push('--code-lock-on-console');
+            emModule.arguments.push('--open-app');
+            emModule.arguments.push('code');
+
+            Epsilon(emModule);
+
+            console.log('Epsilon started');
+
+            function eventHandler(keyHandler) {
+                return function(ev) {
+                    var key = this.getAttribute('data-key');
+                    keyHandler(key);
+                    ev.preventDefault();
+                };
+            }
+            var downHandler = eventHandler(
+                emModule._IonSimulatorKeyboardKeyDown
+            );
+            var upHandler = eventHandler(
+                emModule._IonSimulatorKeyboardKeyUp
+            );
+            calculatorElement
+                .querySelectorAll('span')
+                .forEach(function(span) {
+                    ['touchstart', 'mousedown'].forEach(function(type) {
+                        span.addEventListener(type, downHandler);
+                    });
+                    ['touchend', 'mouseup'].forEach(function(type) {
+                        span.addEventListener(type, upHandler);
+                    });
+                });
+        }
+    </script>
+    <script>
+        var emModule = undefined;
+        var loaded = false;
+        async function getDownloadURL(jsonUrl) {
+            return 'epsilon-casworks.js';
+            return fetch(jsonUrl).then(async(response) => {
+                if (response.status === 404) {
+                    const err = new Error();
+                    err.message = "404 - Couldn't find resource";
+                    throw err;
+                }
+                const json = await response.json();
+                return jsonUrl + '?alt=media&token=' + json.downloadTokens;
+            });
+        }
+
+        // Communication with the host window to execute scripts
+        window.onmessage = function(e) {
+            if (loaded) {
+                stop();
+                start(e.data);
+            } else {
+                console.error('Simulator not ready yet!');
+                // Wait for the simulator to be ready
+                window.setTimeout(function() {
+                    window.onmessage(e);
+                }, 100);
+            }
+        };
+
+        // Download epsilon.js from the latest stable build so it doesn't have to be updated manually
+
+        getDownloadURL(
+            'https://firebasestorage.googleapis.com/v0/b/upsilon-binfiles.appspot.com/o/official%2Fsimulator%2Fepsilon.python.min.js'
+        ).then((url) => {
+            const epsilonJSScriptEl = document.createElement('script');
+            epsilonJSScriptEl.src = url;
+            document.body.append(epsilonJSScriptEl);
+            epsilonJSScriptEl.addEventListener('load', () => {
+                document
+                    .getElementById('action-fullscreen')
+                    .addEventListener('click', function(e) {
+                        if (document.body.className == 'fullscreen') {
+                            document.body.className = '';
+                        } else {
+                            document.body.className = 'fullscreen';
+                        }
+                    });
+                document
+                    .getElementById('action-screenshot')
+                    .addEventListener('click', function(e) {
+                        Module.downloadScreenshot();
+                    });
+                loaded = true;
+                // Remove the loading screen
+                document.querySelector('.calculator').classList.remove('loading');
+
+                window.top.postMessage('Loaded');
+            });
+        });
+    </script>
+    <script src="xcas-ups.js"></script>
+</body>
+
+</html>

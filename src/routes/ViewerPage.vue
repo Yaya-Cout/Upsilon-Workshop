@@ -9,7 +9,7 @@
         <v-col>
           <SimulatorView
             ref="simulatorObject"
-            :scripts="project.files"
+            :project="project"
           />
         </v-col>
       </v-row>
