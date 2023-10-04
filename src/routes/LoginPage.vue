@@ -39,6 +39,12 @@
           </v-btn>
         </v-container>
       </v-form>
+      <router-link
+        class="switch-page-login-register"
+        to="/register" 
+      >
+        {{ $t('login.go-register-page') }}
+      </router-link>
     </v-card>
     <v-snackbar
       v-model="snackbar"
@@ -123,5 +129,11 @@ const connectionFailed = () => {
 
 #login-page>div {
   margin: auto;
+}
+
+.switch-page-login-register {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
 }
 </style>

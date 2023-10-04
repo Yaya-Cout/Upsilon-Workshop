@@ -162,7 +162,8 @@
     },
     "submit": "Log in",
     "title": "Log in",
-    "username": "Username"
+    "username": "Username",
+    "go-register-page": "Or register"
   },
   "navbar": {
     "calculator": "Calculator",
@@ -189,7 +190,8 @@
     "username-invalid-error": "Username is invalid",
     "username-pattern": "Username can only contain letters, numbers, {'@'}, + and -",
     "username-required-error": "Username is required",
-    "username-too-long-error": "Username is too long"
+    "username-too-long-error": "Username is too long",
+    "go-login-page": "Or login"
   },
   "search": {
     "load-more": "Load more",
