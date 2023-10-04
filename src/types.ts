@@ -38,6 +38,8 @@ export type Project = {
     version: string,
     // The collaborators of the project
     collaborators: string[],
+    // The simulator to use for the project
+    runner: string,
 
     // Internal field to know if the project is loaded or not
     _loaded: boolean,

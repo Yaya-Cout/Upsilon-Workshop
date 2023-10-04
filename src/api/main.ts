@@ -27,6 +27,7 @@ export default class API extends EventTarget {
         views: 0,
         version: "",
         collaborators: [],
+        runner: "default",
         _loaded: false,
         _loading: false,
     };
@@ -344,6 +345,7 @@ export default class API extends EventTarget {
                 views: project["views"],
                 version: project["version"],
                 collaborators: [],
+                runner: project["runner"],
                 _loaded: true,
                 _loading: false,
             })
@@ -524,6 +526,7 @@ export default class API extends EventTarget {
             views: 0,
             version: "1.0.0",
             collaborators: [],
+            runner: "default",
             _loaded: true,
             _loading: false,
         })
@@ -570,6 +573,7 @@ export default class API extends EventTarget {
             tags: tags,
             version: project.version,
             collaborators: collaborators,
+            runner: project.runner,
         }, 200, true)
     }
 
@@ -604,6 +608,7 @@ export default class API extends EventTarget {
             language: project.language,
             collaborators: collaborators,
             tags: tags,
+            runner: project.runner,
         }, 200, true)
     }
 
@@ -870,6 +875,7 @@ export default class API extends EventTarget {
             views: response["views"],
             version: response["version"],
             collaborators: [],
+            runner: response["runner"],
             _loaded: true,
             _loading: false,
         }

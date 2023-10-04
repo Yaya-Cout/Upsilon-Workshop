@@ -145,6 +145,7 @@ const create = async () => {
     views: 0,
     version: "1.0.0",
     collaborators: [],
+    runner: 'default',
 
     _loaded: false,
     _loading: false,

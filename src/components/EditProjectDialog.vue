@@ -48,6 +48,20 @@
             />
           </template>
         </v-autocomplete>
+        <v-autocomplete
+          v-model="runner"
+          :items="runners"
+          :label="$t('editor.edit-project-info-dialog.runner')"
+          :rules="runnerRules"
+          item-title="displayName"
+        >
+          <template #item="{ props: attrs, item }">
+            <v-list-item
+              v-bind="attrs"
+              :title="item.title"
+            />
+          </template>
+        </v-autocomplete>
         <SelectCollaborators
           v-model="collaborators"
           :author="props.project.author"
@@ -122,6 +136,17 @@ const languages = [
   { name: "python", icon: import.meta.env.BASE_URL + "assets/python.svg" },
   { name: "xcas", icon: import.meta.env.BASE_URL + "assets/xcas.svg" },
 ];
+
+
+const runners = [
+  { name: "default", displayName: "Upsilon"},
+  { name: "parisse-with-xcas", displayName: "Upsilon CASworks (Bernard Parisse)"}
+];
+
+const runnerRules = [
+  (v: string) => !!v || $t('editor.edit-project-info-dialog.rules.runner.required'),
+  (v: string) => runners.map(r => r.displayName).includes(v) || $t('editor.edit-project-info-dialog.rules.runner.invalid')
+];
 const shortDescriptionRules = [
   // TODO: Allow empty short description
   (v: string) => !!v || $t('editor.edit-project-info-dialog.rules.short-description.required'),
@@ -142,6 +167,7 @@ const dialog = ref(false);
 const title = ref('');
 const version = ref('');
 const language = ref('');
+const runner = ref('');
 const shortDescription = ref('');
 const longDescription = ref('');
 const collaborators = ref([] as string[]);
@@ -157,6 +183,9 @@ watch(props.project, () => {
   isPublic.value = props.project.isPublic;
   collaborators.value = props.project.collaborators;
   tags.value = props.project.tags_raw;
+
+  // Replace the runner name with the display name
+  runner.value = runners.find(r => r.name === props.project.runner)?.displayName || '';
 }, { immediate: true });
 
 const save = () => {
@@ -171,6 +200,10 @@ const save = () => {
   project.isPublic = isPublic.value;
   project.collaborators = collaborators.value;
   project.tags_raw = tags.value;
+
+  // Replace the display name with the runner name
+  project.runner = runners.find(r => r.displayName === runner.value)?.name || 'default';
+
   // Emit the updated project
   emits('update-metadata', project);
   // Close the dialog

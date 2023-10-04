@@ -102,6 +102,10 @@
           "length": "La version du projet doit faire moins de 100 caractères",
           "required": "La version du projet est requise"
         },
+        "runner": {
+          "invalid": "L'environnement d'exécution doit être dans : Upsilon, Upsilon CASworks",
+          "required": "L'environnement d'exécution est requis"
+        },
         "short-description": {
           "length": "La description courte doit faire moins de 100 caractères",
           "required": "La description courte est requise"
@@ -110,6 +114,7 @@
           "length": "La version du projet doit faire moins de 100 caractères"
         }
       },
+      "runner": "Environnement d'exécution",
       "save": "Enregistrer",
       "short-description": "Description courte",
       "title": "Éditer les métadonnées du projet"

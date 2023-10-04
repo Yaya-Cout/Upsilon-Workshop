@@ -102,6 +102,10 @@
           "length": "Project version must be less than 100 characters",
           "required": "Project version is required"
         },
+        "runner": {
+          "invalid": "Execution environnement must be one of the following: Upsilon, Upsilon CASworks",
+          "required": "Execution environnement is required"
+        },
         "short-description": {
           "length": "Short description must be less than 100 characters",
           "required": "Short description is required"
@@ -110,6 +114,7 @@
           "length": "Project version must be less than 100 characters"
         }
       },
+      "runner": "Execution environnement",
       "save": "Save",
       "short-description": "Short description",
       "title": "Edit project metadata"
