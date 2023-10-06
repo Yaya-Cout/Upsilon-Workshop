@@ -39,12 +39,16 @@
           </v-btn>
         </v-container>
       </v-form>
-      <router-link
+      <div
         class="switch-page-login-register"
-        to="/register" 
       >
-        {{ $t('login.go-register-page') }}
-      </router-link>
+        {{ $t('login.no-account') }}
+        <router-link
+          to="/register"
+        >
+          {{ $t('login.signup') }}
+        </router-link>
+      </div>
     </v-card>
     <v-snackbar
       v-model="snackbar"

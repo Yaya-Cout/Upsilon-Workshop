@@ -150,8 +150,8 @@
   "login": {
     "close": "Fermer",
     "error": "Nom d'utilisateur ou mot de passe invalide",
+    "no-account": "Vous n'avez pas de compte ?",
     "password": "Mot de passe",
-    "register": "Vous n'avez pas de compte ? Créez-en un",
     "rules": {
       "password": {
         "required": "Le mot de passe est requis"
@@ -160,10 +160,10 @@
         "required": "Le nom d'utilisateur est requis"
       }
     },
+    "signup": "S'inscrire",
     "submit": "Se connecter",
     "title": "Connexion",
-    "username": "Nom d'utilisateur",
-    "go-register-page": "Ou créer un compte"
+    "username": "Nom d'utilisateur"
   },
   "navbar": {
     "calculator": "Calculatrice",
@@ -180,18 +180,18 @@
     "start": "Créer"
   },
   "register": {
+    "already-have-account": "Vous avez déjà un compte ?",
     "email": "Email",
     "email-invalid-error": "L'adresse email est invalide",
     "email-required-error": "Une adresse email est requise",
-    "login": "Vous avez déjà un compte ? Connectez-vous",
+    "login": "Connectez-vous",
     "submit": "S'inscrire",
     "title": "S'inscrire",
     "username": "Nom d'utilisateur",
     "username-invalid-error": "Le nom d'utilisateur est invalide",
     "username-pattern": "Le nom d'utilisateur ne peut contenir que les lettres, des nombres, {'@'}, + et -",
     "username-required-error": "Un nom d'utilisateur est requis",
-    "username-too-long-error": "Le nom d'utilisateur est trop long",
-    "go-login-page": "Ou se connecter"
+    "username-too-long-error": "Le nom d'utilisateur est trop long"
   },
   "search": {
     "load-more": "Charger plus",

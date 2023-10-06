@@ -55,12 +55,14 @@
           </v-btn>
         </v-container>
       </v-form>
-      <router-link
-        class="switch-page-login-register"
-        to="/login" 
-      >
-        {{ $t('register.go-login-page') }}
-      </router-link>
+      <div class="switch-page-login-register">
+        {{ $t('register.already-have-account') }}
+        <router-link
+          to="/login"
+        >
+          {{ $t('register.login') }}
+        </router-link>
+      </div>
     </v-card>
   </div>
 </template>
