@@ -7,6 +7,12 @@
   "about": {
     "title": "À propos"
   },
+  "alert": {
+    "needlogin": {
+      "description": "Vous devez être connecté pour utiliser cette fonctionnalité",
+      "title": "Vous n'êtes pas connecté"
+    }
+  },
   "app": {
     "not-logged-in-snackbar": "Vous n'êtes pas connecté"
   },

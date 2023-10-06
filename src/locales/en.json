@@ -7,6 +7,12 @@
   "about": {
     "title": "About"
   },
+  "alert": {
+    "needlogin": {
+      "description": "You need to be logged in to use this feature",
+      "title": "Not logged in"
+    }
+  },
   "app": {
     "not-logged-in-snackbar": "You are not logged in"
   },

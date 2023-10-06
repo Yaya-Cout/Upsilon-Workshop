@@ -8,6 +8,8 @@
         {{ $t('create.title') }}
       </h1>
 
+      <AlertNeedLogin />
+
       <v-form
         ref="formObject"
         v-model="form"
@@ -53,7 +55,7 @@
 
           <v-btn
             :loading="loading"
-            :disabled="!form || loading"
+            :disabled="!form || loading || !apiStore.loggedIn"
             type="submit"
             block
             class="mt-2"
@@ -78,6 +80,8 @@ import { useAPIStore } from '../stores/api';
 import { useGlobalStore } from '../stores/global';
 import { Project, Script } from '../types';
 import { VForm } from 'vuetify/components/VForm';
+import AlertNeedLogin from '../components/AlertNeedLogin.vue';
+
 const { t: $t } = useI18n();
 
 const name = ref('');
@@ -88,7 +92,8 @@ const form = ref(false);
 const formObject = ref<InstanceType<typeof VForm> | null>(null);
 
 const $router = useRouter();
-const api = useAPIStore().api;
+const apiStore = useAPIStore();
+const api = apiStore.api;
 const globalStore = useGlobalStore();
 const nameRules = [
   (v: string) => !!v || $t('create.rules.name.required'),
