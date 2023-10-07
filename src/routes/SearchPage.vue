@@ -154,7 +154,9 @@ const toogleTag = (tag: Tag) => {
   if (activeTags.value.includes(tag)) {
     activeTags.value = activeTags.value.filter(t => t !== tag);
   } else {
-    activeTags.value.push(tag);
+    // Because of a bug in the API, we need to clear the active tags before adding a new one
+    activeTags.value = [tag];
+    // activeTags.value.push(tag);
   }
   loadMore(true);
 };
