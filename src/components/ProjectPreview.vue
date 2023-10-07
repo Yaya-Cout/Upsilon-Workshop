@@ -13,7 +13,7 @@
         class="full-height"
       >
         <div class="flex justify-between project-preview full-height">
-          <div class="elevation-10 full-height">
+          <div class="full-height">
             <v-card-title
               class="pb-0"
             >
