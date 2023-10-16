@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@intlify/unplugin-vue-i18n": "^1.4.0",
-    "@mdi/font": "7.2.96",
+    "@mdi/font": "7.3.67",
     "@rushstack/eslint-patch": "^1.5.1",
     "@types/lodash": "^4.14.199",
     "@types/node": "^20.6.2",
