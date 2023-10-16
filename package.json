@@ -14,7 +14,7 @@
     "@mdi/font": "7.3.67",
     "@rushstack/eslint-patch": "^1.5.1",
     "@types/lodash": "^4.14.199",
-    "@types/node": "^20.6.2",
+    "@types/node": "^20.8.6",
     "@types/showdown": "^2.0.2",
     "@types/uuid": "^9.0.4",
     "@types/webfontloader": "^1.6.35",
