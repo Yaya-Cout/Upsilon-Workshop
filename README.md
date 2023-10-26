@@ -1,24 +1,58 @@
-# Vue 3 + TypeScript + Vite
+# Upsilon Workshop
+
+Server Status:
+![Server Status](https://healthchecks.io/badge/120fbda1-0064-4090-9de9-8e5d979e84bf/OTdARQCd-2/Server.svg)
+
+Global Server Status (including the backups and the disk checks):
+![Global Server Status](https://healthchecks.io/badge/120fbda1-0064-4090-9de9-8e5d979e84bf/0qNkKR3z-2.svg)
+
+Upsilon Workshop is a free software project that aims to provide a complete
+collaborative platform to create Python projects for the Numworks calculator.
+
+## Features
+
+- [x] Autocompletion in the editor
+- [x] Syntax highlighting in the editor
+- [x] Monaco editor (VSCode editor)
+- [x] Searching for projects
+- [x] Tagging projects
+- [x] Markdown support in project description
+- [x] View project size before uploading
+- [x] Private projects
+- [x] Collaborative projects (no real-time editing)
+- [x] Manage calculator storage
+- [x] Copyleft license (AGPLv3) for the server and the frontend
+- [ ] Project cloning
+- [ ] CLI to interact with the server directly from the shell (existant but not
+      longer maintained)
+
+## Development
 
 To setup the project, run the following commands:
 
 ```bash
 ./download-epsilon-js.sh
 yarn install
-yarn dev
 ```
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+To start the server, run the following command:
 
-## Recommended IDE Setup
+```bash
+yarn start
+```
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+Once the server is started, you can access it at http://localhost:5173. It won't
+work if the port is different because of the CORS policy of the server.
 
-## Type Support For `.vue` Imports in TS
+## Contributing
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+Contributions are welcome! Feel free to open an issue or a pull request.
 
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
+If you have any question, don't hesitate to create an issue.
+Alternatively, you can go to the [Discord server](https://discord.gg/JpmjSH3) on
+the `#dev-workshop` channel.
 
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+## License
+
+This project is licensed under the AGPLv3 license. See the [LICENSE](LICENSE)
+file for more details.
