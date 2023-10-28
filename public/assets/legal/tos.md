@@ -1,7 +1,7 @@
 ---
 title: Terms of Service
 author: Upsilon Workshop team
-date: 28 October 2023
+date: October 28, 2023
 ---
 
 ## Preface
@@ -14,7 +14,7 @@ website and services.
 
 ## Definitions
 
-- "Upsilon Workshop" refers to the every service provided by Upsilon Workshop,
+- "Upsilon Workshop" refers to every Service provided by Upsilon Workshop,
   including the website and the API
 
 ## Terms of Service
@@ -31,9 +31,9 @@ You can review the most current version of the Terms of Service at any time at:
 [https://yaya-cout.github.io/Upsilon-Workshop/assets/legal/tos.pdf](https://yaya-cout.github.io/Upsilon-Workshop/assets/legal/tos.pdf)
 
 Violation of any of the terms below will result in the termination of your
-Account. While Upsilon Workshop prohibits such conduct and Content on the
+account. While Upsilon Workshop prohibits such conduct and content on the
 Service, you understand and agree that Upsilon Workshop cannot be responsible
-for the Content posted on the Service and you nonetheless may be exposed to
+for the content posted on the Service, and you nonetheless may be exposed to
 such materials. You agree to use the Service at your own risk.
 
 ### Account Terms
@@ -45,15 +45,15 @@ such materials. You agree to use the Service at your own risk.
 - You are responsible for maintaining the security of your account and password.
   Upsilon Workshop cannot and will not be liable for any loss or damage from
   your failure to comply with this security obligation.
-- You are responsible for all Content posted and activity that occurs under your
-  account (even when Content is posted by others who have accounts under your
+- You are responsible for all content posted and activity that occurs under your
+  account (even when content is posted by others who have accounts under your
   account).
 - You may not use the Service for any illegal or unauthorized purpose. You must
   not, in the use of the Service, violate any laws in your jurisdiction
   (including but not limited to copyright).
 - You may not use the Service to earn money without the explicit permission of
   Upsilon Workshop.
-- Upsilon Workshop reserves the right to refuse service to anyone for any
+- Upsilon Workshop reserves the right to refuse Service to anyone for any
   reason at any time.
 
 ### API Terms
@@ -69,41 +69,41 @@ such materials. You agree to use the Service at your own risk.
 - Upsilon Workshop shall not be liable to you or to any third party for any
   modification, price change, suspension or discontinuance of the API.
 
-### User Conduct and Content
+### User Conduct and content
 
-- You understand that all Content posted on, transmitted through, or linked from
-  the Service, are the sole responsibility of the person from whom such Content
+- You understand that all content posted on, transmitted through, or linked from
+  the Service, are the sole responsibility of the person from whom such content
   originated.
 - You understand that Upsilon Workshop does not control, and is not responsible
-  for Content made available through the Service, and that by using the Service,
-  you may be exposed to Content that is offensive, indecent, inaccurate,
+  for content made available through the Service, and that by using the Service,
+  you may be exposed to content that is offensive, indecent, inaccurate,
   misleading, or otherwise objectionable.
 - You understand that Upsilon Workshop reserves the right to refuse to accept,
-  post, display, or transmit any Content in its sole discretion.
+  post, display, or transmit any content in its sole discretion.
 
 ### General Conditions
 
-- Your use of the Service is at your sole risk. The service is provided on an
+- Your use of the Service is at your sole risk. The Service is provided on an
   "as is" and "as available" basis.
-- The service can be modified, suspended or discontinued at any time without
+- The Service can be modified, suspended or discontinued at any time without
   notice.
-- Even if we try to keep the service up and running, we cannot be held
+- Even if we try to keep the Service up and running, we cannot be held
   responsible for any errors, omissions, interruptions, deletions, defects,
   delays in operation or transmission, communications line failure, theft or
   destruction or unauthorized access to, or alteration of, user communications.
 - Even if we try to keep your data safe, we cannot be held responsible for any
   loss of data or stolen data. You shouldn't store any sensitive data on the
-  service (like passwords, credit card numbers, etc.). You should always keep a
+  Service (like passwords, credit card numbers, etc.). You should always keep a
   backup of your data.
 
-### Copyright and Content Ownership
+### Copyright and content Ownership
 
 - We claim no intellectual property rights over the material you provide to the
   Service. Your profile and materials uploaded remain yours.
-- Upsilon Workshop does not pre-screen Content, but Upsilon Workshop and its
+- Upsilon Workshop does not pre-screen content, but Upsilon Workshop and its
   designee have the right (but not the obligation) in their sole discretion to
-  refuse or remove any Content that is available via the Service.
-- The look and feel of the Service is copyleft, but user generated Content is
+  refuse or remove any content that is available via the Service.
+- The look and feel of the Service is copyleft, but user generated content is
   not. The whole source code (Frontend and Backend) is available on GitHub under
   the AGPLv3 license.
 

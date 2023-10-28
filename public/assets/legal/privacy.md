@@ -1,21 +1,21 @@
 ---
 title: Privacy Policy
 author: Upsilon Workshop team
-date: 28 October 2023
+date: October 28, 2023
 ---
 
-Effective date: 28 October 2023
+Effective date: October 28, 2023
 
 At Upsilon Workshop, we are committed to protecting your privacy. This Privacy
-Policy explains our privacy practices for Upsilon Workshop website and services
-(the "Service"). It describes the ways your personal information and data is
-collected and used through our designated websites, and the options available
-to you regarding our use of your personal information and how you can access
-and update this information.
+Policy explains our privacy practices for the Upsilon Workshop website and
+services (the "Service"). It describes the ways your personal information and
+data is collected and used through our designated websites, and the options
+available to you regarding our use of your personal information and how you can
+access and update this information.
 
-In short, we doesn't use your data for anything else than providing you the
-Service. We don't sell your data to third parties, we don't use your data for
-advertising, we don't use your data for analytics.
+In short, we don't use your data for anything other than providing you the
+Service. We don't sell your data to third parties, and we don't use your data
+for advertising, we don't use your data for analytics.
 Everything is pruned after 3 months at the maximum.
 
 ## Preface
@@ -35,19 +35,19 @@ website and services.
 
 ### Information Collection and Use
 
-Upsilon Workshop collects personal information when you register for a Upsilon
+Upsilon Workshop collects personal information when you register for an Upsilon
 Workshop account (email address, username and hashed password). Upsilon Workshop
 uses this information to provide you with the Service, and to contact you about
-the services on our site in which you have expressed interest or to send you
-notifications about the Service (for example, when if you are not respecting
+the services on our site in which you have expressed interest, or to send you
+notifications about the Service (for example, when you are not respecting
 the Terms of Service). Upsilon Workshop does not sell or rent your personal
 information to third parties. This information is only used to provide you the
 Service and is not used for any other purpose.
 
 Upsilon Workshop automatically receives and records information on our server
-logs from your browser, including your IP address, your user agent, and the pages you
-request. This data is only used in the logs of the server and is not used for
-any other purpose. For example, we do not use your IP address to track your
+logs from your browser, including your IP address, your user agent, and the
+pages you request. This data is only used in the server's logs and is not used
+for any other purpose. For example, we do not use your IP address to track your
 behavior on the website. This data can be used to help diagnose problems with
 our servers, to administer the Service, and to gather broad demographic
 information.
@@ -64,7 +64,7 @@ List of cookies:
 | `token`                 | This is the token used to authenticate you on the API.                                     |
 | `dontShowDeleteConfirm` | This is used to know if you want to show the delete confirmation when you delete a script. |
 
-We plan to allow you to fully disable cookies in the future, while still having
+We plan to allow you to fully disable cookies in the future while still having
 almost the same experience as with cookies enabled (by storing the data in the
 RAM instead of in the localStorage).
 
@@ -74,7 +74,7 @@ Upsilon Workshop does not use any analytics tool.
 
 ### Third Party Services
 
-The only third party service we use is the Google Fonts API, which is used to
+The only third-party service we use is the Google Fonts API, which is used to
 load the fonts used on the website. You can find the privacy policy of the
 Google Fonts API at [https://policies.google.com/privacy](https://policies.google.com/privacy).
 
@@ -94,7 +94,7 @@ information is not editable, you can contact us at the email address given in
 the Terms of Service.
 
 Some information can't be edited due to technical limitations. For example, you
-can't change your username, since it is used to identify you on the API
+can't change your username since it is used to identify you on the API
 (primary key of the database and used in relations with other tables).
 In the future, we plan to allow you to change your username, but this will
 require big changes in the database and in the API, so it will take some time.
@@ -110,12 +110,12 @@ Here is the explanation of the data retention:
   on the same server as the database. During this time, the dumps are also
   synced to two other places (my personal computer and my phone) and are
   encrypted with a password, in addition to the GPG encryption of the dumps.
-  Theses dumps are removed 1 month after the deletion from the server, so they
+  These dumps are removed 1 month after the deletion from the server, so they
   are kept for 2 months in total.
-- In addition to database dump, a snapshot of the disk is made every day and are
-  stored encrypted on another server. The last 14 snapshots are kept, so they
-  are kept for 2 weeks.
-- The logs of the server are kept for 2 month.
+- In addition to the database dump, a snapshot of the disk is made every day and
+  are stored encrypted on another server. The last 14 snapshots are kept, so
+  they are kept for 2 weeks at the maximum
+- The logs of the server are kept for 2 months.
 
 So, old data from the database is removed after 2 months.
 Logs are deleted after 2 months and 2 weeks, since they are included in the
@@ -123,12 +123,12 @@ snapshots.
 
 We reserve the right to keep the data for a longer period of time if we believe
 it is necessary to prevent fraud or future abuse, if required by law, or for
-legitimate purposes, such as analysis of non-personally-identifiable data, or
-if we are required to do so by law. All retained data will remain subject to
+legitimate purposes, such as the analysis of non-personally-identifiable data,
+or if we are required to do so by law. All retained data will remain subject to
 the terms of this Privacy Policy.
 The data can be keept for 2 weeks more at the maximum, in case of a server
 failure or any other problem. After this time, the data will be deleted
-definitely if it is technically possible.
+definitely, if it is technically possible.
 
 ### Data Portability
 
@@ -137,16 +137,16 @@ address given in the Terms of Service. The archive will be created manually and
 will be sent to you by email (encrypted with GPG if you have a public key).
 
 Please don't abuse this feature, since it is a manual process. We reserve the
-right to limit the number of times you can request your data to 1 time per
-month.
+right to limit the number of times you can request your data to one request per
+month..
 
 ### Requesting Data Removal
 
 If you want your data to be removed before the data retention period, you can
 request it by contacting us at the email address given in the Terms of Service.
 We will remove your data as soon as possible, but it can take up to 1 week.
-Some backup can be kept offline for 2 weeks more, in case of a server failure or
-any other problem. After this time, the data will be deleted definitely.
+Some backups can be kept offline for 2 weeks more, in case of a server failure
+or any other problem. After this time, the data will be deleted.
 
 ### Disclaimer of Warranty
 
