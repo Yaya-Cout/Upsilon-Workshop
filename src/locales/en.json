@@ -193,6 +193,13 @@
     "login": "Log in",
     "submit": "Sign up",
     "title": "Sign up",
+    "tos": {
+      "acknowledge": "By registering on this website, you acknowledge that you have read and are accepting the",
+      "and-the": "and the",
+      "need-accept": "You have to accept the Terms of Service and the Privacy Policy",
+      "privacy-policy": "Privacy policy",
+      "terms-of-service": "Terms of Service"
+    },
     "username": "Username",
     "username-invalid-error": "Username is invalid",
     "username-pattern": "Username can only contain letters, numbers, {'@'}, + and -",

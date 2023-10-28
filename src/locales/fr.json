@@ -193,6 +193,13 @@
     "login": "Connectez-vous",
     "submit": "S'inscrire",
     "title": "S'inscrire",
+    "tos": {
+      "acknowledge": "En vous inscrivant sur ce site, vous reconnaissez avoir lu et accepté les",
+      "and-the": "et la",
+      "need-accept": "Vous devez accepter les conditions d'utilisation et la politique de confidentialité",
+      "privacy-policy": "Politique de confidentialité",
+      "terms-of-service": "Conditions d'utilisation"
+    },
     "username": "Nom d'utilisateur",
     "username-invalid-error": "Le nom d'utilisateur est invalide",
     "username-pattern": "Le nom d'utilisateur ne peut contenir que les lettres, des nombres, {'@'}, + et -",

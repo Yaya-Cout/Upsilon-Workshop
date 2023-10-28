@@ -40,6 +40,29 @@
             confirm
           />
 
+          <v-checkbox :rules="tosRules">
+            <template #label>
+              <div class="no-wrap">
+                {{ $t("register.tos.acknowledge") }}
+                <a
+                  href="https://yaya-cout.github.io/Upsilon-Workshop/assets/legal/tos.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {{ $t("register.tos.terms-of-service") }}
+                </a>
+                {{ $t("register.tos.and-the") }}
+                <a
+                  href="https://yaya-cout.github.io/Upsilon-Workshop/assets/legal/privacy.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {{ $t("register.tos.privacy-policy") }}
+                </a>
+              </div>
+            </template>
+          </v-checkbox>
+
           <v-btn
             :loading="loading"
             :disabled="!form || loading"
@@ -95,6 +118,9 @@ const usernameRules = [
   (v: string) => /^[a-zA-Z0-9@+-]+$/.test(v) || $t('register.username-invalid-error'),
   (v: string) => v.length <= 150 || $t('register.username-too-long-error'),
 ];
+const tosRules = [
+  (v: boolean) => v === true || $t('register.tos.need-accept')
+]
 const api = useAPIStore().api;
 const globalStore = useGlobalStore();
 
@@ -150,5 +176,9 @@ const registrationFailed = (response: any) => {
   display: inline-block;
   width: 100%;
   text-align: center;
+}
+
+.no-wrap {
+  display: inline-block;
 }
 </style>
