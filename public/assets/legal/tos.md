@@ -1,7 +1,7 @@
 ---
-title: Terms of Services
+title: Terms of Service
 author: Upsilon Workshop team
-date: 27 October 2023
+date: 28 October 2023
 ---
 
 ## Preface
@@ -28,7 +28,7 @@ that augment or enhance the current Service, including the release of new tools
 and resources, shall be subject to the Terms of Service. Continued use of the
 Service after any such changes shall constitute your consent to such changes.
 You can review the most current version of the Terms of Service at any time at:
-https://yaya-cout.github.io/Upsilon-Workshop/assets/legal/tos.pdf.
+[https://yaya-cout.github.io/Upsilon-Workshop/assets/legal/tos.pdf](https://yaya-cout.github.io/Upsilon-Workshop/assets/legal/tos.pdf)
 
 Violation of any of the terms below will result in the termination of your
 Account. While Upsilon Workshop prohibits such conduct and Content on the
