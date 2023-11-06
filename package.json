@@ -35,7 +35,7 @@
     "vite-plugin-checker": "^0.6.2",
     "vite-plugin-monaco-editor": "^1.1.0",
     "vue": "^3.3.7",
-    "vue-i18n": "^9.6.2",
+    "vue-i18n": "^9.6.5",
     "vue-router": "^4.2.5",
     "vuetify": "^3.3.22",
     "webfontloader": "^1.0.0"
