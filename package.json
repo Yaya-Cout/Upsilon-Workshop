@@ -10,7 +10,7 @@
     "lint": "eslint --ext .js,.vue,.ts --ignore-path .gitignore --fix src"
   },
   "dependencies": {
-    "@intlify/unplugin-vue-i18n": "^1.4.0",
+    "@intlify/unplugin-vue-i18n": "^1.5.0",
     "@mdi/font": "7.3.67",
     "@rushstack/eslint-patch": "^1.5.1",
     "@types/lodash": "^4.14.199",
