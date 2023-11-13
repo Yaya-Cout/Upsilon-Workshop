@@ -15,7 +15,7 @@
     "@rushstack/eslint-patch": "^1.5.1",
     "@types/lodash": "^4.14.200",
     "@types/node": "^20.8.10",
-    "@types/showdown": "^2.0.3",
+    "@types/showdown": "^2.0.4",
     "@types/uuid": "^9.0.6",
     "@types/webfontloader": "^1.6.36",
     "@vitejs/plugin-vue": "^3.1.0",
