@@ -6,6 +6,8 @@ import App from './App.vue';
 import vuetify from './plugins/vuetify';
 import pinia from './plugins/pinia';
 import { loadFonts } from './plugins/webfontloader';
+
+import { useGlobalStore } from "./stores/global";
 const AboutPage = () => import('./routes/AboutPage.vue');
 const CalculatorPage = () => import('./routes/CalculatorPage.vue');
 const CreatePage = () => import('./routes/CreatePage.vue');
@@ -46,6 +48,12 @@ router.beforeEach((to, from, next) => {
   }
   title += "Upsilon Workshop"
   document.title = title
+  useGlobalStore().progress = true
+  next()
+})
+
+router.beforeResolve((to, from, next) => {
+  useGlobalStore().progress = false
   next()
 })
 
