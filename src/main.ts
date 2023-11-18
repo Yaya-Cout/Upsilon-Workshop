@@ -6,18 +6,18 @@ import App from './App.vue';
 import vuetify from './plugins/vuetify';
 import pinia from './plugins/pinia';
 import { loadFonts } from './plugins/webfontloader';
-import AboutPage from './routes/AboutPage.vue';
-import CalculatorPage from './routes/CalculatorPage.vue';
-import CreatePage from './routes/CreatePage.vue';
-import EditorPage from './routes/EditorPage.vue';
-import HomePage from './routes/HomePage.vue';
-import LoginPage from './routes/LoginPage.vue';
-import NotFoundPage from './routes/NotFoundPage.vue'
-import RegisterPage from './routes/RegisterPage.vue';
-import SearchPage from './routes/SearchPage.vue';
-import SettingsPage from './routes/SettingsPage.vue';
-import UserPage from './routes/UserPage.vue';
-import ViewerPage from './routes/ViewerPage.vue';
+const AboutPage = () => import('./routes/AboutPage.vue');
+const CalculatorPage = () => import('./routes/CalculatorPage.vue');
+const CreatePage = () => import('./routes/CreatePage.vue');
+const EditorPage = () => import('./routes/EditorPage.vue');
+const HomePage = () => import('./routes/HomePage.vue');
+const LoginPage = () => import('./routes/LoginPage.vue');
+const NotFoundPage = () => import('./routes/NotFoundPage.vue');
+const RegisterPage = () => import('./routes/RegisterPage.vue');
+const SearchPage = () => import('./routes/SearchPage.vue');
+const SettingsPage = () => import('./routes/SettingsPage.vue');
+const UserPage = () => import('./routes/UserPage.vue');
+const ViewerPage = () => import('./routes/ViewerPage.vue');
 
 loadFonts()
 
