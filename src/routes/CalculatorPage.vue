@@ -43,15 +43,34 @@
           />
 
           <v-list v-if="storage.records">
-            <v-checkbox
-              v-model="showAll"
-              :label="$t('calculator.show-all-files')"
-              hide-details
-            />
+            <div class="list-header">
+              <v-checkbox
+                v-model="showAll"
+                :label="$t('calculator.show-all-files')"
+                hide-details
+              />
+
+              <UploadFromComputer
+                v-model="storage"
+                @write="installAndReloadStorage"
+              >
+                <v-btn
+                  icon
+                  variant="plain"
+                >
+                  <v-icon>mdi-plus</v-icon>
+                  <v-tooltip
+                    activator="parent"
+                  >
+                    {{ $t('calculator.upload-from-computer') }}
+                  </v-tooltip>
+                </v-btn>
+              </UploadFromComputer>
+            </div>
             <v-list-item
               v-for="(record, index) in storage.records.filter((record) => record.type === 'py' || showAll)"
               :key="index"
-              class="records"
+              class="records px-1"
               :title="record.name + '.' + record.type"
             >
               <template #append>
@@ -146,6 +165,7 @@ import ConnectCalculator from '../components/ConnectCalculator.vue';
 import WebUSBNotSupported from '../components/WebUSBNotSupported.vue';
 import DeleteConfirm from '../components/confirmations/DeleteConfirm.vue';
 import RenameScript from '../components/RenameScript.vue';
+import UploadFromComputer from '../components/UploadFromComputer.vue';
 
 const calculatorStore = useCalculatorStore();
 const calculator = calculatorStore.calculator;
@@ -242,6 +262,26 @@ const deletedScriptHandler = () => {
   reloadScripts();
 };
 
+const installAndReloadStorage = async () => {
+  try {
+    await calculatorStore.calculator.installStorage(cloneDeep(storage.value), storageInstalled);
+  } catch (error) {
+    storageInstallError(error);
+  }
+}
+
+const storageInstalled = () => {
+  globalStore.success = 'snackbar.success.installation-success.message';
+};
+
+const storageInstallError = (error: any) => {
+  if (error.message === 'Too much data!') {
+    calculatorStore.tooMuchDataError = true;
+  } else {
+    globalStore.error = true;
+  }
+};
+
 const saveScript = async (name: string, type: string, index: number) => {
   savingScript.value[index] = true;
 
@@ -310,5 +350,9 @@ watch(connected, async (connected) => {
 .script-label {
   display: table-cell;
   vertical-align: middle;
+}
+
+.list-header {
+  display: flex;
 }
 </style>

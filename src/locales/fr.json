@@ -27,7 +27,8 @@
     "script-saved": "{name} enregistré",
     "show-all-files": "Afficher tous les fichiers",
     "title": "Calculatrice",
-    "unknown": "Quelqu'un"
+    "unknown": "Quelqu'un",
+    "upload-from-computer": "Envoyer un fichier depuis cet ordinateur (peut être un zip)"
   },
   "create": {
     "create": "Créer",

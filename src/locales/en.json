@@ -27,7 +27,8 @@
     "script-saved": "{name} saved",
     "show-all-files": "Show all files",
     "title": "Calculator",
-    "unknown": "Someone"
+    "unknown": "Someone",
+    "upload-from-computer": "Upload a file (can be a zip file) from the computer"
   },
   "create": {
     "create": "Create",
