@@ -2253,10 +2253,10 @@ vue@^3.3.7:
     "@vue/server-renderer" "3.3.7"
     "@vue/shared" "3.3.7"
 
-vuetify@^3.3.22:
-  version "3.3.22"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.3.22.tgz#1be1fa66e810774fbbe9abd9068fa4274aeaa5de"
-  integrity sha512-+X7IBnlvmj/3h2hgnGXWWKNM/N0ioi7xMEoBC5gPQnlaUPMvzXFG70BP9YlhYyUQhi05sD6n/BirImKur1gOEw==
+vuetify@^3.4.2:
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.4.2.tgz#439115ef71867d8358585cc499c21bb7f1cdbcab"
+  integrity sha512-WvfVmES1SkhrCfYcfzPp8jpfIM+L+OcN9EYiBM+4bpmsIXLNJyMv42QhoDDWihSO6/zbE8RqCtyHawpu4ApyzA==
 
 webdfu@^1.0.5:
   version "1.0.5"
