@@ -186,6 +186,14 @@
     "signup": "S'inscrire",
     "start": "Créer"
   },
+  "popups": {
+    "warning-private-projects": {
+      "description": "Il semble que vous avez des projets publics qui devraient être privés. Pour changer l'état d'un projet, rendez-vous sur ce projet et changez l'état de la bascule \"Public\" dans les métadonnées du projet.",
+      "dismiss": "OK",
+      "done": "C'est fait",
+      "title": "Connaissez-vous les projets privés ?"
+    }
+  },
   "register": {
     "already-have-account": "Vous avez déjà un compte ?",
     "email": "Email",

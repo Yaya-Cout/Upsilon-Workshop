@@ -19,11 +19,13 @@
   <div v-else>
     <UserDropdown ref="menu" />
   </div>
+  <PopupWarningPrivateProjects />
 </template>
 
 <script setup lang="ts">
 import { useAPIStore } from '../../stores/api';
 import UserDropdown from './UserDropdown.vue';
+import PopupWarningPrivateProjects from '../popup/PopupWarningPrivateProjects.vue';
 
 const apiStore = useAPIStore();
 </script>

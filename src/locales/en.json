@@ -186,6 +186,14 @@
     "signup": "Sign up",
     "start": "Start scripting"
   },
+  "popups": {
+    "warning-private-projects": {
+      "description": "It seems that you have some public projects that should be private. To change the state of one project, go to that project and toogle the \"Public\" switch in the project metadata.",
+      "dismiss": "OK",
+      "done": "It's done",
+      "title": "Do you know private projects ?"
+    }
+  },
   "register": {
     "already-have-account": "Already have an account?",
     "email": "Email",

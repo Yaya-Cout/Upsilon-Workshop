@@ -157,6 +157,7 @@ export default class API extends EventTarget {
 
         this.API_STORE.loggedIn = false;
         this.API_STORE.username = ""
+        this.API_STORE.warning_private_projects = false;
 
         return true;
     }
@@ -658,6 +659,7 @@ export default class API extends EventTarget {
                 const response = await this._request("current_user/", "GET", {}, 200, false, true)
                 this.API_STORE.loggedIn = true
                 this.API_STORE.username = response["username"]
+                this.API_STORE.warning_private_projects = response["warning_private_project"]
             } catch (e) {
                 // TODO: Check if unauthorized and handle other errors
                 await this.logout(true)
@@ -759,6 +761,19 @@ export default class API extends EventTarget {
         return await this._request("users/" + this.API_STORE.username + "/", "PATCH", {
             password: password,
         }, 200, true)
+    }
+
+    /*
+     * Update the private projects warning popup state on the server
+     * @param {bool} state - The new state
+     * @returns {Promise} - A promise that resolves to true in case of success
+     * @throws {Error} - If an error occurred
+     */
+    async updatePrivateProjectsWarning(state: boolean) {
+        await this._request("users/" + this.API_STORE.username + "/", "PATCH", {
+            warning_private_project: state
+        }, 200, true)
+        this.API_STORE.warning_private_projects = state
     }
 
     /*
