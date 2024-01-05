@@ -10,7 +10,7 @@
       <v-row class="mt-0 fill-height">
         <div
           class="bg-background elevation-3 rounded-lg ml-4 pa-1"
-          style="width: 300px"
+          style="width: 480px"
         >
           <v-card>
             <v-card-title>
