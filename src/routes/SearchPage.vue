@@ -30,7 +30,7 @@
 
         <v-row class="mx-2 my-0 full-width">
           <ProjectPreview
-            v-for="project in projects.slice(0, 50)"
+            v-for="project in projects"
             :key="project.uuid"
             :project="project"
           />
