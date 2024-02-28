@@ -61,7 +61,7 @@ const _send = () => {
     ) as HTMLIFrameElement;
     iframe.contentWindow?.postMessage(
         props.scripts.map((script) => {
-            return { name: script.title, content: script.content };
+            return { name: script.title, content: script.content.normalize('NFKD') };
         })
     );
 }

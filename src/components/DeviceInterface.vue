@@ -6,12 +6,15 @@
     >
       Select device
     </v-btn>
-    <v-btn
+    <UploadProject
       v-if="connected"
-      @click="send"
+      :files="scripts"
+      class="mr-2"
     >
-      Send scripts
-    </v-btn>
+      <v-btn>
+        Send scripts
+      </v-btn>
+    </UploadProject>
     <v-btn
       v-if="connected"
       @click="disconnect"
@@ -70,6 +73,7 @@ import { useCalculatorStore } from '../stores/calculator';
 import { useGlobalStore } from '../stores/global';
 import { Script } from '../types';
 import ReplaceConfirm from './confirmations/ReplaceConfirm.vue';
+import UploadProject from './UploadProject.vue';
 
 const calculatorStore = useCalculatorStore();
 const calculator = calculatorStore.calculator;
@@ -81,7 +85,7 @@ const descriptor = ref('');
 
 const emits = defineEmits(['record-select']);
 
-const props = defineProps({
+defineProps({
     scripts: {
         type: Object as () => Script[],
         default: () => {},
@@ -139,30 +143,6 @@ async function onConnect() {
         descriptor.value += ' - U' + platformInfo.upsilon.version;
     descriptor.value += ' - ' + platformInfo.commit;
     storage.value = await calculator.backupStorage();
-}
-
-async function send() {
-    storage.value = await calculator.backupStorage();
-    for (const script of props.scripts) {
-        // If script is already in storage, delete it
-        const index = storage.value.records.findIndex(
-            (record: any) => record.name === script.title.substring(0, script.title.length - 3)
-        );
-        if (index !== -1) {
-            storage.value.records.splice(index, 1);
-        }
-
-        //@ts-ignore
-        storage.value.records.push({
-            name: script.title.substring(0, script.title.length - 3),
-            type: 'py',
-            autoImport: true,
-            code: script.content,
-        });
-    }
-    calculator.installStorage(storage.value, () => {
-      globalStore.success = "snackbar.success.installation-success.message"
-    });
 }
 
 function onRecordSelect(record: any) {

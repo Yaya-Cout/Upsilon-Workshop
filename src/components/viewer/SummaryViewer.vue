@@ -159,7 +159,7 @@
             {{ $t('viewer.edit') }}
           </v-btn>
           <UploadProject
-            :project="project"
+            :files="project.files"
             class="mr-2"
           >
             <v-btn variant="outlined">
