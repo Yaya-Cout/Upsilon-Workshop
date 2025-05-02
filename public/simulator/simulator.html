@@ -676,17 +676,22 @@
             console.log('Epsilon started');
 
             function eventHandler(keyHandler) {
+                console.log(keyHandler);
                 return function(ev) {
                     var key = this.getAttribute('data-key');
+                    // FIXME: We're using eval as passing as a pointer doesn't
+                    // work, it used to work, perhaps related to some async
+                    // simulator init?
+                    keyHandler = eval(keyHandler);
                     keyHandler(key);
                     ev.preventDefault();
                 };
             }
             var downHandler = eventHandler(
-                emModule._IonSimulatorKeyboardKeyDown
+                "emModule._IonSimulatorKeyboardKeyDown"
             );
             var upHandler = eventHandler(
-                emModule._IonSimulatorKeyboardKeyUp
+                "emModule._IonSimulatorKeyboardKeyUp"
             );
             calculatorElement
                 .querySelectorAll('span')
