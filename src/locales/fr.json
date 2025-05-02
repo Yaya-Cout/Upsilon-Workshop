@@ -333,6 +333,7 @@
     "edit": "Éditer",
     "long-description": "Description longue",
     "modified-on": "Modifié pour la dernière fois le {date}",
+    "runner-tooltip": "Environnement d'exécution : {runner}",
     "upload": "Envoyer vers la calculatrice",
     "version": "Version {version}",
     "views": "{count} vues"

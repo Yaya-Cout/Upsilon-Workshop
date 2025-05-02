@@ -144,6 +144,25 @@
                 </div>
               </v-list-item-subtitle>
             </v-list-item>
+            <v-list-item
+              density="compact"
+              prepend-icon="mdi-console"
+            >
+              <v-skeleton-loader
+                v-if="!project._loaded"
+                type="text"
+                density="compact"
+                height="24px"
+              /><v-list-item-subtitle
+                v-else
+                class="fit-content"
+              >
+                {{ runner_to_human_string(project.runner) }}
+                <v-tooltip activator="parent">
+                  {{ $t('viewer.runner-tooltip', { runner: runner_to_human_string(project.runner) }) }}
+                </v-tooltip>
+              </v-list-item-subtitle>
+            </v-list-item>
           </v-col>
         </v-row>
       </v-card-item>
@@ -247,6 +266,17 @@ const dateToExtendedString = (date: Date) => {
   const ampm = date.getHours() < 12 ? 'AM' : 'PM';
   return `${month}/${day}/${date.getFullYear()} ${hours}:${minutes}:${seconds} ${ampm}`;
 };
+
+const runner_to_human_string = (runner: string) => {
+  // TODO: Optimize with hash table
+  if (runner == "default") {
+    return "Upsilon";
+  } else if (runner == "parisse-with-xcas") {
+    return "Upsilon CASworks";
+  }
+  console.warn("Unknown runner:", runner)
+  return runner;
+}
 </script>
 
 <style scoped>

@@ -333,6 +333,7 @@
     "edit": "Edit",
     "long-description": "Long description",
     "modified-on": "Last modified on {date}",
+    "runner-tooltip": "Execution Environnement: {runner}",
     "upload": "Upload to calculator",
     "version": "Version {version}",
     "views": "{count} views"
