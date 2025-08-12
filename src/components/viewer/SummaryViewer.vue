@@ -185,11 +185,22 @@
               {{ $t('viewer.upload') }}
             </v-btn>
           </UploadProject>
-          <DeleteProject
+          <DownloadProject
             :project="project"
             class="mr-2"
           >
             <v-btn variant="outlined">
+              {{ $t('viewer.download') }}
+            </v-btn>
+          </DownloadProject>
+          <DeleteProject
+            :project="project"
+            class="mr-2"
+          >
+            <v-btn
+              variant="outlined"
+              color="red"
+            >
               {{ $t('viewer.delete') }}
             </v-btn>
           </DeleteProject>
@@ -206,6 +217,7 @@ import { Project } from '../../types';
 import { useAPIStore } from '../../stores/api';
 import UserPreview from '../UserPreview.vue';
 import UploadProject from '../UploadProject.vue';
+import DownloadProject from '../DownloadProject.vue';
 import DeleteProject from '../DeleteProject.vue';
 import SizeView from './SizeView.vue';
 const { locale } = useI18n();

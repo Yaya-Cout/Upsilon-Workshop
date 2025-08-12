@@ -330,6 +330,7 @@
       "message": "Are you sure you want to delete this project? ({name})",
       "title": "Delete project"
     },
+    "download": "Download",
     "edit": "Edit",
     "long-description": "Long description",
     "modified-on": "Last modified on {date}",

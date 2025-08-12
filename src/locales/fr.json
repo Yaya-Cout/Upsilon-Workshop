@@ -330,6 +330,7 @@
       "message": "Êtes-vous sûr de vouloir supprimer ce projet ? ({name})",
       "title": "Supprimer le projet"
     },
+    "download": "Télécharger",
     "edit": "Éditer",
     "long-description": "Description longue",
     "modified-on": "Modifié pour la dernière fois le {date}",
