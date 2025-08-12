@@ -87,6 +87,15 @@
       </v-card-text>
 
       <v-card-actions>
+        <DeleteProject
+          :project="project"
+          class="mr-2"
+        >
+          <v-btn color="red">
+            {{ $t('viewer.delete') }}
+          </v-btn>
+        </DeleteProject>
+
         <v-spacer />
 
         <v-btn @click="dialog = false">
@@ -109,6 +118,7 @@ import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import cloneDeep from 'lodash/cloneDeep';
 import { Project } from '../types';
+import DeleteProject from './DeleteProject.vue';
 import SelectCollaborators from './editor/SelectCollaborators.vue';
 import SelectTags from './editor/SelectTags.vue';
 const { t: $t } = useI18n();
