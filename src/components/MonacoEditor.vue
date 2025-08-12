@@ -257,12 +257,29 @@ const deleteScript = (scriptId: number) => {
   globalStore.success = "snackbar.success.script-deleted.message";
 };
 
-const addScript = (name: string) => {
-  scripts.value.push({
-    title: name,
-    content: "",
-  });
-  setTab(scripts.value.length - 1);
+const addScript = (name: string, content: string) => {
+  // IDK why this code cause scripts.value to be "undefined", but it does, so we
+  // use a for loop instead. The for loop also allows preserving file order
+  // scripts.value = scripts.value.filter((file) => file.title !== name);
+  let index = 0;
+  for (let file of scripts.value) {
+    if (file.title == name) {
+      file.content = content;
+      break;
+    }
+    index++;
+  }
+  if (index == scripts.value.length) {
+    // Create the file if it wasn't found
+    scripts.value.push({
+      title: name,
+      content: content,
+    });
+    index = scripts.value.length - 1;
+  }
+
+  createModels();
+  tab.value = index;
 };
 </script>
 

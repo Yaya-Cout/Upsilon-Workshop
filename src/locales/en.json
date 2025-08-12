@@ -60,7 +60,8 @@
       "cancel": "Cancel",
       "enter-name": "Enter the name for the new script:",
       "name": "Name",
-      "title": "Add script"
+      "title": "Add script",
+      "upload": "Upload"
     },
     "change-script": {
       "cancel": "Cancel",

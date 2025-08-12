@@ -25,6 +25,10 @@
       </v-card-text>
 
       <v-card-actions>
+        <v-btn @click="upload">
+          {{ $t('editor.add-script.upload') }}
+        </v-btn>
+
         <v-spacer />
 
         <v-btn @click="dialog = false">
@@ -46,6 +50,7 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Project } from '../types';
+const JSZip = import("jszip")
 const { t: $t } = useI18n();
 
 const emits = defineEmits(['add']);
@@ -85,8 +90,58 @@ const filenameRules = ref([
 const add = () => {
   dialog.value = false;
   // TODO: Check if name is valid
-  emits('add', name.value)
+  emits('add', name.value, '')
 };
+
+const upload = () => {
+  const input = document.createElement("input");
+  input.type = "file";
+  // input.accept = ".py,.zip";
+  input.onchange = (e) => {
+    if (!e.target || !("files" in e.target)) {
+      throw new Error("Files is not returned by the input")
+    }
+    for (const file of e.target.files) {
+      // If file name ends with .zip, unzip it
+      if (file.name.endsWith(".zip")) {
+        uploadZip(file);
+      } else {
+        uploadFile(file);
+      }
+    }
+  };
+  input.click();
+
+  dialog.value = false;
+};
+
+const uploadFile = async (file: Blob) => {
+  const reader = new FileReader();
+  reader.readAsText(file);
+  reader.addEventListener("load", async () => {
+    let code = reader.result;
+    // TODO: Check if name is valid
+    emits('add', file.name, code);
+  });
+}
+
+const uploadZip = async (file: Blob) => {
+  const reader = new FileReader();
+  reader.readAsArrayBuffer(file);
+  reader.addEventListener("load", async () => {
+    // Await JSZip to avoid eslint warning
+    let JSZip_awaited = await JSZip;
+    if (reader.result === null) {
+      throw new Error("FileReader returned null")
+    }
+    const zip = await JSZip_awaited.loadAsync(reader.result);
+    for (const [name, file] of Object.entries(zip.files)) {
+      const code = await file.async("string");
+      // TODO: Check if name is valid
+      emits('add', name, code);
+    }
+  });
+}
 </script>
 
 <style scoped></style>

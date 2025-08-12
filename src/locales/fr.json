@@ -60,7 +60,8 @@
       "cancel": "Annuler",
       "enter-name": "Entrez le nom pour le nouveau script :",
       "name": "Nom",
-      "title": "Ajouter un script"
+      "title": "Ajouter un script",
+      "upload": "Envoyer"
     },
     "change-script": {
       "cancel": "Annuler",
