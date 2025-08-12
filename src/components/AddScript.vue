@@ -95,6 +95,7 @@ const add = () => {
 
 const upload = () => {
   const input = document.createElement("input");
+  input.multiple = true;
   input.type = "file";
   // input.accept = ".py,.zip";
   input.onchange = (e) => {
