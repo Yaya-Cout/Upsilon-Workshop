@@ -88,7 +88,6 @@
     "edit-project-info": "Edit project info",
     "edit-project-info-dialog": {
       "cancel": "Cancel",
-      "description": "Enter the new metadata for the project:",
       "language": "Language",
       "long-description": "Long description",
       "project-title": "Project title",

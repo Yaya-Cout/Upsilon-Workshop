@@ -10,8 +10,6 @@
         {{ $t('editor.edit-project-info-dialog.title') }}
       </v-card-title>
 
-      <v-card-text>{{ $t('editor.edit-project-info-dialog.description') }}</v-card-text>
-
       <v-card-text>
         <v-text-field
           v-model="title"

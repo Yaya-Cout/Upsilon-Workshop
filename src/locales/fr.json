@@ -88,7 +88,6 @@
     "edit-project-info": "Éditer les infos du projet",
     "edit-project-info-dialog": {
       "cancel": "Annuler",
-      "description": "Entrez les nouvelles métadonnées pour ce projet :",
       "language": "Langage",
       "long-description": "Description longue",
       "project-title": "Titre du projet",

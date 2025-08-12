@@ -859,7 +859,7 @@ export default class API extends EventTarget {
      * @throws {Error} - If the project does not exist
      */
     async _getProject(uuid: string): Promise<Project> {
-        const response = await this._request("scripts/" + uuid + "/", "GET", {}, 200, false)
+        const response = await this._request("scripts/" + uuid + "/?skip_view=1", "GET", {}, 200, false)
 
         // Convert the files
         const files: Script[] = []
