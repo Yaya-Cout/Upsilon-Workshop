@@ -84,6 +84,7 @@
       "title": "Delete {name}"
     },
     "device": "Calculator",
+    "download-tooltip": "Download",
     "edit-project-info": "Edit project info",
     "edit-project-info-dialog": {
       "cancel": "Cancel",
@@ -139,7 +140,7 @@
       "title": "Replace {name}"
     },
     "simulator": "Simulator",
-    "view-project-info": "Back to project info"
+    "view-project-info": "Back to project page"
   },
   "forms": {
     "password-field": {

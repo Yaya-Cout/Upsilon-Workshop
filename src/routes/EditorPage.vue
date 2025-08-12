@@ -17,8 +17,48 @@
               <v-skeleton-loader
                 :loading="!project._loaded"
                 type="heading"
+                class="card-title"
               >
-                <h3>{{ project.title }}</h3>
+                <EditProjectDialog
+                  v-if="hasWriteAccess()"
+                  :project="project"
+                  @update-metadata="updateMetadata"
+                >
+                  <h3 class="title title-with-edit">
+                    {{ project.title }}
+                    <v-tooltip
+                      activator="parent"
+                      location="top"
+                    >
+                      {{ project.title }}
+                    </v-tooltip>
+                  </h3>
+                  <span>
+                    <v-btn
+                      density="compact"
+                      variant="plain"
+                      icon="mdi-pencil"
+                    />
+                    <v-tooltip
+                      activator="parent"
+                      location="bottom"
+                    >
+                      {{ $t('editor.edit-project-info') }}
+                    </v-tooltip>
+                  </span>
+                </EditProjectDialog>
+                <h3
+                  v-else
+                  class="title"
+                >
+                  {{ project.title }}
+                  <v-tooltip
+                    activator="parent"
+                    location="bottom"
+                  >
+                    {{ project.title }}
+                  </v-tooltip>
+                </h3>
               </v-skeleton-loader>
             </v-card-title>
             <v-card-item v-if="tags.length > 0">
@@ -29,21 +69,24 @@
               />
             </v-card-item>
             <v-card-actions>
-              <EditProjectDialog
-                v-if="hasWriteAccess()"
-                :project="project"
-                @update-metadata="updateMetadata"
-              >
-                <v-btn>
-                  {{ $t('editor.edit-project-info') }}
-                </v-btn>
-              </EditProjectDialog>
               <v-btn
-                v-else
                 :to="'/view/' + project.uuid"
               >
                 {{ $t('editor.view-project-info') }}
               </v-btn>
+              <DownloadProject
+                :project="project"
+              >
+                <v-btn icon>
+                  <v-icon>mdi-download</v-icon>
+                </v-btn>
+                <v-tooltip
+                  activator="parent"
+                  location="bottom"
+                >
+                  {{ $t('editor.download-tooltip') }}
+                </v-tooltip>
+              </DownloadProject>
             </v-card-actions>
           </v-card>
           <v-tabs v-model="tab">
@@ -92,6 +135,7 @@ import { useAPIStore } from '../stores/api';
 import { useGlobalStore } from '../stores/global';
 import { Project, Tag } from '../types';
 import DeviceInterface from '../components/DeviceInterface.vue';
+import DownloadProject from '../components/DownloadProject.vue';
 import EditProjectDialog from '../components/EditProjectDialog.vue';
 import MonacoEditor from '../components/MonacoEditor.vue';
 import SimulatorView from '../components/SimulatorView.vue';
@@ -186,5 +230,23 @@ const updateProject = (NewProject: Project) => {
 <style scoped>
 .no-wrap {
   flex-wrap: nowrap;
+}
+
+.title {
+  max-width: 100%;
+  display: inline-block;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+  padding-right: 4px;
+}
+
+.title-with-edit {
+  max-width: calc(100% - 30px);
+}
+
+.card-title {
+  display: inline;
 }
 </style>

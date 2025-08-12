@@ -1,9 +1,9 @@
 <template>
   <v-dialog v-model="dialog">
     <template #activator="{ props: attrs }">
-      <div v-bind="attrs">
+      <span v-bind="attrs">
         <slot />
-      </div>
+      </span>
     </template>
     <v-card>
       <v-card-title class="headline">
