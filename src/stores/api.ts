@@ -5,6 +5,7 @@ export const useAPIStore = defineStore('API', {
   state: () => ({
     api: new API(),
     username: "",
+    email: "",
     ready: false,
     loggedIn: false,
     notLoggedInError: false,

@@ -654,11 +654,13 @@ export default class API extends EventTarget {
         if (!this.isLoggedIn()) {
             this.API_STORE.loggedIn = false
             this.API_STORE.username = ""
+            this.API_STORE.email = ""
         } else {
             try {
                 const response = await this._request("current_user/", "GET", {}, 200, false, true)
                 this.API_STORE.loggedIn = true
                 this.API_STORE.username = response["username"]
+                this.API_STORE.email = response["email"]
                 this.API_STORE.warning_private_projects = response["warning_private_project"]
             } catch (e) {
                 // TODO: Check if unauthorized and handle other errors
@@ -742,7 +744,6 @@ export default class API extends EventTarget {
     async updateUser(user: User): Promise<object> {
         const response = await this._request("users/" + this.API_STORE.username + "/", "PATCH", {
             username: user.username,
-            // TODO: Email
         }, 200, true)
 
         // Update user info
@@ -752,7 +753,7 @@ export default class API extends EventTarget {
     }
 
     /*
-     * Update the password the logged in user on the API
+     * Update the password for the logged in user on the API
      * @param {string} password - The new password
      * @returns {Promise} - A promise that resolves to the response
      * @throws {Error} - If an error occurred
@@ -760,6 +761,18 @@ export default class API extends EventTarget {
     async updatePassword(password: string): Promise<object> {
         return await this._request("users/" + this.API_STORE.username + "/", "PATCH", {
             password: password,
+        }, 200, true)
+    }
+
+    /*
+     * Update the email for the logged in user on the API
+     * @param {string} email - The new email
+     * @returns {Promise} - A promise that resolves to the response
+     * @throws {Error} - If an error occurred
+     */
+    async updateEmail(email: string): Promise<object> {
+        return await this._request("users/" + this.API_STORE.username + "/", "PATCH", {
+            email: email,
         }, 200, true)
     }
 

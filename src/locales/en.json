@@ -240,6 +240,7 @@
       },
       "title": "Danger zone"
     },
+    "email": "Change email address",
     "password": "Change password",
     "save": "Save",
     "title": "Settings",
@@ -271,6 +272,9 @@
     "success": {
       "account-deleted": {
         "message": "Account deleted successfully"
+      },
+      "email-changed": {
+        "message": "Email address changed successfully"
       },
       "generic-message": "Operation successful",
       "installation-success": {

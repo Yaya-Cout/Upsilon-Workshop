@@ -240,6 +240,7 @@
       },
       "title": "Zone à risque"
     },
+    "email": "Changer d'adresse email",
     "password": "Changer de mot de passe",
     "save": "Enregistrer",
     "title": "Paramètres",
@@ -271,6 +272,9 @@
     "success": {
       "account-deleted": {
         "message": "Compte supprimé avec succès"
+      },
+      "email-changed": {
+        "message": "Adresse email changée avec succès"
       },
       "generic-message": "L'opération s'est déroulée avec succès",
       "installation-success": {

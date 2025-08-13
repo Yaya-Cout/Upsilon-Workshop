@@ -9,6 +9,7 @@
         <v-col class="col-1">
           <!-- <GeneralSettings :model-value="userData" /> -->
           <PasswordChangeSettings />
+          <EmailChangeSettings />
           <DangerZoneSettings />
         </v-col>
       </v-row>
@@ -25,6 +26,7 @@ import UserPreviewBig from '../components/user/UserPreviewBig.vue';
 // import GeneralSettings from '../components/settings/GeneralSettings.vue';
 import DangerZoneSettings from '../components/settings/DangerZoneSettings.vue';
 import PasswordChangeSettings from '../components/settings/PasswordChangeSettings.vue';
+import EmailChangeSettings from '../components/settings/EmailChangeSettings.vue';
 const $router = useRouter();
 
 const api = useAPIStore().api;
