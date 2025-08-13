@@ -333,7 +333,7 @@
     },
     "download": "Télécharger",
     "edit": "Éditer",
-    "long-description": "Description longue",
+    "long-description": "Description",
     "modified-on": "Modifié pour la dernière fois le {date}",
     "runner-tooltip": "Environnement d'exécution : {runner}",
     "upload": "Envoyer vers la calculatrice",
