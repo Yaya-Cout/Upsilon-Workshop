@@ -12,5 +12,7 @@ export const useGlobalStore = defineStore('global', {
     progress: false as boolean | number,
     // Control if the delete dialog should be shown
     showDeleteConfirm: true,
+    // Control weather the user should be warned before changing page
+    preventExit: false,
   }),
 })

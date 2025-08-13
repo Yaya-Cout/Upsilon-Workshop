@@ -120,6 +120,7 @@
             :project="project"
             @run="run"
             @update-project="updateProject"
+            @modified="modified"
           />
         </div>
       </v-row>
@@ -128,7 +129,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAPIStore } from '../stores/api';
 import { useGlobalStore } from '../stores/global';
@@ -166,7 +167,15 @@ onMounted(async () => {
   }
   tags.value = await project.value.tags;
   globalStore.progress = false;
+
+  // Prevent exiting if project isn't saved
+  // Based on https://stackoverflow.com/questions/78516768/how-to-trigger-a-confirmation-modal-before-leaving-a-page-in-nuxt-3-and-vue-3
+  window.addEventListener('beforeunload', beforeUnload);
 });
+
+onBeforeUnmount(() => {
+    window.removeEventListener('beforeunload', beforeUnload)
+})
 
 const onRecordSelect = (record: any) => {
   if (record.type === 'py') {
@@ -222,7 +231,21 @@ const updateMetadata = async (metadata: any) => {
 };
 
 const updateProject = (NewProject: Project) => {
+  // FIXME: This code is never executed as all writes are done indirectly,
+  // through pointers
   project.value = NewProject;
+};
+
+const modified = (value: boolean) => {
+  console.log("Modified", value);
+  useGlobalStore().preventExit = value;
+};
+
+const beforeUnload = (e: Event) => {
+  if (useGlobalStore().preventExit) {
+    console.log("Project has been modified, blocking exit")
+    e.preventDefault()
+  }
 };
 </script>
 

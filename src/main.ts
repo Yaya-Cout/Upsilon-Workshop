@@ -42,6 +42,15 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  if (useGlobalStore().preventExit) {
+    if (!confirm('Are you sure you want to leave this page? You have unsaved changes')) {
+      next(false);
+      return;
+    } else {
+      useGlobalStore().preventExit = false;
+    }
+  }
+
   let title = ""
   if (to.meta.title && typeof to.meta.title === "string") {
     title = to.meta.title + " - "

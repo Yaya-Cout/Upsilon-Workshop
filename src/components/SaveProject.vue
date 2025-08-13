@@ -19,8 +19,11 @@ const props = defineProps({
   },
 });
 
+const emits = defineEmits(['modified']);
+
 const save = () => {
   api.updateProject(props.project).then(() => {
+    emits('modified', false);
     globalStore.success = "snackbar.success.project-saved.message"
   }).catch((error) => {
     globalStore.error = true;

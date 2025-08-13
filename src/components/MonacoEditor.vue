@@ -50,6 +50,7 @@
       <SaveProject
         v-if="hasWriteAccess"
         :project="project"
+        @modified="emits('modified', false)"
       >
         <v-btn icon>
           <v-icon>mdi-content-save</v-icon>
@@ -104,7 +105,7 @@ const { t: $t } = useI18n();
 
 const tab = ref(0);
 const oldTab = ref(0);
-const fistCreateModels = ref(true);
+const firstCreateModels = ref(true);
 
 const globalStore = useGlobalStore();
 const apiStore = useAPIStore();
@@ -116,7 +117,7 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits(['run', 'update-project']);
+const emits = defineEmits(['run', 'update-project', 'modified']);
 
 const scripts = computed({
   get(): Script[] {
@@ -124,6 +125,8 @@ const scripts = computed({
   },
   set(value: Script[]) {
     // TODO: Use v-model for updating project
+    // FIXME: This code is never executed as all writes are done indirectly,
+    // through pointers
     emits('update-project', value);
   },
 });
@@ -147,8 +150,8 @@ watchEffect(() => {
   for (const script of scripts.value) {
     // Required to force WatchEffect to update
   }
-  if (fistCreateModels.value) {
-    fistCreateModels.value = false;
+  if (firstCreateModels.value) {
+    firstCreateModels.value = false;
     return;
   }
   createModels();
@@ -171,6 +174,7 @@ const contentChanged = () => {
     for (var i = 0; i < scripts.value.length; i++) {
       if (props.project.uuid + scripts.value[i].title === model.uri.path.substring(1)) {
         scripts.value[i].content = model.getValue();
+        emits('modified', true);
       }
     }
   }
