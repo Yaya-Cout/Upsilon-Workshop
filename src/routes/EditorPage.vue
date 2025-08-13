@@ -9,8 +9,7 @@
     >
       <v-row class="mt-0 fill-height no-wrap">
         <div
-          class="bg-background elevation-3 rounded-lg ml-4 pa-1"
-          style="width: 480px"
+          class="bg-background elevation-3 rounded-lg ml-4 pa-1 left-row"
         >
           <v-card>
             <v-card-title>
@@ -248,5 +247,10 @@ const updateProject = (NewProject: Project) => {
 
 .card-title {
   display: inline;
+}
+
+.left-row {
+  width: 480px;
+  max-width: 33vw;
 }
 </style>

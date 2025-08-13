@@ -1,35 +1,38 @@
 <template>
   <div class="container">
-    <v-tabs
-      id="monaco-editor-tabs"
-      v-model="tab"
-      @update:model-value="setTab"
-    >
-      <v-tab
-        v-for="(script, scriptIndex) in project.files"
-        :key="script.title"
+    <span class="tabs-container">
+      <v-tabs
+        v-model="tab"
+        center-active
+        show-arrows
+        @update:model-value="setTab"
       >
-        <ChangeScript
-          v-if="scriptIndex === tab"
-          :project="project"
-          :script-index="scriptIndex"
-          @rename="filename => rename(scriptIndex, filename)"
-          @delete="deleteScript(scriptIndex)"
+        <v-tab
+          v-for="(script, scriptIndex) in project.files"
+          :key="script.title"
         >
-          <template #default>
+          <ChangeScript
+            v-if="scriptIndex === tab"
+            :project="project"
+            :script-index="scriptIndex"
+            @rename="filename => rename(scriptIndex, filename)"
+            @delete="deleteScript(scriptIndex)"
+          >
+            <template #default>
+              {{ script.title }}
+              <v-tooltip
+                activator="parent"
+                location="bottom"
+              >
+                {{ $t('editor.monaco-editor.change-tooltip') }}
+              </v-tooltip>
+            </template>
+          </ChangeScript>
+          <div v-else>
             {{ script.title }}
-            <v-tooltip
-              activator="parent"
-              location="bottom"
-            >
-              {{ $t('editor.monaco-editor.change-tooltip') }}
-            </v-tooltip>
-          </template>
-        </ChangeScript>
-        <div v-else>
-          {{ script.title }}
-        </div>
-      </v-tab>
+          </div>
+        </v-tab>
+      </v-tabs>
       <v-btn
         icon
         @click="run"
@@ -72,7 +75,7 @@
           {{ $t('editor.monaco-editor.add-script-tooltip') }}
         </v-tooltip>
       </AddScript>
-    </v-tabs>
+    </span>
     <div class="monaco-editor-wrapper">
       <div id="monaco-editor" />
     </div>
@@ -285,12 +288,7 @@ const addScript = (name: string, content: string) => {
 
 <style scoped>
 .monaco-editor-wrapper {
-  /* height: 100%; */
   height: calc(100% - 48px);
-}
-
-.monaco-editor {
-  width: 0 !important;
 }
 
 #monaco-editor {
@@ -299,11 +297,11 @@ const addScript = (name: string, content: string) => {
 
 .container {
   height: 100%;
-  width: 100%;
+  /* TODO: Avoid hardcoding */
+  width: max(100vw - 544px, 100vw - 33vw - 64px);
 }
 
-#monaco-editor-tabs {
-  /* TODO : Avoid hardcoding */
-  max-width: calc(100vw - 364px);
+.tabs-container {
+  display: flex;
 }
 </style>

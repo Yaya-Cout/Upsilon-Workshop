@@ -1,7 +1,7 @@
 <template>
-  <div @click="save">
+  <span @click="save">
     <slot />
-  </div>
+  </span>
 </template>
 
 <script setup lang="ts">
