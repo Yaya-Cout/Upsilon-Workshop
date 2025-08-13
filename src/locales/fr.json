@@ -195,6 +195,10 @@
       "title": "Connaissez-vous les projets privés ?"
     }
   },
+  "project-preview": {
+    "private": "Projet privé",
+    "unlisted": "Project non listé"
+  },
   "register": {
     "already-have-account": "Vous avez déjà un compte ?",
     "email": "Email",

@@ -17,14 +17,65 @@
             <v-card-title
               class="pb-0"
             >
-              {{ project.title }}
-              <!-- TODO: Improve the lock icon -->
-              <v-icon
-                v-if="!project.isPublic"
-                small
+              <span
+                v-if="!project.isPublic || project.isUnlisted"
+                class="title title-with-icon"
               >
-                mdi-lock
-              </v-icon>
+                {{ project.title }}
+                <v-tooltip
+                  activator="parent"
+                  location="top"
+                >
+                  {{ project.title }}
+                </v-tooltip>
+              </span>
+              <span
+                v-else
+                class="title"
+              >
+                {{ project.title }}
+                <v-tooltip
+                  activator="parent"
+                  location="top"
+                >
+                  {{ project.title }}
+                </v-tooltip>
+              </span>
+              <!-- TODO: Improve the lock icon -->
+              <span
+                v-if="!project.isPublic"
+                class="icon"
+              >
+                <v-icon
+                  :id="'icon-private-' + localId"
+                  small
+                >
+                  mdi-lock
+                </v-icon>
+                <v-tooltip
+                  :activator="'#icon-private-' + localId"
+                  location="top"
+                >
+                  {{ $t('project-preview.private') }}
+                </v-tooltip>
+              </span>
+              <span
+                v-else-if="project.isUnlisted"
+                class="icon"
+              >
+                <v-icon
+                  :id="'icon-unlisted-' + localId"
+                  small
+                >
+                  mdi-file-hidden
+                </v-icon>
+                <v-tooltip
+                  :activator="'#icon-unlisted-' + localId"
+                  location="top"
+                >
+                  {{ $t('project-preview.unlisted') }}
+                </v-tooltip>
+              </span>
             </v-card-title>
             <v-card-text class="py-0">
               <v-icon small>
@@ -68,18 +119,28 @@
   </div>
 </template>
 
+<script lang="ts">
+var id: number = 0;
+</script>
+
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { Project } from '../types';
 import SizeView from './viewer/SizeView.vue';
 
 const tagsNames = ref(["test"] as string[]);
+const localId = ref(0);
 
 const props = defineProps({
   project: {
     type: Object as () => Project,
     required: true
   }
+});
+
+onMounted(() => {
+  localId.value = id;
+  id++;
 });
 
 watch(props.project, async (project: Project) => {
@@ -103,5 +164,22 @@ watch(props.project, async (project: Project) => {
 
 .size-view {
   margin-left: 0.25rem;
+}
+
+.title {
+  max-width: 100%;
+  display: inline-block;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.title-with-icon {
+  max-width: calc(100% - 30px);
+}
+
+.icon {
+  text-align: right;
 }
 </style>

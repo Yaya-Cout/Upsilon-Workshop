@@ -22,6 +22,8 @@ export type Project = {
     uuid: string,
     // Whether the project is public or not
     isPublic: boolean,
+    // Whether the project is listed or not
+    isUnlisted: boolean,
     // The language of the project (python, xcas, etc.)
     language: string,
     // The list of tags of the project
