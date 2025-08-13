@@ -479,6 +479,7 @@ export default class API extends EventTarget {
             long_description: project.long_description,
             files: files,
             is_public: project.isPublic,
+            is_unlisted: project.isUnlisted,
             language: project.language,
             version: project.version,
             // TODO: Add tags
@@ -573,9 +574,10 @@ export default class API extends EventTarget {
             long_description: project.long_description,
             files: files,
             is_public: project.isPublic,
+            is_unlisted: project.isUnlisted,
+            version: project.version,
             language: project.language,
             tags: tags,
-            version: project.version,
             collaborators: collaborators,
             runner: project.runner,
         }, 200, true)
@@ -608,10 +610,11 @@ export default class API extends EventTarget {
             short_description: project.short_description,
             long_description: project.long_description,
             is_public: project.isPublic,
+            is_unlisted: project.isUnlisted,
             version: project.version,
             language: project.language,
-            collaborators: collaborators,
             tags: tags,
+            collaborators: collaborators,
             runner: project.runner,
         }, 200, true)
     }

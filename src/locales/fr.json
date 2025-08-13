@@ -125,7 +125,12 @@
       "runner": "Environnement d'exécution",
       "save": "Enregistrer",
       "short-description": "Description courte",
-      "title": "Éditer les métadonnées du projet"
+      "title": "Éditer les métadonnées du projet",
+      "visibility": {
+        "public": "Public",
+        "unlisted": "Non listé",
+        "private": "Privé"
+      }
     },
     "monaco-editor": {
       "add-script-tooltip": "Ajouter un script",

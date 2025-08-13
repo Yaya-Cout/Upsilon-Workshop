@@ -79,11 +79,36 @@
           outlined
           counter="10000"
         />
-        <v-switch
-          v-model="isPublic"
-          :label="$t('editor.edit-project-info-dialog.public')"
+        <v-btn-toggle
+          v-model="projectVisibility"
+          divided
+          variant="outlined"
           color="primary"
-        />
+        >
+          <v-btn value="public">
+            <span>{{ $t('editor.edit-project-info-dialog.visibility.public') }}</span>
+
+            <v-icon end>
+              mdi-earth
+            </v-icon>
+          </v-btn>
+
+          <v-btn value="unlisted">
+            <span>{{ $t('editor.edit-project-info-dialog.visibility.unlisted') }}</span>
+
+            <v-icon end>
+              mdi-file-hidden
+            </v-icon>
+          </v-btn>
+
+          <v-btn value="private">
+            <span>{{ $t('editor.edit-project-info-dialog.visibility.private') }}</span>
+
+            <v-icon end>
+              mdi-lock
+            </v-icon>
+          </v-btn>
+        </v-btn-toggle>
       </v-card-text>
 
       <v-card-actions>
@@ -181,7 +206,7 @@ const shortDescription = ref('');
 const longDescription = ref('');
 const collaborators = ref([] as string[]);
 const tags = ref([] as string[]);
-const isPublic = ref(false);
+const projectVisibility = ref("private");
 
 watch(props.project, () => {
   title.value = props.project.title;
@@ -189,9 +214,16 @@ watch(props.project, () => {
   language.value = props.project.language;
   shortDescription.value = props.project.short_description;
   longDescription.value = props.project.long_description;
-  isPublic.value = props.project.isPublic;
   collaborators.value = props.project.collaborators;
   tags.value = props.project.tags_raw;
+
+  if (!props.project.isPublic) {
+    projectVisibility.value = "private";
+  } else if (props.project.isUnlisted) {
+    projectVisibility.value = "unlisted";
+  } else {
+    projectVisibility.value = "public";
+  }
 
   // Replace the runner name with the display name
   runner.value = runners.find(r => r.name === props.project.runner)?.displayName || '';
@@ -206,9 +238,20 @@ const save = () => {
   project.language = language.value;
   project.short_description = shortDescription.value;
   project.long_description = longDescription.value;
-  project.isPublic = isPublic.value;
   project.collaborators = collaborators.value;
   project.tags_raw = tags.value;
+
+  if (projectVisibility.value === "public") {
+    project.isPublic = true;
+    project.isUnlisted = false;
+  } else if (projectVisibility.value === "unlisted") {
+    project.isPublic = true;
+    project.isUnlisted = true;
+  } else {
+    project.isPublic = false;
+    project.isUnlisted = false;
+  }
+  console.log(projectVisibility.value);
 
   // Replace the display name with the runner name
   project.runner = runners.find(r => r.displayName === runner.value)?.name || 'default';

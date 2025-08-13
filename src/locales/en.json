@@ -93,7 +93,6 @@
       "long-description": "Long description",
       "project-title": "Project title",
       "project-version": "Project version",
-      "public": "Public",
       "rules": {
         "language": {
           "invalid": "Language must be one of the following: python, micropython-khicas, xcas-python-pow, xcas-python-xor, xcas, xcas-session",
@@ -125,7 +124,12 @@
       "runner": "Execution environnement",
       "save": "Save",
       "short-description": "Short description",
-      "title": "Edit project metadata"
+      "title": "Edit project metadata",
+      "visibility": {
+        "public": "Public",
+        "unlisted": "Unlisted",
+        "private": "Private"
+      }
     },
     "monaco-editor": {
       "add-script-tooltip": "Add script",
