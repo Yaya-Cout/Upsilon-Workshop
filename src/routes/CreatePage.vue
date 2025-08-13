@@ -48,11 +48,37 @@
             </template>
           </v-autocomplete>
 
-          <v-switch
-            v-model="isPublic"
-            :label="$t('create.is-public')"
+          <v-btn-toggle
+            v-model="projectVisibility"
+            divided
+            variant="outlined"
             color="primary"
-          />
+            class="mb-2"
+          >
+            <v-btn value="public">
+              <span>{{ $t('editor.edit-project-info-dialog.visibility.public') }}</span>
+
+              <v-icon end>
+                mdi-earth
+              </v-icon>
+            </v-btn>
+
+            <v-btn value="unlisted">
+              <span>{{ $t('editor.edit-project-info-dialog.visibility.unlisted') }}</span>
+
+              <v-icon end>
+                mdi-file-hidden
+              </v-icon>
+            </v-btn>
+
+            <v-btn value="private">
+              <span>{{ $t('editor.edit-project-info-dialog.visibility.private') }}</span>
+
+              <v-icon end>
+                mdi-lock
+              </v-icon>
+            </v-btn>
+          </v-btn-toggle>
 
           <v-btn
             :loading="loading"
@@ -87,10 +113,10 @@ const { t: $t } = useI18n();
 
 const name = ref('');
 const language = ref('python');
-const isPublic = ref(false);
 const loading = ref(false);
 const form = ref(false);
 const formObject = ref<InstanceType<typeof VForm> | null>(null);
+const projectVisibility = ref("private");
 
 const $router = useRouter();
 const apiStore = useAPIStore();
@@ -139,7 +165,8 @@ const create = async () => {
     ] as Script[],
     short_description: '',
     long_description: '',
-    isPublic: isPublic.value,
+    isPublic: projectVisibility.value === "public" || projectVisibility.value === "unlisted",
+    isUnlisted: projectVisibility.value === "unlisted",
     // Everything else is set to avoid type errors and is not used
     rating: 0,
     author: '',
