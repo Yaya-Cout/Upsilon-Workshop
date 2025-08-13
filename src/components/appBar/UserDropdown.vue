@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center">
+  <div class="container">
     <v-menu
       v-model="menu"
       :close-on-content-click="true"
@@ -53,4 +53,8 @@ const apiStore = useAPIStore();
 const menu = ref(false);
 </script>
 
-<style scoped></style>
+<style scoped>
+.container {
+  margin-right: 2px;
+}
+</style>

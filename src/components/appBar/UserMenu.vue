@@ -1,5 +1,8 @@
 <template>
-  <div v-if="!apiStore.loggedIn">
+  <span
+    v-if="!apiStore.loggedIn"
+    class="container"
+  >
     <v-btn
       class="mx-2"
       to="/login"
@@ -15,10 +18,15 @@
     >
       {{ $t('navbar.signup') }}
     </v-btn>
-  </div>
-  <div v-else>
-    <UserDropdown ref="menu" />
-  </div>
+  </span>
+  <span
+    v-else
+    class="register"
+  >
+    <div>
+      <UserDropdown ref="menu" />
+    </div>
+  </span>
   <PopupWarningPrivateProjects />
 </template>
 
@@ -30,4 +38,9 @@ import PopupWarningPrivateProjects from '../popup/PopupWarningPrivateProjects.vu
 const apiStore = useAPIStore();
 </script>
 
-<style scoped></style>
+<style scoped>
+.container {
+  margin-right: 8px;
+  display: inherit;
+}
+</style>
