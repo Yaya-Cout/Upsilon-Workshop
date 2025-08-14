@@ -8,13 +8,25 @@
             type="heading"
             height="32px"
           />
-          <h1 class="text-center mb-2">
+          <h1 class="text-center mb-2 text-overflow">
             {{ project.title }}
+            <v-tooltip
+              activator="parent"
+              location="top"
+            >
+              {{ project.title }}
+            </v-tooltip>
           </h1>
         </v-card-title>
         <v-card-subtitle>
-          <h2 class="text-center mb-2">
+          <h2 class="text-center mb-2 text-overflow">
             {{ project.short_description }}
+            <v-tooltip
+              activator="parent"
+              location="bottom"
+            >
+              {{ project.short_description }}
+            </v-tooltip>
           </h2>
         </v-card-subtitle>
         <v-row class="mt-2">
@@ -294,5 +306,11 @@ const runner_to_human_string = (runner: string) => {
 <style scoped>
 .fit-content {
   width: fit-content;
+}
+
+.text-overflow {
+  max-width: 100%;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 </style>
