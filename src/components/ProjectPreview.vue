@@ -15,7 +15,7 @@
         <div class="flex justify-between project-preview full-height">
           <div class="full-height">
             <v-card-title
-              class="pb-0"
+              class="pb-0 card-title"
             >
               <span
                 v-if="!project.isPublic || project.isUnlisted"
@@ -48,9 +48,10 @@
               >
                 <v-icon
                   :id="'icon-private-' + localId"
+                  class="icon-private"
                   small
                 >
-                  mdi-lock
+                  mdi-eye-off
                 </v-icon>
                 <v-tooltip
                   :activator="'#icon-private-' + localId"
@@ -65,6 +66,7 @@
               >
                 <v-icon
                   :id="'icon-unlisted-' + localId"
+                  class="icon-unlisted"
                   small
                 >
                   mdi-file-hidden
@@ -154,8 +156,7 @@ watch(props.project, async (project: Project) => {
 
 <style scoped>
 .project-preview {
-  min-width: 300px;
-  max-width: 0px;
+  width: 300px;
 }
 
 .full-height {
@@ -180,6 +181,19 @@ watch(props.project, async (project: Project) => {
 }
 
 .icon {
-  text-align: right;
+  font-size: initial;
+  float: right;
+}
+
+.icon-private {
+  margin-top: 6px;
+}
+
+.icon-unlisted {
+  margin-top: 5px;
+}
+
+.card-title {
+  width: 300px;
 }
 </style>

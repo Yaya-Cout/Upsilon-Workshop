@@ -105,7 +105,7 @@
             <span>{{ $t('editor.edit-project-info-dialog.visibility.private') }}</span>
 
             <v-icon end>
-              mdi-lock
+              mdi-eye-off
             </v-icon>
           </v-btn>
         </v-btn-toggle>
