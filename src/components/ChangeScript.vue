@@ -21,6 +21,7 @@
           :label="$t('editor.change-script.new-name')"
           :rules="filenameRules"
           outlined
+          counter="31"
         />
       </v-card-text>
 
@@ -86,6 +87,11 @@ const filenameRules = ref([
   (v: string) => {
     const existing = props.project.files.find(f => f.title === v);
     return !existing || $t('editor.change-script.name-taken');
+  },
+  // Script name can't be longer than 28 chars to prevent calculator from
+  // failing to run script
+  (v: string) => {
+    return (v && new Blob([v]).size <= 31) || $t('editor.change-script.name-too-long');
   },
   // Script must not start with a number
   (v: string) => (v && isNaN(parseInt(v[0], 10))) || $t('editor.change-script.name-starts-with-number'),

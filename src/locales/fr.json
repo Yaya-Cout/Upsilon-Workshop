@@ -73,6 +73,7 @@
       "name-required": "Le nom du script est requis",
       "name-starts-with-number": "Le nom du script ne peut pas démarrer par un nombre",
       "name-taken": "Le nom du script est déjà pris",
+      "name-too-long": "Le nom du script ne peut pas être plus long que 31 octets",
       "new-name": "Nouveau nom",
       "rename": "Renommer",
       "title": "Renommer"

@@ -73,6 +73,7 @@
       "name-required": "The script name is required",
       "name-starts-with-number": "The script name cannot start with a number",
       "name-taken": "The script name is already taken",
+      "name-too-long": "The script name cannot be longer than 31 bytes",
       "new-name": "New name",
       "rename": "Rename",
       "title": "Rename"

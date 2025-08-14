@@ -151,7 +151,9 @@ const create = async () => {
 
   // Generate a pythonic name
   // Uppercase and lowercase letters, numbers not at the start, and underscores are allowed
-  let filename = name.value.replace(/[^a-zA-Z0-9_]/g, '_').replace(/^[^a-zA-Z]/g, '_') + '.py';
+  // Max filename length is 31 chars (calculator will crash beyond, can be
+  // reproduced on simulator)
+  let filename = name.value.replace(/[^a-zA-Z0-9_]/g, '_').replace(/^[^a-zA-Z]/g, '_').substring(0,28) + '.py';
 
   // Create empty project
   const project: Project = {
