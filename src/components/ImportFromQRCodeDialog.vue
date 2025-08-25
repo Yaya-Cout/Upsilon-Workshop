@@ -98,8 +98,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { QrcodeStream, DetectedBarcode } from 'vue-qrcode-reader'
+import { ref, computed, watch, onMounted } from 'vue';
+import { QrcodeStream, DetectedBarcode, setZXingModuleOverrides } from 'vue-qrcode-reader'
+import wasmFile from "../../node_modules/zxing-wasm/dist/reader/zxing_reader.wasm?url";
 
 import Storage from "upsilon.js/Storage";
 const JSZip = import("jszip")
@@ -268,6 +269,14 @@ const downloadAll = async (storage: Storage) => {
   link.download = "backup.zip";
   link.click();
 }
+
+onMounted(() => {
+  setZXingModuleOverrides({
+    locateFile: () => {
+      return wasmFile
+    },
+  })
+})
 </script>
 
 <style scoped>
