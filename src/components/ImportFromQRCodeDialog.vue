@@ -19,7 +19,7 @@
         <a href="https://yaya-cout.github.io/Nwagyu/guide/apps/backup.html">Nwagyu</a>
         <br>
         {{ $t('calculator.qrcode-popup.description-upsilon') }}
-        <a href="https://yaya-cout.github.io/Upsilon-External/">Upsilon External</a>
+        <a href="https://upsilonnumworks.github.io/Upsilon-External/">Upsilon External</a>
         <br>
         <br>
         {{ $t('calculator.qrcode-popup.description-scan') }}
