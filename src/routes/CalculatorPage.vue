@@ -8,32 +8,52 @@
         {{ $t('calculator.title') }}
       </h1>
       <WebUSBNotSupported />
+      <!-- TODO: Show QR without WebUSB -->
       <div v-if="webUSB">
-        <ConnectCalculator v-if="!connected">
-          <v-btn
+        <span class="connect-buttons-group">
+          <ConnectCalculator
             v-if="!connected"
+            class="connect-button"
+          >
+            <v-btn
+              v-if="!connected"
+              block
+              class="mt-2 connect-button"
+              variant="elevated"
+              width="0%"
+              color="primary"
+              size="x-large"
+            >
+              {{ $t('calculator.connect') }}
+            </v-btn>
+          </ConnectCalculator>
+          <v-btn
+            v-else
             block
             class="mt-2"
             variant="elevated"
             width="0%"
             color="primary"
             size="x-large"
+            @click="disconnect"
           >
-            {{ $t('calculator.connect') }}
+            {{ $t('calculator.disconnect') }}
           </v-btn>
-        </ConnectCalculator>
-        <v-btn
-          v-else
-          block
-          class="mt-2"
-          variant="elevated"
-          width="0%"
-          color="primary"
-          size="x-large"
-          @click="disconnect"
-        >
-          {{ $t('calculator.disconnect') }}
-        </v-btn>
+          <ImportFromQRCodeDialog v-model="showQRCodeDialog">
+            <v-btn
+              icon
+              class="mt-2 ml-1 qr-button"
+              variant="outlined"
+            >
+              <v-icon>mdi-qrcode</v-icon>
+              <v-tooltip
+                activator="parent"
+              >
+                {{ $t('calculator.qrcode-tooltip') }}
+              </v-tooltip>
+            </v-btn>
+          </ImportFromQRCodeDialog>
+        </span>
 
         <div v-if="connected">
           <CalculatorCard
@@ -106,6 +126,26 @@
           </v-list>
         </div>
       </div>
+      <div v-else>
+        <ImportFromQRCodeDialog v-model="showQRCodeDialog">
+          <v-btn
+            v-if="!connected"
+            block
+            class="mt-2 connect-button"
+            variant="elevated"
+            width="0%"
+            color="primary"
+            size="x-large"
+          >
+            {{ $t('calculator.qrcode-button') }}
+            <v-tooltip
+              activator="parent"
+            >
+              {{ $t('calculator.qrcode-tooltip') }}
+            </v-tooltip>
+          </v-btn>
+        </ImportFromQRCodeDialog>
+      </div>
     </v-card>
     <v-snackbar
       v-model="deleted"
@@ -153,8 +193,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, watchEffect } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, watch, watchEffect, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import cloneDeep from 'lodash/cloneDeep';
 import { Storage } from '../types';
 import { useAPIStore } from '../stores/api';
@@ -164,6 +204,7 @@ import CalculatorCard from '../components/CalculatorCard.vue';
 import ConnectCalculator from '../components/ConnectCalculator.vue';
 import WebUSBNotSupported from '../components/WebUSBNotSupported.vue';
 import DeleteConfirm from '../components/confirmations/DeleteConfirm.vue';
+import ImportFromQRCodeDialog from '../components/ImportFromQRCodeDialog.vue';
 import RenameScript from '../components/RenameScript.vue';
 import UploadFromComputer from '../components/UploadFromComputer.vue';
 
@@ -173,6 +214,7 @@ const apiStore = useAPIStore();
 const globalStore = useGlobalStore();
 const api = apiStore.api;
 const webUSB = "usb" in navigator ? true : false;
+const $route = useRoute();
 const $router = useRouter();
 
 const storage = ref({magik: false, records: []} as Storage);
@@ -184,6 +226,7 @@ const savingScript = ref([] as boolean[]);
 const scriptSaved = ref(false);
 const scriptSavedName = ref("");
 const scriptSavedId = ref("");
+const showQRCodeDialog = ref(false);
 
 const connected = computed({
   get() {
@@ -324,6 +367,14 @@ watch(connected, async (connected) => {
     storage.value = {magik: false, records: []};
   }
 }, { immediate: true });
+
+onMounted(async () => {
+  // Show QR scan page is ?qr=1 is present in the URL
+  if ($route.query.qr === "1") {
+    showQRCodeDialog.value = true;
+  }
+});
+
 </script>
 
 <style scoped>
@@ -354,5 +405,18 @@ watch(connected, async (connected) => {
 
 .list-header {
   display: flex;
+}
+
+.connect-buttons-group {
+  display: flex;
+}
+
+.connect-button {
+  width: 100%;
+}
+
+.qr-button {
+  height: 52px;
+  width: 52px;
 }
 </style>

@@ -37,6 +37,7 @@
     "vite-plugin-monaco-editor": "^1.1.0",
     "vue": "^3.3.7",
     "vue-i18n": "^9.14.2",
+    "vue-qrcode-reader": "^5.7.3",
     "vue-router": "^4.2.5",
     "vuetify": "^3.3.22",
     "webfontloader": "^1.0.0"

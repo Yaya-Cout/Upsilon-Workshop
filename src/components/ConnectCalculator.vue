@@ -1,7 +1,7 @@
 <template>
-  <div @click="connect">
+  <span @click="connect">
     <slot />
-  </div>
+  </span>
 </template>
 
 <script setup lang="ts">
