@@ -31,7 +31,7 @@
     "showdown-xss-filter": "^0.2.0",
     "upsilon.js": "github:Yaya-Cout/Upsilon.js#master",
     "uuid": "^9.0.1",
-    "vite": "^4.5.6",
+    "vite": "^4.5.14",
     "vite-plugin-checker": "^0.6.2",
     "vite-plugin-monaco-editor": "^1.1.0",
     "vite-plugin-webfont-dl": "^3.11.1",
