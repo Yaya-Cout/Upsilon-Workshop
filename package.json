@@ -17,7 +17,6 @@
     "@types/node": "^20.8.10",
     "@types/showdown": "^2.0.3",
     "@types/uuid": "^9.0.6",
-    "@types/webfontloader": "^1.6.36",
     "@vitejs/plugin-vue": "^3.1.0",
     "@vue/eslint-config-typescript": "^12.0.0",
     "eslint": "^8.53.0",
@@ -35,12 +34,12 @@
     "vite": "^4.5.6",
     "vite-plugin-checker": "^0.6.2",
     "vite-plugin-monaco-editor": "^1.1.0",
+    "vite-plugin-webfont-dl": "^3.11.1",
     "vue": "^3.3.7",
     "vue-i18n": "^9.14.2",
     "vue-qrcode-reader": "^5.7.3",
     "vue-router": "^4.2.5",
-    "vuetify": "^3.3.22",
-    "webfontloader": "^1.0.0"
+    "vuetify": "^3.3.22"
   },
   "devDependencies": {
     "@intlify/vite-plugin-vue-i18n": "^7.0.0",

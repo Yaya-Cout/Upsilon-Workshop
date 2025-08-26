@@ -7,6 +7,7 @@ import path from "node:path";
 //@ts-ignore
 import { fileURLToPath } from "node:url";
 import checker from 'vite-plugin-checker'
+import webfontDownload from 'vite-plugin-webfont-dl';
 
 // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
 import vuetify from 'vite-plugin-vuetify';
@@ -27,7 +28,10 @@ export default defineConfig({
 		VueI18nPlugin({
 			//@ts-ignore
 			include: path.resolve(__dirname, './src/locales/**'),
-		})
+		}),
+		webfontDownload([
+			"https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap",
+		]),
 	], resolve: {
 		alias: {
 			'@': fileURLToPath(new URL('./src', import.meta.url))

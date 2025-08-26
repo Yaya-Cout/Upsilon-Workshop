@@ -5,7 +5,6 @@ import { createRouter, createWebHistory } from "vue-router";
 import App from './App.vue';
 import vuetify from './plugins/vuetify';
 import pinia from './plugins/pinia';
-import { loadFonts } from './plugins/webfontloader';
 
 import { useGlobalStore } from "./stores/global";
 const AboutPage = () => import('./routes/AboutPage.vue');
@@ -20,8 +19,6 @@ const SearchPage = () => import('./routes/SearchPage.vue');
 const SettingsPage = () => import('./routes/SettingsPage.vue');
 const UserPage = () => import('./routes/UserPage.vue');
 const ViewerPage = () => import('./routes/ViewerPage.vue');
-
-loadFonts()
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL || "/"),
