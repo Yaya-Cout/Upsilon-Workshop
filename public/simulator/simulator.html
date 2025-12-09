@@ -676,7 +676,6 @@
             console.log('Epsilon started');
 
             function eventHandler(keyHandler) {
-                console.log(keyHandler);
                 return function(ev) {
                     var key = this.getAttribute('data-key');
                     // FIXME: We're using eval as passing as a pointer doesn't
@@ -762,7 +761,7 @@
                 // Remove the loading screen
                 document.querySelector('.calculator').classList.remove('loading');
 
-                window.top.postMessage('Loaded');
+                window.parent.postMessage('Loaded');
             });
         });
     </script>
