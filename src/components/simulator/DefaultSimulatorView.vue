@@ -19,6 +19,8 @@ const base_url = import.meta.env.BASE_URL;
 
 const last_scripts_empty = ref(true);
 
+const emits = defineEmits(['new-files']);
+
 const props = defineProps({
     scripts: {
         type: Array as () => Script[],
@@ -43,6 +45,39 @@ onMounted(() => {
     window.onmessage = function (e) {
         if (e.data === 'Loaded') {
             _send();
+        } else if (e.data.type == 'new_files') {
+            let new_files: Script[] = [];
+            for (let file of e.data.value) {
+                new_files.push({
+                    title: file.name + "." + file.type,
+                    content: file.code,
+                })
+            }
+
+            let modified_files: Script[] = [];
+            let added_files: Script[] = [];
+            // We detect new and modified files. File deletions are supposed to
+            // be done from the UI
+            for (const new_file of new_files) {
+                let found = false;
+                for (const original_file of props.scripts) {
+                    if (new_file.title == original_file.title) {
+                        found = true;
+                        if (new_file.content != original_file.content) {
+                            modified_files.push(new_file);
+                        }
+                    }
+                }
+                if (!found) {
+                    added_files.push(new_file);
+                }
+            }
+
+            // Forward edits to parents
+            emits('new-files', {
+                modified_files,
+                added_files,
+            });
         }
     };
 });

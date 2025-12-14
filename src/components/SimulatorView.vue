@@ -8,17 +8,20 @@
     v-else
     ref="defaultSimulatorObject"
     :scripts="project.files"
+    @new-files="newFiles"
   />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Project } from '../types';
+import { Project, Script } from '../types';
 import DefaultSimulatorView from './simulator/DefaultSimulatorView.vue';
 import CASWorksSimulatorView from './simulator/CASWorksSimulatorView.vue';
 
 const casworksSimulatorObject = ref<InstanceType<typeof CASWorksSimulatorView> | null>(null);
 const defaultSimulatorObject = ref<InstanceType<typeof DefaultSimulatorView> | null>(null);
+
+const emits = defineEmits(['new-files']);
 
 const props = defineProps({
   project: {
@@ -41,6 +44,10 @@ const send = () => {
       console.error('Simulator object is null');
     }
   }
+}
+
+const newFiles = (files: { modified_files: Script[], added_files: Script[]}) => {
+  emits('new-files', files);
 }
 
 defineExpose({

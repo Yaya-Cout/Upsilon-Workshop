@@ -101,6 +101,7 @@
               <SimulatorView
                 ref="simulatorObject"
                 :project="project"
+                @new-files="handleNewSimulatorFiles"
               />
             </v-window-item>
 
@@ -133,7 +134,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAPIStore } from '../stores/api';
 import { useGlobalStore } from '../stores/global';
-import { Project, Tag } from '../types';
+import { Project, Script, Tag } from '../types';
 import DeviceInterface from '../components/DeviceInterface.vue';
 import DownloadProject from '../components/DownloadProject.vue';
 import EditProjectDialog from '../components/EditProjectDialog.vue';
@@ -246,6 +247,16 @@ const beforeUnload = (e: Event) => {
     console.log("Project has been modified, blocking exit")
     e.preventDefault()
   }
+};
+
+const handleNewSimulatorFiles = async (files: { modified_files: Script[], added_files: Script[]}) => {
+  // TODO: Ask before adding files to project
+  // TODO: Handle conflicts
+  for (let file of files.added_files) {
+    console.log(file)
+    project.value.files.push(file);
+  }
+  console.log("Modified files from simulator", files);
 };
 </script>
 

@@ -722,15 +722,22 @@
 
         // Communication with the host window to execute scripts
         window.onmessage = function(e) {
-            if (loaded) {
-                stop();
-                start(e.data);
+            if (e.data.type == "epsilon_micropython_executionEnvironment_runCode_finished") {
+                window.parent.postMessage({
+                    type: "new_files",
+                    value: e.data.value,
+                });
             } else {
-                console.error('Simulator not ready yet!');
-                // Wait for the simulator to be ready
-                window.setTimeout(function() {
-                    window.onmessage(e);
-                }, 100);
+                if (loaded) {
+                    stop();
+                    start(e.data);
+                } else {
+                    console.error('Simulator not ready yet!');
+                    // Wait for the simulator to be ready
+                    window.setTimeout(function() {
+                        window.onmessage(e);
+                    }, 100);
+                }
             }
         };
 
