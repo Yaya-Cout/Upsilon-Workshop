@@ -10,6 +10,7 @@
       <v-row class="mt-0 fill-height no-wrap">
         <div
           class="bg-background elevation-3 rounded-lg ml-4 pa-1 left-row"
+          :style="sidebarSize"
         >
           <v-card>
             <v-card-title>
@@ -148,16 +149,23 @@ const api = useAPIStore().api;
 const globalStore = useGlobalStore();
 const apiStore = useAPIStore();
 const uuid = $route.params.uuid as string;
+const split = $route.params.split as string;
 
 const tab = ref(null);
 const project = ref(api.EMPTY_PROJECT as Project);
 const tags = ref([api.EMPTY_TAG, api.EMPTY_TAG] as Tag[]);
 const simulatorObject = ref<InstanceType<typeof SimulatorView> | null>(null);
+const sidebarSize = ref("width: 480px;max-width: 33vw;");
 
 project.value._loaded = false;
 
 onMounted(async () => {
   globalStore.progress = true;
+
+  if (($route.query.split != "") && ($route.query.split * 0 === 0)) {
+    sidebarSize.value = "width: " + $route.query.split + "vw;";
+  }
+
   // Before loading the project, add the uuid to the dummy project
   api.EMPTY_PROJECT.uuid = uuid;
   try {
@@ -284,7 +292,7 @@ const handleNewSimulatorFiles = async (files: { modified_files: Script[], added_
 }
 
 .left-row {
-  width: 480px;
-  max-width: 33vw;
+  /* width: 480px;
+  max-width: 33vw; */
 }
 </style>
