@@ -24,9 +24,9 @@ then
 else
     # Downoad epsilon-casworks.js from Parisse's website
     url="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/epsilon.js"
-    curl --retry 12 -L -o public/simulator/epsilon-casworks.js "${url}"
+    curl --retry 12 --retry-all-errors -L -o public/simulator/epsilon-casworks.js "${url}"
 
     # Download xcas-ups.js from Parisse's website
     url="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/xcas_ups.js"
-    curl --retry 12 -L -o public/simulator/xcas-ups.js "${url}"
+    curl --retry 12 --retry-all-errors -L -o public/simulator/xcas-ups.js "${url}"
 fi
