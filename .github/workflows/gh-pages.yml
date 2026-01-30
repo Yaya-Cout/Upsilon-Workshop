@@ -4,6 +4,11 @@ name: Deploy built content to Pages
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      CASWorks_fallback_to_current_version:
+        description: Use CASWorks version from the current deployment in case the official server is down
+        required: false
+        default: false
 
   # Runs on pushes targeting the default branch
   push:
@@ -37,6 +42,8 @@ jobs:
         run: yarn install
       - name: Download epsilon.js
         run: ./download-epsilon-js.sh
+        env:
+          CASWORKS_FALLBACK_TO_CURRENT_VERSION: ${{ inputs.CASWorks_fallback_to_current_version }}
       - name: Build
         run: yarn build
       - name: Copy index to 404
