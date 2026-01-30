@@ -8,7 +8,7 @@ on:
       CASWorks_fallback_to_current_version:
         description: Use CASWorks version from the current deployment in case the official server is down
         required: false
-        default: false
+        default: ""
 
   # Runs on pushes targeting the default branch
   push:
