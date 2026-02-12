@@ -24,6 +24,9 @@
 if (location.hash) {
   location.replace(location.hash.replace('#', ''));
 }
+if (location.href.includes("https://yaya-cout.github.io/Upsilon-Workshop/?")) {
+    location.replace(location.search.replace('?', ''));
+}
     </script>
 </head>
 
