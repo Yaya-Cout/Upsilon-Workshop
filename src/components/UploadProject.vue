@@ -46,18 +46,33 @@ const uploadProject = async (files: Script[]) => {
     let type = file.title.split('.').pop();
     // If the script already exists in the storage, we remove it.
     storage.records = storage.records.filter((record) => record.name !== name);
-    // TODO: Show a popup to ask the user if he wants to overwrite the
+    // TODO: Show a popup to ask the user if they want to overwrite the
     // existing script.
-    storage.records.push({
-      name: name,
-      type: type,
-      // TODO: Store it on the API and retrieve it here.
-      // (Or mark the file which have the name of the project to
-      // be autoImported)
-      autoImport: true,
-      code: file.content.normalize('NFKD').replaceAll("\r\n",'\n'),
-    });
+    if (type === "py") {
+      storage.records.push({
+        name: name,
+        type: type,
+        // TODO: Store it on the API and retrieve it here.
+        // (Or mark the file which have the name of the project to
+        // be autoImported)
+        autoImport: true,
+        code: file.content.normalize('NFKD').replaceAll("\r\n",'\n').replaceAll("\t",'  '),
+      });
+    } else {
+      // Other files aren't handled by Upsilon.js, and don't have the autoImport byte.
+      // This mean we need to convert the file content to a blob
+      let content = new TextEncoder("utf-8").encode(file.content.normalize('NFKD').replaceAll("\r\n",'\n').replaceAll("\t",'  '));
+      let data = new Blob([content]);
+
+      storage.records.push({
+        name: name,
+        type: type,
+        data: data,
+      });
+    }
   }
+
+  console.log(storage)
 
   try {
     await calculatorStore.calculator.installStorage(storage, storageInstalled);
@@ -75,6 +90,7 @@ const storageInstallError = (error: any) => {
     calculatorStore.tooMuchDataError = true;
   } else {
     globalStore.error = true;
+    console.log(error)
   }
 };
 </script>
