@@ -9,6 +9,9 @@ import { createVuetify } from 'vuetify'
 export default createVuetify(
   // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
   {
-    blueprint: md3
+    blueprint: md3,
+    theme: {
+      defaultTheme: 'system'
+    }
   }
 )

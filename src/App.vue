@@ -32,4 +32,10 @@ import AppBar from './components/appBar/AppBar.vue';
   width: 100%;
   height: 100%;
 }
+
+@media (prefers-color-scheme: dark) {
+  .main-container {
+    background-image: url('./assets/background_dark.webp');
+  }
+}
 </style>

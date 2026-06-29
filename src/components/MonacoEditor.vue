@@ -92,8 +92,9 @@ var states: monaco.editor.ICodeEditorViewState[] = [];
 </script>
 
 <script setup lang="ts">
-import { ref, watchEffect, computed, onMounted } from 'vue';
+import { ref, watch, watchEffect, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useTheme } from 'vuetify';
 import * as monaco from 'monaco-editor';
 import { useGlobalStore } from '../stores/global';
 import { useAPIStore } from '../stores/api';
@@ -109,6 +110,14 @@ const firstCreateModels = ref(true);
 
 const globalStore = useGlobalStore();
 const apiStore = useAPIStore();
+const theme = useTheme();
+
+// Keep Monaco's theme in sync with Vuetify (which follows the system preference)
+const monacoTheme = computed(() => (theme.global.current.value.dark ? 'vs-dark' : 'vs'));
+
+watch(monacoTheme, (value) => {
+  monaco.editor.setTheme(value);
+});
 
 const props = defineProps({
   project: {
@@ -164,6 +173,7 @@ onMounted(() => {
   editor = monaco.editor.create(editorElement, {
     language: "python",
     automaticLayout: true,
+    theme: monacoTheme.value,
   });
   editor.onDidChangeModelContent(contentChanged);
   createModels();

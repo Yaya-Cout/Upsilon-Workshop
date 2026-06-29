@@ -1,9 +1,6 @@
 <template>
   <div id="home-page">
-    <h1
-      class="text-center text-h1 my-10 py-10"
-      style="background-color:#fffa"
-    >
+    <h1 class="text-center text-h1 my-10 py-10 title-banner">
       {{ $t('upsilon-workshop') }}
     </h1>
     <v-row class="mx-2 my-0 full-width">
@@ -43,5 +40,9 @@ onMounted(async () => {
 <style scoped>
 .full-width {
   width: 100%;
+}
+
+.title-banner {
+  background-color: rgba(var(--v-theme-surface), 0.667);
 }
 </style>

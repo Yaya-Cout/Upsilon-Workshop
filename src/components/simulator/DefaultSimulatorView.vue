@@ -110,5 +110,7 @@ defineExpose({
 iframe {
     width: 100%;
     height: 75vh;
+    background: transparent;
+    color-scheme: normal;
 }
 </style>
